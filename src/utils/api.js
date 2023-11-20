@@ -2,7 +2,7 @@ import { api } from '@/utils/axios';
 
 export const register = async (data) => {
   try {
-    const response = await api.post('/user', data);
+    const response = await api.post('/auth/register', data);
     if (response.status === 201) {
       return response;
     }
@@ -13,7 +13,7 @@ export const register = async (data) => {
 
 export const login = async (data) => {
   try {
-    const response = await api.post(`/auth/login`, data);
+    const response = await api.post('/auth/login', data);
     if (response.status === 200) {
       return response;
     }
