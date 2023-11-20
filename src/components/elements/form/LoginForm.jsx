@@ -33,16 +33,10 @@ export default function LoginForm() {
   const handleLogin = async (data) => {
     try {
       const response = await login(data);
-      const accessToken = response?.data?.data?.accessToken;
       if (response.status === 200) {
         reset(initialLogin);
-        const authUser = {
-          id: response.data?.id,
-          username: response.data?.username,
-          email: response.data?.email,
-        };
-        localStorage.setItem('user', JSON.stringify(authUser));
-        localStorage.setItem('access_token', accessToken);
+        const accessToken = response.data?.data?.accessToken;
+        localStorage.setItem('accessToken', accessToken);
         push('/product');
       }
     } catch (error) {
