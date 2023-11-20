@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('access_token');
+const accessToken = localStorage.getItem('accessToken');
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${accessToken}`,
   },
 });
