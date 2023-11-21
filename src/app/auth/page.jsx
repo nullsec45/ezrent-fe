@@ -4,8 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function page() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center">
-      <Tabs defaultValue="Login" className="max-w-sm w-full mx-auto">
+    <div className="w-full min-h-screen flex flex-col  justify-center">
+      <Tabs
+        defaultValue="Login"
+        className="max-w-sm w-full mx-auto lg:px-0 md:px-0 sm:px-0 px-4"
+        data-aos="fade-up"
+      >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Login">Login</TabsTrigger>
           <TabsTrigger value="Register">Register</TabsTrigger>
