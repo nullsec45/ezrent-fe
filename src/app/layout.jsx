@@ -1,7 +1,9 @@
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import ProgressTopBar from '@/components/ProgressTopBar';
+import { Toaster } from '@/components/ui/toaster';
+import Container from '@/components/Container';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,7 +17,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <ProgressTopBar />
+          <Container>{children}</Container>
           <Toaster />
         </ThemeProvider>
       </body>
