@@ -21,3 +21,13 @@ export const login = async (data) => {
     console.log(error?.message);
   }
 };
+export const addProduct = async (data) => {
+  try {
+    const response = await api.post('/products', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
