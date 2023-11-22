@@ -72,14 +72,14 @@ export default function AddProductForm() {
           reset(initialProduct);
           toast({
             title: 'Success',
-            description: 'Your Product has been created !',
+            description: response.data?.message,
           });
         }
       } catch (error) {
         toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
-          description: 'There was a problem with your request.',
+          description: error?.message,
         });
       }
     } else {
@@ -100,7 +100,7 @@ export default function AddProductForm() {
           <CardContent>
             <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">Name</Label>
+                <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
                   name="name"
