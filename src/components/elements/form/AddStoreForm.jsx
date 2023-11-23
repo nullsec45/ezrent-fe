@@ -8,16 +8,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
+import { initialStore } from '@/config/constant/store/initialStoreValues';
 import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
-import { useForm } from 'react-hook-form';
+import FieldInput from '@/components/elements/input/FieldInput';
+import { storeSchema } from '@/config/schema/store/storeSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { useEdgeStore } from '@/lib/edgestore';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { initialStore } from '@/config/constant/store/initialStoreValues';
-import { storeSchema } from '@/config/schema/store/storeSchema';
+import { useForm } from 'react-hook-form';
 import { addStore } from '@/utils/api';
 
 export default function AddStoreForm() {
@@ -89,107 +89,101 @@ export default function AddStoreForm() {
           <CardContent>
             <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Bukataplak"
-                  {...register('name')}
+                <FieldInput
+                  name={'name'}
+                  type={'text'}
+                  placeholder={'Bukataplak'}
+                  register={register}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.name?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="file">Picture</Label>
-                <Input
-                  type="file"
-                  id="profilePicture"
-                  name="profilePicture"
-                  {...register('profilePicture')}
-                  className="cursor-pointer"
+                <FieldInput
+                  label={'picture'}
+                  name={'profilePicture'}
+                  type={'file'}
+                  register={register}
                 />
                 <ErrorMessageInput message={errors.profilePicture?.message} />
               </div>
             </div>
-
             <div className="my-4">
               <h1>Address</h1>
             </div>
             <div className="gap-4 grid lg:grid-cols-2 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 w-full">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  name="city"
-                  type="text"
-                  placeholder="Jakarta"
-                  {...register('city')}
+                <FieldInput
+                  name={'city'}
+                  type={'text'}
+                  placeholder={'Jakarta'}
+                  register={register}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.city?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="province">Province</Label>
-                <Input
-                  id="province"
-                  name="province"
-                  type="text"
-                  placeholder="Jawa Barat"
-                  {...register('province')}
+                <FieldInput
+                  name={'province'}
+                  type={'text'}
+                  placeholder={'Jawa Barat'}
+                  register={register}
+                  required={true}
                 />
-                <ErrorMessageInput message={errors.profince?.message} />
+                <ErrorMessageInput message={errors.province?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">District</Label>
-                <Input
-                  id="district"
-                  name="district"
-                  type="text"
-                  placeholder="Jakarta Selatan"
-                  {...register('district')}
+                <FieldInput
+                  name={'district'}
+                  type={'text'}
+                  placeholder={'Jakarta Selatan'}
+                  register={register}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.district?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="postalCode">Postal Code</Label>
-                <Input
-                  id="postalCode"
-                  name="postalCode"
-                  type="text"
-                  placeholder="41235"
-                  {...register('postalCode')}
+                <FieldInput
+                  label={'postal code'}
+                  name={'postalCode'}
+                  type={'number'}
+                  placeholder={'41398'}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.postalCode?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="latitude">Latitude</Label>
-                <Input
-                  id="latitude"
-                  name="latitude"
-                  type="text"
-                  placeholder="+126-8384"
-                  {...register('latitude')}
+                <FieldInput
+                  name={'latitude'}
+                  type={'number'}
+                  placeholder={'+660-739'}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.latitude?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="longitude">Longitude</Label>
-                <Input
-                  id="longitude"
-                  name="longitude"
-                  type="text"
-                  placeholder="-826-2384"
-                  {...register('longitude')}
+                <FieldInput
+                  name={'longitude'}
+                  type={'number'}
+                  placeholder={'-830-914'}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.longitude?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="accountNumber">Account Number</Label>
-                <Input
-                  id="accountNumber"
-                  name="accountNumber"
-                  type="text"
-                  placeholder="8210489120"
-                  {...register('accountNumber')}
+                <FieldInput
+                  label={'account number'}
+                  name={'accountNumber'}
+                  type={'tel'}
+                  placeholder={'838085612349790'}
+                  register={register}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.longitude?.message} />
               </div>
