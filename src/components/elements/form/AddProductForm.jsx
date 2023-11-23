@@ -15,16 +15,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
 import { initialProduct } from '@/config/constant/product/productInitialValues';
+import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
 import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
 import { productSchema } from '@/config/schema/product/productShema';
+import FieldInput from '@/components/elements/input/FieldInput';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { useEdgeStore } from '@/lib/edgestore';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { addProduct } from '@/utils/api';
 
@@ -100,46 +100,46 @@ export default function AddProductForm() {
           <CardContent>
             <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Name of your product"
-                  {...register('name')}
+                <FieldInput
+                  name={'name'}
+                  type={'text'}
+                  placeholder={'Name of your product'}
+                  register={register}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.name?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  placeholder="70.000"
-                  {...register('price')}
+                <FieldInput
+                  name={'price'}
+                  type={'number'}
+                  placeholder={'70.000'}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.price?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="price">Maximum Rental</Label>
-                <Input
-                  id="maximumRental"
-                  name="maximumRental"
-                  type="number"
-                  placeholder="70"
-                  {...register('maximumRental')}
+                <FieldInput
+                  label={'Maximum Rental'}
+                  name={'maximumRental'}
+                  type={'number'}
+                  placeholder={'70'}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.maximumRental?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="stock">Stock</Label>
-                <Input
-                  id="stock"
-                  name="stock"
-                  type="number"
-                  placeholder="7"
-                  {...register('stock')}
+                <FieldInput
+                  name={'stock'}
+                  type={'number'}
+                  placeholder={7}
+                  register={register}
+                  min={1}
+                  required={true}
                 />
                 <ErrorMessageInput message={errors.stock?.message} />
               </div>
@@ -172,12 +172,11 @@ export default function AddProductForm() {
                 <ErrorMessageInput message={errors.category?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="file">Picture</Label>
-                <Input
-                  type="file"
-                  id="productPicture"
-                  name="productPicture"
-                  {...register('productPicture')}
+                <FieldInput
+                  label={'picture'}
+                  name={'productPicture'}
+                  type={'file'}
+                  register={register}
                   className="cursor-pointer"
                 />
                 <ErrorMessageInput message={errors.productPicture?.message} />
