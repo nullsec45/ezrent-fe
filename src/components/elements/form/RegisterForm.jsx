@@ -8,15 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useForm } from 'react-hook-form';
+import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
+import { initialRegister } from '@/config/constant/auth/authInitialValues';
+import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
+import { registerSchema } from '@/config/schema/auth/authSchema';
+import FieldInput from '@/components/elements/input/FieldInput';
 import { register as CreateAccount } from '@/utils/api';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from '@/components/ui/use-toast';
 import { CheckCircle } from 'lucide-react';
-import { initialRegister } from '@/config/constant/auth/authInitialValues';
-import { registerSchema } from '@/config/schema/auth/authSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
-import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
-import RegisterInput from '@/components/elements/input/RegisterInput';
+import { useForm } from 'react-hook-form';
 
 export default function RegisterForm() {
   const {
@@ -59,7 +60,39 @@ export default function RegisterForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          <RegisterInput register={register} errors={errors} />
+          <div className="space-y-1">
+            <FieldInput
+              name={'username'}
+              type={'text'}
+              placeholder={'John Doe'}
+              register={register}
+              required={true}
+              autoComplete={'off'}
+            />
+            <ErrorMessageInput message={errors.username?.message} />
+          </div>
+          <div className="space-y-1">
+            <FieldInput
+              name={'email'}
+              type={'email'}
+              placeholder={'example@gmail.com'}
+              register={register}
+              required={true}
+              autoComplete={'off'}
+            />
+            <ErrorMessageInput message={errors.email?.message} />
+          </div>
+          <div className="space-y-1">
+            <FieldInput
+              name={'password'}
+              type={'password'}
+              placeholder={'*******'}
+              register={register}
+              required={true}
+              autoComplete={'off'}
+            />
+            <ErrorMessageInput message={errors.password?.message} />
+          </div>
         </CardContent>
         <CardFooter>
           <ButtonSubmit isSubmitting={isSubmitting} text={'Create Account'} />

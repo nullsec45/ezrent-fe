@@ -8,15 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
 import { initialLogin } from '@/config/constant/auth/authInitialValues';
+import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
+import FieldInput from '@/components/elements/input/FieldInput';
 import { loginSchema } from '@/config/schema/auth/authSchema';
-import { toast } from '@/components/ui/use-toast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { login } from '@/utils/api';
-import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
-import LoginInput from '@/components/elements/input/LoginInput';
 
 export default function LoginForm() {
   const {
@@ -56,7 +57,28 @@ export default function LoginForm() {
           <CardDescription>Login to your account</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          <LoginInput errors={errors} register={register} />
+          <div className="space-y-1">
+            <FieldInput
+              name={'email'}
+              type={'email'}
+              placeholder={'example@gmail.com'}
+              register={register}
+              required={true}
+              autoComplete={'off'}
+            />
+            <ErrorMessageInput message={errors.email?.message} />
+          </div>
+          <div className="space-y-1">
+            <FieldInput
+              name={'password'}
+              type={'password'}
+              placeholder={'*******'}
+              register={register}
+              required={true}
+              autoComplete={'off'}
+            />
+            <ErrorMessageInput message={errors.password?.message} />
+          </div>
         </CardContent>
         <CardFooter>
           <ButtonSubmit isSubmitting={isSubmitting} text={'Login'} />

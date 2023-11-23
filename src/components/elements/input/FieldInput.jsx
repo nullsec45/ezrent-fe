@@ -9,6 +9,7 @@ export default function FieldInput({
   register,
   min,
   required,
+  autoComplete,
 }) {
   return (
     <>
@@ -23,6 +24,8 @@ export default function FieldInput({
         {...register(name)}
         min={min}
         required={required}
+        autoComplete={autoComplete}
+        aria-label={name}
         className={type == 'file' ? 'cursor-pointer' : null}
       />
     </>
