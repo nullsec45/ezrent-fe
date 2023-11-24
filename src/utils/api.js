@@ -1,4 +1,5 @@
 import { api } from '@/utils/axios';
+import { setCookie } from 'cookies-next';
 
 export const register = async (data) => {
   try {
@@ -13,7 +14,8 @@ export const register = async (data) => {
 export const login = async (data) => {
   try {
     const response = await api.post('/auth/login', data);
-    if (response.status === 200) {
+    if (response?.data.statusCode === 200) {
+      setCookie("accessToken", response?.data.data.accessToken)
       return response;
     }
   } catch (error) {
