@@ -18,19 +18,21 @@ import {
 import Image from 'next/image';
 import FieldInputGroup from '@/components/elements/input/FieldInputGroup';
 import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchPopUpOpen, setIsSearchPopUpOpen] = useState(false);
   const [authUser, setAuthUser] = useState(false);
-  const [isPopUp, setIsPopUp] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    setIsPopUp(false);
+    setIsMenuOpen(!isMenuOpen);
+    setIsSearchPopUpOpen(false);
   };
+
   const toggleSearchPopUp = () => {
-    setIsPopUp(!isPopUp);
-    setIsOpen(false);
+    setIsSearchPopUpOpen(!isSearchPopUpOpen);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -50,7 +52,9 @@ export default function Navbar() {
           <button onClick={toggleSearchPopUp}>
             <Search />
           </button>
-          <button onClick={toggleMenu}>{isOpen ? <X /> : <MenuIcon />}</button>
+          <button onClick={toggleMenu}>
+            {isMenuOpen ? <X /> : <MenuIcon />}
+          </button>
         </div>
         <div className="hidden sm:flex md:flex lg:flex xl:flex 2xl:flex sm:justify-between md:justify-between lg:justify-between xl:justify-between 2xl:justify-between items-center gap-3 w-full">
           <FieldInputGroup />
@@ -76,25 +80,31 @@ export default function Navbar() {
         </div>
         {/* search pop-up */}
         <div
-          className={`${
-            isPopUp ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 '
-          } origin-top transition-all duration-500 ease-in-out sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden absolute top-20 z-50 h-fit border-b bg-white p-2 text-black right-4 left-4 rounded-md`}
+          className={twMerge(
+            'origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-20 z-50 h-fit border-b bg-white p-2 text-black right-4 left-4 rounded-md',
+            `${
+              isSearchPopUpOpen
+                ? 'opacity-100 scale-y-100'
+                : 'opacity-0 scale-y-0 '
+            }`
+          )}
         >
           <FieldInputGroup />
         </div>
         {/* search pop-up */}
         {/* backdrop */}
         <div
-          className={`bg-black/60 z-10 min-h-screen absolute top-[4.2rem] left-0 bottom-0 right-0 sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden ${
-            isOpen || isPopUp ? 'opacity-100' : 'opacity-0'
-          }  transition-all duration-300 ease-in-out`}
+          className={twMerge(
+            'bg-black/60 z-10 min-h-screen absolute top-[4.2rem] left-0 bottom-0 right-0 sm:hidden transition-all duration-300 ease-in-out',
+            `${isMenuOpen || isSearchPopUpOpen ? 'block' : 'hidden'}`
+          )}
         />
         {/* backdrop */}
         {/* nav menu */}
         <div
           className={`${
-            isOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 '
-          } origin-top transition-all duration-500 ease-in-out sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden absolute top-[4.2rem] z-50 bg-none inset-0 min-h-screen border-b text-black`}
+            isMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 '
+          } origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-[4.2rem] z-50 bg-none inset-0 min-h-screen border-b text-black`}
         >
           {authUser ? (
             <>
