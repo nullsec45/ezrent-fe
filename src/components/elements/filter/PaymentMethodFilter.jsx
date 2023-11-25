@@ -19,7 +19,7 @@ export default function PaymentMethodFilter() {
         <AccordionTrigger className="hover:no-underline">
           Metode Pembayaran
         </AccordionTrigger>
-        <AccordionContent className="flex gap-8 justify-between items-center px-1">
+        <AccordionContent className="px-1">
           <RadioGroup defaultValue="comfortable" className="space-y-1">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="transfer" id="transfer" />
