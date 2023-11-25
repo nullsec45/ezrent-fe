@@ -36,8 +36,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full sticky top-0 lg:py-4 md:py-4 sm:py-4 xl:py-4 2xl:py-4 py-6 bg-white z-50">
-      <nav className="container w-full flex justify-between  gap-3 items-center ">
+    <header className="w-full sticky top-0 sm:py-4 py-6 bg-white z-50">
+      <nav className="container px-4 lg:px-10 w-full flex justify-between gap-3 items-center">
         <div className="w-full max-w-[7rem] mr-2">
           <Image
             src={'/logo.png'}

@@ -22,7 +22,7 @@ export default function Counter({
       <Input
         type="text"
         value={value}
-        className="w-12 focus-visible:ring-0"
+        className="w-12 focus-visible:ring-0 text-center"
         onChange={onInputChange}
       />
       <Button
