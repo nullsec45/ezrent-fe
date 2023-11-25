@@ -9,8 +9,8 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className="grid gap-3 w-fit m-20">
+    <>
       <Products />
-    </div>
+    </>
   );
 }
