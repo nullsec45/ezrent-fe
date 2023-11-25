@@ -11,7 +11,10 @@ export default function SelectMenu({ items, placeholder, fullWidth }) {
   return (
     <Select>
       <SelectTrigger
-        className={twMerge('w-44 py-5', `${fullWidth && 'w-full'}`)}
+        className={twMerge(
+          'max-w-[158px] py-5',
+          `${fullWidth && 'w-full max-w-none'}`
+        )}
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

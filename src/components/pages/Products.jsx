@@ -62,7 +62,7 @@ export default function Products() {
             <div className="lg:hidden">
               <Button
                 variant="outline"
-                className="w-40 flex justify-between border-gray-300"
+                className="w-full max-w-[10rem] flex justify-between border-gray-300"
                 onClick={openFilterMenu}
               >
                 <span>Filter</span>
