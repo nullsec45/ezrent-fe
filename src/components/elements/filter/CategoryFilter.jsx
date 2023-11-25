@@ -58,7 +58,7 @@ export default function CategoryFilter() {
         <AccordionTrigger className="hover:no-underline">
           Kategori
         </AccordionTrigger>
-        <AccordionContent className="px-1">
+        <AccordionContent className="px-1 pt-3">
           <Search onChange={searchCategory} />
 
           <RadioGroup className="space-y-2 my-4">

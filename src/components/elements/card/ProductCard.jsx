@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FaStar } from 'react-icons/fa6';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Button } from '@/components/ui/button';
+import { twMerge } from 'tailwind-merge';
 
 export default function ProductCard({ product }) {
   const {
@@ -60,7 +61,7 @@ export default function ProductCard({ product }) {
               {store.storeAddress?.city || 'Lokasi'}
             </span>
           </div>
-          <div className="text-green-500 font-medium text-xs">
+          <div className={twMerge('text-green-500 font-medium text-xs')}>
             {availableStock > 0 ? 'Tersedia' : 'Tidak Tersedia'}
           </div>
         </div>

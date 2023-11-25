@@ -3,7 +3,7 @@ import ProgressTopBar from '@/components/ProgressTopBar';
 import { Toaster } from '@/components/ui/toaster';
 import Container from '@/components/Container';
 import { Inter } from 'next/font/google';
-import './globals.css';
+import '../globals.css';
 import { EdgeStoreProvider } from '@/lib/edgestore';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -23,12 +23,7 @@ export default function RootLayout({ children }) {
         <EdgeStoreProvider>
           <ThemeProvider attribute="class" defaultTheme="light">
             <ProgressTopBar />
-            <Navbar />
-            <Container>
-              <Alert />
-              {children}
-            </Container>
-            <Footer />
+            <Container>{children}</Container>
             <Toaster />
           </ThemeProvider>
         </EdgeStoreProvider>

@@ -43,16 +43,17 @@ export default function Products() {
   ];
 
   return (
-    <main className="container p-2 mx-auto flex relative">
+    <main className="container px-2 py-10 mx-auto flex relative">
       {/* Filter Sidebar */}
       <aside
         className={twMerge(
-          'fixed top-0 w-full h-screen lg:sticky lg:top-0 lg:block lg:w-72 max-h-screen overflow-y-scroll bg-white z-10 flex-shrink-0',
+          'fixed lg:sticky top-0 lg:top-0 left-0 lg:left-auto w-full h-screen lg:block lg:w-72 max-h-screen overflow-y-scroll bg-white z-50 flex-shrink-0',
           `${isFilterMenuOpen || 'hidden'}`
         )}
       >
         <FilterMenu closeFilterMenu={closeFilterMenu} />
       </aside>
+
       {/* Main Section */}
       <div className="flex-1">
         {/* Section Header */}
@@ -80,17 +81,17 @@ export default function Products() {
 
         {/* Product list */}
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-3 py-5 lg:px-3 flex-1">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <>
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
+              <ProductCard key={product.id + index} product={product} />
             </>
           ))}
         </div>
