@@ -5,6 +5,9 @@ import Container from '@/components/Container';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { EdgeStoreProvider } from '@/lib/edgestore';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import Alert from '@/components/Alert';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +21,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <EdgeStoreProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <ProgressTopBar />
-            <Container>{children}</Container>
+            <Navbar />
+            <Container>
+              <Alert />
+              {children}
+            </Container>
+            <Footer />
             <Toaster />
           </ThemeProvider>
         </EdgeStoreProvider>
