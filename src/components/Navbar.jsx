@@ -81,7 +81,7 @@ export default function Navbar() {
         {/* search pop-up */}
         <div
           className={twMerge(
-            'origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-20 z-50 h-fit border-b bg-white p-2 text-black right-4 left-4 rounded-md',
+            'origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-20 z-50 h-fit  bg-white p-2 text-black right-4 left-4 rounded-md',
             `${
               isSearchPopUpOpen
                 ? 'opacity-100 scale-y-100'
@@ -104,7 +104,7 @@ export default function Navbar() {
         <div
           className={`${
             isMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 '
-          } origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-[4.2rem] z-50 bg-none inset-0 min-h-screen border-b text-black`}
+          } origin-top transition-all duration-500 ease-in-out sm:hidden absolute top-[4.2rem] z-50 bg-none inset-0 min-h-screen  text-black`}
         >
           {authUser ? (
             <>

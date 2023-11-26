@@ -25,11 +25,12 @@ export default function PriceFilter() {
               type="number"
               placeholder="Terendah"
               className="max-w-[150px]"
+              min="0"
             />
           </div>
           <div className="space-y-2 text-end">
             <span className="text-gray-400">Maks</span>
-            <Input placeholder="Tertinggi" className="max-w-[150px]" />
+            <Input placeholder="Tertinggi" className="max-w-[150px]" min="0" />
           </div>
         </AccordionContent>
       </AccordionItem>
