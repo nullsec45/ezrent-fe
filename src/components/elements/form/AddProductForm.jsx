@@ -169,7 +169,7 @@ export default function AddProductForm() {
                     </Select>
                   )}
                 />
-                <ErrorMessageInput message={errors.category?.message} />
+                <ErrorMessageInput message={errors.categoryId?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <FieldInput
