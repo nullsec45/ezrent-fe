@@ -8,6 +8,7 @@ import { EdgeStoreProvider } from '@/lib/edgestore';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Alert from '@/components/Alert';
+import SWRConfigClient from '@/providers/SWRConfigClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,14 +23,16 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <EdgeStoreProvider>
           <ThemeProvider attribute="class" defaultTheme="light">
-            <ProgressTopBar />
-            <Navbar />
-            <Container>
-              <Alert />
-              {children}
-            </Container>
-            <Footer />
-            <Toaster />
+            <SWRConfigClient>
+              <ProgressTopBar />
+              <Navbar />
+              <Container>
+                <Alert />
+                {children}
+              </Container>
+              <Footer />
+              <Toaster />
+            </SWRConfigClient>
           </ThemeProvider>
         </EdgeStoreProvider>
       </body>

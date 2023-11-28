@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 
 let accessToken = null;
 
 if (typeof window !== 'undefined') {
-  accessToken = localStorage.getItem('accessToken');
+  accessToken = getCookie('accessToken')
 }
 
 export const api = axios.create({
