@@ -48,7 +48,7 @@ export default function UpdateProfileForm({
           // reset()
           toast({
             title: 'Success',
-            description: response?.data.message,
+            description: response?.data?.message,
           });
         }
       } catch (error) {
@@ -68,7 +68,7 @@ export default function UpdateProfileForm({
         // reset()
         toast({
           title: 'Success',
-          description: response?.data.message,
+          description: response?.data?.message,
         });
       }
     }
@@ -84,7 +84,7 @@ export default function UpdateProfileForm({
           placeholder={'ex. John Doe'}
           register={register}
         />
-        <ErrorMessageInput message={errors?.fullname.message} />
+        <ErrorMessageInput message={errors?.fullname?.message} />
       </div>
       <div className="lg:col-span-1 col-span-2">
         <FieldInput
@@ -94,7 +94,7 @@ export default function UpdateProfileForm({
           required={true}
           register={register}
         />
-        <ErrorMessageInput message={errors?.dateOfbirth.message} />
+        <ErrorMessageInput message={errors?.dateOfbirth?.message} />
       </div>
       <div className="lg:col-span-1 col-span-2">
         <Label
@@ -121,7 +121,7 @@ export default function UpdateProfileForm({
             </Select>
           )}
         />
-        <ErrorMessageInput message={errors?.gender.message} />
+        <ErrorMessageInput message={errors?.gender?.message} />
       </div>
       <div className="col-span-2">
         <FieldInput
@@ -133,7 +133,7 @@ export default function UpdateProfileForm({
           register={register}
           placeholder={'ex. 08xxxx'}
         />
-        <ErrorMessageInput message={errors?.phoneNumber.message} />
+        <ErrorMessageInput message={errors?.phoneNumber?.message} />
       </div>
       <div className="flex justify-end col-span-2 mt-2">
         <Button
