@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import NavbarMenuMobile from './NavbarMenuMobile';
-import NavbarBackdrop from './NavbarBackdrop';
-import NavbarSearchMobile from './NavbarSearchMobile';
-import NavbarBrand from './NavbarBrand';
-import NavbarMobile from './NavbarMobile';
-import NavbarDekstop from './NavbarDekstop';
+import NavbarBrand from '@/components/elements/navbar/NavbarBrand';
+import NavbarMobile from '@/components/elements/navbar/NavbarMobile';
+import NavbarDekstop from '@/components/elements/navbar/NavbarDekstop';
+import NavbarSearchMobile from '@/components/elements/navbar/NavbarSearchMobile';
+import NavbarBackdrop from '@/components/elements/navbar/NavbarBackdrop';
+import NavbarMenuMobile from '@/components/elements/navbar/NavbarMenuMobile';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function Navbar() {
 
         <NavbarDekstop />
 
-        <NavbarSearchMobile />
+        <NavbarSearchMobile isSearchPopUpOpen={isSearchPopUpOpen} />
 
         <NavbarBackdrop
           isMenuOpen={isMenuOpen}
