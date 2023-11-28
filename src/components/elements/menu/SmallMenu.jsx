@@ -9,7 +9,6 @@ import { twMerge } from 'tailwind-merge';
 
 export default function SmallMenu() {
   const path = usePathname().split('/')[2];
-  path === 'address' ? console.log(path[2]) : null;
   return (
     <div className="rounded-xl max-w-xs w-full border-[1.4px] h-fit shadow p-3">
       <ul className="flex flex-col gap-1 ">
