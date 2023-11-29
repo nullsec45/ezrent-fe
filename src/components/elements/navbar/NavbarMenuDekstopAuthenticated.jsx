@@ -16,7 +16,7 @@ export default function NavbarMenuDekstopAuthenticated({ user }) {
       </li>
 
       <li>
-        <Link href="/user/profile">
+        <Link href="/dashboard/profile">
           <Button variant="ghost" className="flex gap-3">
             <span className="hidden lg:inline-block">{user.username}</span>
             <Avatar className="w-8 h-8">
