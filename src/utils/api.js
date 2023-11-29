@@ -11,17 +11,19 @@ export const register = async (data) => {
     console.log(error?.message);
   }
 };
+
 export const login = async (data) => {
   try {
     const response = await api.post('/auth/login', data);
     if (response?.data.statusCode === 200) {
-      setCookie("accessToken", response?.data.data.accessToken)
+      setCookie('accessToken', response?.data.data.accessToken);
       return response;
     }
   } catch (error) {
     console.log(error?.message);
   }
 };
+
 export const addProduct = async (data) => {
   try {
     const response = await api.post('/products', data);
@@ -32,6 +34,7 @@ export const addProduct = async (data) => {
     console.log(error?.message);
   }
 };
+
 export const addStore = async (data) => {
   try {
     const response = await api.post('/stores', data);
