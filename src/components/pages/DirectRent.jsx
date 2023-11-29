@@ -89,7 +89,7 @@ function DirectRent() {
 
           <div className="mt-12">
             <Button className="w-full py-6">
-              <Link href="/checkout">Checkout</Link>
+              <Link href="/checkout?step=address">Checkout</Link>
             </Button>
           </div>
         </div>
