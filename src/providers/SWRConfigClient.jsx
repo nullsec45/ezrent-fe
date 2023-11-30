@@ -9,8 +9,9 @@ export default function SWRConfigClient({ children }) {
       value={{
         fetcher: fetcher,
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-          // Never retry on 404.
-          if (error.status === 404) return;
+          // Never retry on 404 or 401.
+          if (error.response.status === 404 || error.response.status === 401)
+            return;
 
           // Never retry for a specific key.
           if (key === '/auth/verify-token') return;
