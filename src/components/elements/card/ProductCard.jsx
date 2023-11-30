@@ -27,7 +27,7 @@ export default function ProductCard({ product }) {
       <div className="pt-2 pb-6 px-4">
         <div className="h-10">
           <Link
-            href={`/detail/${id}`}
+            href={`/products/${id}`}
             className="font-bold text-sm line-clamp-2"
           >
             {name}
@@ -73,7 +73,7 @@ export default function ProductCard({ product }) {
         </div>
 
         <Button className="mt-4 w-full py-6" disabled={availableStock < 1}>
-          <Link href={`/detail/${id}`}>Sewa Sekarang</Link>
+          <Link href={`/products/${id}`}>Sewa Sekarang</Link>
         </Button>
       </div>
     </div>
