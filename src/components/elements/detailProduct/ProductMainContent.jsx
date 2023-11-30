@@ -39,6 +39,8 @@ export default function ProductMainContent({ productId }) {
   const [quantity, setQuantity] = useState(1);
   const [day, setDay] = useState(1);
 
+  const isStockEmpty = () => product.availableStock < 1;
+
   const updateDayCounter = (range) => {
     if (range?.from && range?.to) {
       const dayFrom = new Date(range?.from);
@@ -252,11 +254,19 @@ export default function ProductMainContent({ productId }) {
 
         {/*  */}
         <div className="grid sm:grid-cols-2 gap-3 mt-5">
-          <Button className="w-full py-7" variant="outline">
+          <Button
+            className="w-full py-7"
+            variant="outline"
+            disabled={isStockEmpty()}
+          >
             Tambah ke Keranjang
           </Button>
-          <Button className="w-full py-7" onClick={handleOnRent}>
-            Sewa Sekarang
+          <Button
+            className="w-full py-7"
+            onClick={handleOnRent}
+            disabled={isStockEmpty()}
+          >
+            {isStockEmpty() ? 'Stok Habis' : 'Sewa Sekarang'}
           </Button>
         </div>
       </div>
