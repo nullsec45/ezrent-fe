@@ -1,9 +1,9 @@
 import DetailProduct from '@/components/pages/DetailProduct';
 
-export default function page() {
+export default async function page({ params }) {
   return (
     <>
-      <DetailProduct />
+      <DetailProduct productId={params.id} />
     </>
   );
 }
