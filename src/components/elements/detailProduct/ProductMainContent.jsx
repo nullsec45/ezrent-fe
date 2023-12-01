@@ -88,7 +88,7 @@ export default function ProductMainContent({ productId }) {
       },
     });
 
-    router.push('/checkout?page=address');
+    router.push('/checkout?step=address');
   };
 
   if (isLoading) return <ProductMainContentSkeleton />;
