@@ -1,5 +1,6 @@
 import useDetailProduct from '@/hooks/api/useDetailProduct';
 import ProductDescriptionSkeleton from '@/components/elements/skeleton/ProductDescriptionSkeleton';
+import PropTypes from 'prop-types';
 
 export default function ProductDescription({ productId }) {
   const { data: product, isLoading } = useDetailProduct(productId);
@@ -13,3 +14,7 @@ export default function ProductDescription({ productId }) {
     </div>
   );
 }
+
+ProductDescription.propTypes = {
+  productId: PropTypes.number.isRequired,
+};

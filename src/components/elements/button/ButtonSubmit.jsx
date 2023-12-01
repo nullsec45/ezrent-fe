@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { RotateCw } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 export default function ButtonSubmit({ isSubmitting, text }) {
   return (
@@ -15,3 +16,8 @@ export default function ButtonSubmit({ isSubmitting, text }) {
     </Button>
   );
 }
+
+ButtonSubmit.propTypes = {
+  isSubmitting: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+};

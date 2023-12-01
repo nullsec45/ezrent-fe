@@ -1,13 +1,24 @@
 import React from 'react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SmallMenu from '../elements/menu/SmallMenu';
-import { Pen, Pencil, Plus, X } from 'lucide-react';
+import { Pencil, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Address() {
   return (
     <div className="container">
-      <Breadcrumbs mainTitle={'Daftar Alamat'} />
+      <Breadcrumbs
+        items={[
+          {
+            name: 'Dashboard',
+            link: '/dashboard',
+          },
+          {
+            name: 'Daftar Alamat',
+            link: '/dashboard/profile',
+          },
+        ]}
+      />
       <div className="flex lg:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
         <SmallMenu />
         <div className="rounded-xl p-3 w-full border shadow">

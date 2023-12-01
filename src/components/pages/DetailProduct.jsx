@@ -10,6 +10,7 @@ import ProductCard from '@/components/elements/card/ProductCard';
 import ProductMainContent from '@/components/elements/detailProduct/ProductMainContent';
 import ProductDescription from '@/components/elements/detailProduct/ProductDescription';
 import useDetailProduct from '@/hooks/api/useDetailProduct';
+import PropTypes from 'prop-types';
 
 const reviews = [
   {
@@ -217,3 +218,7 @@ export default function DetailProduct({ productId }) {
     </div>
   );
 }
+
+DetailProduct.propTypes = {
+  productId: PropTypes.number.isRequired,
+};

@@ -24,6 +24,7 @@ import ErrorFetchApiFallback from '@/components/elements/errors/ErrorFetchApiFal
 import { useBoundStore } from '@/components/store/useBoundStore';
 import { useRouter } from 'next/navigation';
 import ProductMainContentSkeleton from '@/components/elements/skeleton/ProductMainContentSkeleton';
+import PropTypes from 'prop-types';
 
 export default function ProductMainContent({ productId }) {
   const { data: product, isLoading, error } = useDetailProduct(productId);
@@ -273,3 +274,7 @@ export default function ProductMainContent({ productId }) {
     </div>
   );
 }
+
+ProductMainContent.propTypes = {
+  productId: PropTypes.number.isRequired,
+};
