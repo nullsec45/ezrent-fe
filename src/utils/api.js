@@ -1,5 +1,5 @@
 import { api } from '@/utils/axios';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 export const register = async (data) => {
   try {
@@ -19,6 +19,14 @@ export const login = async (data) => {
       setCookie('accessToken', response?.data.data.accessToken);
       return response;
     }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const logout = async () => {
+  try {
+    return deleteCookie('accessToken');
   } catch (error) {
     console.log(error?.message);
   }
