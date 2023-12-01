@@ -1,8 +1,10 @@
 'use client';
 
 import UpdateProfileForm from '@/components/elements/form/UpdateProfileForm';
+import { updateProfileSchema } from '@/config/schema/profile/profileSchema';
 import SmallMenu from '@/components/elements/menu/SmallMenu';
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -16,7 +18,9 @@ export default function Profile() {
     reset,
     control,
     formState: { isSubmitting, errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(updateProfileSchema),
+  });
 
   return (
     <div className="container">
