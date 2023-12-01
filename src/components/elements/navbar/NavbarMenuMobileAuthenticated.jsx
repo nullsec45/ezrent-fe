@@ -10,8 +10,15 @@ import {
   User,
 } from 'lucide-react';
 import OpenStoreIcon from '@/components/icons/OpenStoreIcon';
+import { useRouter } from 'next/navigation';
+import { logout } from '@/utils/api';
 
 export default function NavbarMenuMobileAuthenticated({ user }) {
+  const { push } = useRouter();
+  const handleLogout = async () => {
+    await logout();
+    push('/auth');
+  };
   return (
     <>
       <div className="font-medium px-5 flex flex-col bg-white rounded-b-lg pb-4 pt-2">
@@ -74,7 +81,7 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
           <li>
             <button
               className="flex gap-2 items-center text-red-600"
-              onClick={() => console.log('logout')}
+              onClick={handleLogout}
             >
               <LogOutIcon />
               Logout
