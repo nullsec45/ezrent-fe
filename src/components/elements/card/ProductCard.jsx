@@ -20,8 +20,13 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="w-full min-w-[150px] lg:min-w-[220px] max-w-xs bg-gray-50 shadow-md rounded-xl overflow-hidden">
-      <div className="relative w-full aspect-[9/8] max-h-56 bg-gray-200">
-        <Image src={productPictures[0].url} fill={true} alt="product image" />
+      <div className="relative w-full aspect-[9/8] max-h-56">
+        <Image
+          src={productPictures[0].url}
+          fill={true}
+          alt="product image"
+          className="object-contain"
+        />
       </div>
 
       <div className="pt-2 pb-6 px-4">

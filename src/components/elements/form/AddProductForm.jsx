@@ -29,9 +29,8 @@ import { Label } from '@/components/ui/label';
 import { addProduct } from '@/utils/api';
 
 const categories = [
-  { name: 'student', id: 1 },
-  { name: 'developer', id: 2 },
-  { name: 'manager', id: 3 },
+  { name: 'Elektronik', id: 'c58d789f-c681-4b36-9710-411bfbb6f7b3' },
+  { name: 'Lainnya', id: '6agwh9f-c681-827b-9710-813501bf7b3' },
 ];
 
 export default function AddProductForm() {
@@ -57,13 +56,14 @@ export default function AddProductForm() {
         });
         const product = {
           name: data?.name,
-          storeId: 1,
+          storeId: 'f1119eed-14ee-4ebd-9a32-d8661990f66b',
           description: data?.description,
-          price: data?.price,
-          maximumRental: data?.maximumRental,
-          stock: data?.stock,
+          price: Number(data?.price),
+          maximumRental: Number(data?.maximumRental),
+          stock: Number(data?.stock),
+          availableStock: Number(data?.stock),
           categoryId: data?.categoryId,
-          productPicture: res?.url,
+          productPictures: [res?.url],
         };
 
         const response = await addProduct(product);
