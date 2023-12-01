@@ -39,7 +39,20 @@ export const createOrderSlice = persist(
       })),
 
     setUserAddress: (userAddressId) =>
-      set((state) => ({ order: { ...state.order, userAddressId } })),
+      set((state) => ({
+        order: {
+          ...state.order,
+          userAddressId,
+        },
+      })),
+
+    setOrderShipping: (shipping) =>
+      set((state) => ({
+        order: {
+          ...state.order,
+          shipping,
+        },
+      })),
   }),
   {
     name: 'product-rent',
