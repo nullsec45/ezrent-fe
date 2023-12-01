@@ -20,7 +20,18 @@ export default function Profile() {
 
   return (
     <div className="container">
-      <Breadcrumbs mainTitle={'Profil Saya'} />
+      <Breadcrumbs
+        items={[
+          {
+            name: 'Dashboard',
+            link: '/dashboard',
+          },
+          {
+            name: 'Profil Saya',
+            link: '/dashboard/profile',
+          },
+        ]}
+      />
       <div className="flex lg:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
         {/* menu */}
         <SmallMenu />
