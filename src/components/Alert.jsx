@@ -9,9 +9,8 @@ import Link from 'next/link';
 export default function Alert() {
   const [isClose, setIsClose] = useState(true);
 
-  const handleClose = () => {
-    setIsClose(false);
-  };
+  const handleClose = () => setIsClose(false);
+
   return (
     <div
       className={twMerge(
