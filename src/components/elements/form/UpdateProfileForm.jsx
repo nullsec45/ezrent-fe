@@ -15,6 +15,7 @@ import { useEdgeStore } from '@/lib/edgestore';
 import axios from 'axios';
 import { toast } from '@/components/ui/use-toast';
 import ErrorMessageInput from '../errors/ErrorMessageInput';
+import PropTypes from 'prop-types';
 
 export default function UpdateProfileForm({
   register,
@@ -38,6 +39,7 @@ export default function UpdateProfileForm({
           fullname: data?.fullname,
           gender: data?.gender,
           dateOfbirth: data?.dateOfbirth,
+          phoneNumber: data?.phoneNumber,
           profilePicture: res?.url,
         };
         const response = await axios.patch(
@@ -59,6 +61,7 @@ export default function UpdateProfileForm({
         fullname: data?.fullname,
         gender: data?.gender,
         dateOfbirth: data?.dateOfbirth,
+        phoneNumber: data?.phoneNumber,
       };
       const response = await axios.patch(
         `${process.env.API_BASE_URL}/profile`,
@@ -148,3 +151,13 @@ export default function UpdateProfileForm({
     </>
   );
 }
+
+UpdateProfileForm.propTypes = {
+  errors: PropTypes.object.isRequired,
+  control: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired,
+  control: PropTypes.func.isRequired,
+  Controller: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+};

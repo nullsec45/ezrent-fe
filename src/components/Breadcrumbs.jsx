@@ -3,6 +3,7 @@
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
+import PropTypes from 'prop-types';
 
 export default function Breadcrumbs({ items }) {
   return (
@@ -38,3 +39,7 @@ export default function Breadcrumbs({ items }) {
     </div>
   );
 }
+
+Breadcrumbs.propTypes = {
+  items: PropTypes.object,
+};

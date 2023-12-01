@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import PropTypes from 'prop-types';
 
 export default function FieldInput({
   label,
@@ -31,3 +32,13 @@ export default function FieldInput({
     </>
   );
 }
+
+FieldInput.propTypes = {
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  min: PropTypes.number,
+  autoComplete: PropTypes.string,
+  required: PropTypes.bool,
+};
