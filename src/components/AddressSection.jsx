@@ -2,28 +2,43 @@ import { RadioGroup } from '@/components/ui/radio-group';
 import AddressCard from '@/components/elements/card/AddressCard';
 import { Button } from '@/components/ui/button';
 import { FaCirclePlus } from 'react-icons/fa6';
+import useSWR from 'swr';
+import AddressCardSkeleton from '@/components/elements/skeleton/AddressCardSkeleton';
+import { useBoundStore } from './store/useBoundStore';
+import { useState } from 'react';
 
 export default function AddressSection({ nextPage }) {
+  const { data: addresses, isLoading } = useSWR('/addresses');
+  const [selectedAddress, setSelectedAddress] = useState('');
+  const setUserAddress = useBoundStore((state) => state.setUserAddress);
+
+  const onButtonNextStep = () => {
+    setUserAddress(selectedAddress);
+    nextPage();
+  };
+
+  if (isLoading) return <AddressCardSkeleton />;
+
   return (
     <div>
       <h1 className="text-xl font-semibold mb-8">Pilih Alamat</h1>
 
       <div>
-        <RadioGroup defaultValue="address-1" className="space-y-6">
-          <AddressCard
-            fullAddress="Jl Mawar RT 05/ RW 04 No.10"
-            name="John Doe"
-            phone="081299994343"
-            id="address-1"
-            value="address-1"
-          />
-          <AddressCard
-            fullAddress="Jl Durian RT 09/ RW 01 No.14"
-            name="Bapak Budi"
-            phone="08955554343"
-            id="address-2"
-            value="address-2"
-          />
+        <RadioGroup className="space-y-6">
+          {addresses.map((address) => (
+            <AddressCard
+              key={address.id}
+              id={address.id}
+              value={address.id}
+              fullAddress={address.fullAddress}
+              name="John Doe"
+              phone="081277773434"
+              province={address.province}
+              city={address.city}
+              district={address.district}
+              onAddressSelected={() => setSelectedAddress(address.id)}
+            />
+          ))}
         </RadioGroup>
       </div>
 
@@ -42,7 +57,10 @@ export default function AddressSection({ nextPage }) {
         <Button variant="outline" className="py-7 md:px-10 w-full md:w-auto">
           Kembali
         </Button>
-        <Button className="py-7 md:px-10 w-full md:w-auto" onClick={nextPage}>
+        <Button
+          className="py-7 md:px-10 w-full md:w-auto"
+          onClick={onButtonNextStep}
+        >
           Pengiriman
         </Button>
       </div>

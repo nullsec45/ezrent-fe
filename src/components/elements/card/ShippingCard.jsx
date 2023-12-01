@@ -7,10 +7,11 @@ export default function ShippingCard({
   value,
   id,
   estimationDate = '1 Jan, 2023',
+  onSelected,
 }) {
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-white border border-gray-300 p-6 rounded-lg">
-      <RadioGroupItem value={value} id={id} />
+      <RadioGroupItem value={value} id={id} onClick={onSelected} />
       <Label
         htmlFor={id}
         className="w-full flex justify-between items-center cursor-pointer"

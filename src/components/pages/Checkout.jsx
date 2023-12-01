@@ -44,7 +44,7 @@ export default function Checkout() {
   };
 
   return (
-    <main className="container px-4 lg:px-10 py-14">
+    <main className="container px-4 lg:px-10 py-14 min-h-[700px]">
       <CheckoutSteps activePage={activePage} />
 
       <div className="mt-20">{pages[activePage]}</div>
