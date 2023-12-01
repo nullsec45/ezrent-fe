@@ -1,20 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { FileClock, FileText, History, LogOut, User2 } from 'lucide-react';
+import ButtonLogout from '@/components/elements/button/ButtonLogout';
+import { Button } from '@/components/ui/button';
 import { PiMapPinFill } from 'react-icons/pi';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
-import { logout } from '@/utils/api';
+import Link from 'next/link';
 
 export default function SmallMenu() {
   const path = usePathname().split('/')[2];
-  const { push } = useRouter();
-  const handleLogout = async () => {
-    await logout();
-    push('/auth');
-  };
   return (
     <div className="rounded-xl max-w-xs w-full border-[1.4px] h-fit shadow p-3">
       <ul className="flex flex-col gap-1 ">
@@ -84,15 +79,16 @@ export default function SmallMenu() {
         </li>
       </ul>
       <hr className="w-full h-[1.5px] bg-gray-400 my-3" />
-      <Button
-        onClick={handleLogout}
-        className="py-1 w-full bg-transparent hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg"
-      >
-        <div className="hover:bg-transparent bg-transparent text-red-500  flex gap-2 items-center">
-          <LogOut />
-          Logout
-        </div>
-      </Button>
+      <ButtonLogout
+        text={'Logout'}
+        classNameWrapper={
+          'hover:bg-transparent bg-transparent text-red-500  flex gap-2 items-center'
+        }
+        classNameBtn={
+          'py-1 w-full bg-transparent hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg'
+        }
+        LogoutIcon={LogOut}
+      />
     </div>
   );
 }
