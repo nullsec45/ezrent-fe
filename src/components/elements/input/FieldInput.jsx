@@ -11,6 +11,8 @@ export default function FieldInput({
   min,
   required,
   autoComplete,
+  helperText,
+  ...props
 }) {
   return (
     <>
@@ -28,7 +30,11 @@ export default function FieldInput({
         autoComplete={autoComplete}
         aria-label={name}
         className={type == 'file' ? 'cursor-pointer' : null}
+        {...props}
       />
+      {helperText && (
+        <div className="text-xs text-gray-500 font-medium">{helperText}</div>
+      )}
     </>
   );
 }
@@ -40,5 +46,6 @@ FieldInput.propTypes = {
   placeholder: PropTypes.string,
   min: PropTypes.number,
   autoComplete: PropTypes.string,
+  helperText: PropTypes.string,
   required: PropTypes.bool,
 };
