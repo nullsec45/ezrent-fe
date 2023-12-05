@@ -156,7 +156,7 @@ UpdateProfileForm.propTypes = {
   errors: PropTypes.object.isRequired,
   control: PropTypes.object.isRequired,
   register: PropTypes.func.isRequired,
-  control: PropTypes.func.isRequired,
+  control: PropTypes.object.isRequired,
   Controller: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool.isRequired,

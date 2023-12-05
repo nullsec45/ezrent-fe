@@ -4,21 +4,16 @@ import { Button } from '@/components/ui/button';
 import {
   CopyCheck,
   History,
-  LogOutIcon,
+  LogOut,
   MapPin,
   ShoppingCart,
   User,
 } from 'lucide-react';
 import OpenStoreIcon from '@/components/icons/OpenStoreIcon';
-import { useRouter } from 'next/navigation';
-import { logout } from '@/utils/api';
+import ButtonLogout from '@/components/elements/button/ButtonLogout';
+import PropTypes from 'prop-types';
 
 export default function NavbarMenuMobileAuthenticated({ user }) {
-  const { push } = useRouter();
-  const handleLogout = async () => {
-    await logout();
-    push('/auth');
-  };
   return (
     <>
       <div className="font-medium px-5 flex flex-col bg-white rounded-b-lg pb-4 pt-2">
@@ -38,7 +33,7 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
           </Link>
         </div>
 
-        <ul className="flex flex-col space-y-3 mt-3">
+        <ul className="flex flex-col space-y-4 mt-3">
           <li>
             <Link href="/profile/me" className="flex gap-2 items-center">
               <User />
@@ -61,7 +56,7 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
       </div>
 
       <div className="mt-2 bg-white pb-4 pt-1 px-5 rounded-lg font-medium">
-        <ul className="flex flex-col space-y-3 mt-3">
+        <ul className="flex flex-col space-y-4 mt-3">
           <li>
             <Link href="/" className="flex gap-2 items-center">
               <CopyCheck />
@@ -77,18 +72,22 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
         </ul>
       </div>
       <div className="mt-2 mb-2  bg-white  pb-4 pt-1 px-5 rounded-lg">
-        <ul className="flex flex-col space-y-2 mt-3">
+        <ul className="mt-3">
           <li>
-            <button
-              className="flex gap-2 items-center text-red-600"
-              onClick={handleLogout}
-            >
-              <LogOutIcon />
-              Logout
-            </button>
+            <ButtonLogout
+              LogoutIcon={LogOut}
+              classNameBtn={
+                'flex gap-2 items-center text-base text-red-600 bg-white hover:bg-white h-6 p-0'
+              }
+              text={'Logout'}
+            />
           </li>
         </ul>
       </div>
     </>
   );
 }
+
+NavbarMenuMobileAuthenticated.propTypes = {
+  user: PropTypes.object,
+};

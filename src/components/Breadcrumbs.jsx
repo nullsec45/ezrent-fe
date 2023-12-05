@@ -41,5 +41,5 @@ export default function Breadcrumbs({ items }) {
 }
 
 Breadcrumbs.propTypes = {
-  items: PropTypes.object,
+  items: PropTypes.array,
 };
