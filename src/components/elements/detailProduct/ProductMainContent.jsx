@@ -99,7 +99,7 @@ export default function ProductMainContent({ productId }) {
     <div className="my-12 flex flex-col lg:flex-row h-full max-h-fit items-center gap-7">
       <div className="w-full lg:max-w-lg h-[27rem]">
         <Image
-          src={product.productPictures[0].url}
+          src={product.productPictures[0]?.url}
           alt={product.name}
           width={100}
           height={100}
