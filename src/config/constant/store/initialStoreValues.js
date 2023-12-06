@@ -9,6 +9,4 @@ export const initialStore = {
   subDistrict: '',
   fullAddress: '',
   postalCode: '',
-  latitude: '',
-  longitude: '',
 };
