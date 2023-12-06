@@ -30,7 +30,7 @@ export default function NavbarMenuDekstopAuthenticated({ user }) {
       </li>
 
       <li>
-        <Link href="/store/add-store">
+        <Link href="/store/open-store">
           <Button className="flex gap-3 items-center px-8">
             <span>Buka Toko</span>
             <OpenStoreIcon />

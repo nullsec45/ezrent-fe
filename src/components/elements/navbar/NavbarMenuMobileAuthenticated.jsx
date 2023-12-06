@@ -25,7 +25,7 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
             </Avatar>
             <p>{user.username}</p>
           </Link>
-          <Link href="/store/add-store">
+          <Link href="/store/open-store">
             <Button className="flex gap-3 items-center">
               <span> Buka Toko</span>
               <OpenStoreIcon />
