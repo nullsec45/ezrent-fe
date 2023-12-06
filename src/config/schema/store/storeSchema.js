@@ -5,6 +5,7 @@ export const storeSchema = yup
     name: yup.string().required(),
     phoneNumber: yup.string().required().min(10).max(15),
     description: yup.string().required(),
+    bank: yup.string().required(),
     accountNumber: yup.string().required(),
     province: yup.string().required(),
     city: yup.string().required(),

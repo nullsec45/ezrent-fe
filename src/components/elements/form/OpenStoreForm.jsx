@@ -31,6 +31,7 @@ import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { initialStore } from '@/config/constant/store/initialStoreValues';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { storeSchema } from '@/config/schema/store/storeSchema';
+import { banks } from '@/data/banks';
 
 export default function OpenStoreForm() {
   const { edgestore } = useEdgeStore();
@@ -79,6 +80,7 @@ export default function OpenStoreForm() {
           profilePicture: res?.url,
           description: data?.description,
           phoneNumber: data?.phoneNumber,
+          bank: data?.bank,
           accountNumber: data?.accountNumber,
           status: true,
           storeAddress: {
@@ -159,6 +161,34 @@ export default function OpenStoreForm() {
                 />
                 <ErrorMessageInput message={errors.description?.message} />
               </div>
+            </div>
+
+            <div className="flex flex-col space-y-1.5 ">
+              <Label htmlFor="bank">Bank</Label>
+              <Controller
+                control={control}
+                name="bank"
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Bank" />
+                    </SelectTrigger>
+                    <SelectContent className="z-[9999]">
+                      <SelectGroup>
+                        {banks?.map((bank) => (
+                          <SelectItem value={bank.id} key={bank.id}>
+                            {bank.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              <ErrorMessageInput message={errors.bank?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5">
