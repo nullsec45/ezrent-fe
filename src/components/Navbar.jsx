@@ -23,7 +23,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full sticky top-0 sm:py-4 py-6 bg-white z-50">
+    <header className="w-full sticky top-0 sm:py-4 py-6 bg-white z-[9999]">
       <nav className="container px-4 lg:px-10 w-full flex justify-between gap-3 items-center">
         <NavbarBrand />
 
