@@ -1,4 +1,5 @@
 import axios from 'axios';
+import useSWR from 'swr';
 
 const fetcher = async (url) => {
   const res = await axios(url);
