@@ -2,13 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import ErrorMessageInput from '../errors/ErrorMessageInput';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ButtonSubmit from '../button/ButtonSubmit';
 import {
   Select,
@@ -22,7 +16,8 @@ import { Label } from '@/components/ui/label';
 import FieldInput from '../input/FieldInput';
 import { Textarea } from '@/components/ui/textarea';
 import useProvinces from '@/hooks/api/useProvinces';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useEdgeStore } from '@/lib/edgestore';
 import { toast } from '@/components/ui/use-toast';
@@ -31,13 +26,11 @@ import useCities from '@/hooks/api/useCities';
 import useDistricts from '@/hooks/api/useDistricts';
 import useSubDistricts from '@/hooks/api/useSubDistricts';
 import usePostalCode from '@/hooks/api/usePostalCode';
-import useSWR from 'swr';
-import axios from 'axios';
-
-const fetcher = async (url) => {
-  const res = await axios.get(url);
-  return res.data;
-};
+import { Button } from '@/components/ui/button';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
+import { initialStore } from '@/config/constant/store/initialStoreValues';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { storeSchema } from '@/config/schema/store/storeSchema';
 
 export default function OpenStoreForm() {
   const { edgestore } = useEdgeStore();
@@ -54,23 +47,25 @@ export default function OpenStoreForm() {
     control,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: initialStore,
+    resolver: yupResolver(storeSchema),
+  });
+
   const [provinceId, setProvinceId] = useState(null);
   const [cityId, setCityId] = useState(null);
   const [districtId, setDistrictId] = useState(null);
+  const [position, setPosition] = useState(null); // {last, lng}
 
   const { data: provinces } = useProvinces();
+  const { data: cities } = useCities(provinceId);
+  const { data: districts } = useDistricts(cityId);
+  const { data: subDistricts } = useSubDistricts(districtId);
+  const { data: postalCodes } = usePostalCode(cityId, districtId);
 
-  const [position, setPosition] = useState(null);
-  // {last, lng} <- posisi
-
-  const { data: cities } = useCities(provinceId); // ini GET Kota berdasarkan ID Provinsi nya
-  const { data: districts } = useDistricts(cityId); // ini GET Kecamatan berdasarkan ID Kota nya
-  const { data: subDistricts } = useSubDistricts(districtId); // ini GET Kelurahan berdasarkan ID Kecataman nya
-  const { data: postalCodes } = usePostalCode(cityId, districtId); // ini GET KodePos berdasarkan ID Kota && ID Kecamatan nya
+  const router = useRouter();
 
   const handleOpenStore = async (data) => {
-    console.log(data);
     const profilePicture = data?.profilePicture?.[0];
 
     if (data.profilePicture.length !== 0) {
@@ -83,22 +78,25 @@ export default function OpenStoreForm() {
           name: data?.name,
           profilePicture: res?.url,
           description: data?.description,
+          phoneNumber: data?.phoneNumber,
           accountNumber: data?.accountNumber,
+          status: true,
           storeAddress: {
             province: data?.province,
             city: data?.city,
             district: data?.district,
             subDistrict: data?.subDistrict,
             fullAddress: data?.fullAddress,
-            postalCode: position?.postalCode,
-            latitude: position?.lat,
-            longitude: position?.lng,
+            postalCode: data?.postalCode,
+            latitude: position?.lat.toString(),
+            longitude: position?.lng.toString(),
           },
         };
 
         const response = await addStore(store);
         if (response.status === 201) {
           reset(initialStore);
+          router.push('/products');
           toast({
             title: 'Success',
             description: response.data?.message,
@@ -121,13 +119,9 @@ export default function OpenStoreForm() {
   };
   return (
     <>
-      <Card>
+      <Card className="border-none shadow-none">
         <form onSubmit={handleSubmit(handleOpenStore)}>
-          <CardHeader>
-            <CardTitle>Buka Toko</CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-7">
+          <CardContent className="space-y-7 p-0">
             <div className="flex flex-col space-y-1.5">
               <FieldInput
                 label="Nama Toko"
@@ -138,6 +132,19 @@ export default function OpenStoreForm() {
                 required={true}
               />
               <ErrorMessageInput message={errors.name?.message} />
+            </div>
+
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Nomor Handphone"
+                name="phoneNumber"
+                type="tel"
+                placeholder="0812XXXXXXXX"
+                helperTextTop="Gunakan nomor Whatsapp agar mudah dihubungi oleh pelanggan anda"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.phoneNumber?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5">
@@ -160,7 +167,8 @@ export default function OpenStoreForm() {
                 name="accountNumber"
                 type="text"
                 placeholder="XXXX XXXX XXXX XXXX"
-                helperText="Masukkan 16 digit nomor rekening tanpa spasi"
+                helperTextTop="Nomor rekening ini akan digunakan sebagai tujuan pembayaran pelanggan anda"
+                helperTextBottom="Masukkan 16 digit nomor rekening tanpa spasi"
                 register={register}
                 required={true}
                 pattern="[0-9\s]{13,19}"
@@ -213,6 +221,7 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.province?.message} />
             </div>
+
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="city">Kota</Label>
               <Controller
@@ -228,7 +237,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih kota" />
+                      <SelectValue placeholder="Pilih Kota" />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -247,6 +256,7 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.city?.message} />
             </div>
+
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="district">Kecamatan</Label>
               <Controller
@@ -281,6 +291,7 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.district?.message} />
             </div>
+
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="subDistrict">Kelurahan</Label>
               <Controller
@@ -314,6 +325,7 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.subDistrict?.message} />
             </div>
+
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="postalCode">Kode POS</Label>
               <Controller
@@ -347,12 +359,48 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.subDistrict?.message} />
             </div>
+
+            <div className="flex flex-col space-y-1.5">
+              <div className="flex flex-col mt-4 space-y-1.5">
+                <Label htmlFor="fullAddress">Alamat Lengkap</Label>
+                <Textarea
+                  id="fullAddress"
+                  name="fullAddress"
+                  placeholder="Jl Mawar RT 05/RW 02 No.2"
+                  className="min-h-[7rem]"
+                  rows="2"
+                  {...register('fullAddress')}
+                />
+                <ErrorMessageInput message={errors.fullAddress?.message} />
+              </div>
+            </div>
+
             <div className="flex flex-col space-y-1.5 ">
+              <Label>Pilih Lokasi Anda</Label>
+              <div className="text-xs text-gray-500 font-medium max-w-md">
+                Pilih lokasi toko anda dengan memberikan PIN pada peta.
+              </div>
               <Map position={position} setPosition={setPosition} />
             </div>
+
+            <div className="flex flex-col gap-3 items-end max-w-lg ml-auto mt-7 text-gray-500">
+              <BsFillInfoCircleFill className="w-5 h-5 inline-block" />
+              <span className="text-xs font-medium text-end">
+                Pastikan lokasi toko anda tepat dan sesuai agar penyewa mudah
+                menemukan toko anda ketika penyewa ingin mengambil barang sewaan
+                secara langsung ditoko anda.
+              </span>
+            </div>
           </CardContent>
-          <CardFooter>
-            <ButtonSubmit isSubmitting={isSubmitting} text="Buka Toko" />
+          <CardFooter className="flex justify-end mt-7 gap-5 px-0">
+            <Button variant="ghost" className="px-8 py-6">
+              Batal
+            </Button>
+            <ButtonSubmit
+              isSubmitting={isSubmitting}
+              text="Buka Toko"
+              className="px-10 py-6"
+            />
           </CardFooter>
         </form>
       </Card>
