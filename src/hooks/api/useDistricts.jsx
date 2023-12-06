@@ -8,7 +8,9 @@ const fetcher = async (url) => {
 
 export default function useDistricts(cityId) {
   const res = useSWR(
-    `https://alamat.thecloudalert.com/api/kecamatan/get/?d_kabkota_id=${cityId}`,
+    cityId
+      ? `https://alamat.thecloudalert.com/api/kecamatan/get/?d_kabkota_id=${cityId}`
+      : null,
     fetcher
   );
 

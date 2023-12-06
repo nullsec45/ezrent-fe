@@ -8,7 +8,9 @@ const fetcher = async (url) => {
 
 export default function usePostalCode(cityId, districtId) {
   const res = useSWR(
-    `https://alamat.thecloudalert.com/api/kodepos/get/?d_kabkota_id=${cityId}&d_kecamatan_id=${districtId}`,
+    cityId && districtId
+      ? `https://alamat.thecloudalert.com/api/kodepos/get/?d_kabkota_id=${cityId}&d_kecamatan_id=${districtId}`
+      : null,
     fetcher
   );
 

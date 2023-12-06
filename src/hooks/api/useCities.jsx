@@ -8,7 +8,9 @@ const fetcher = async (url) => {
 
 export default function useCities(provinceId) {
   const res = useSWR(
-    `https://alamat.thecloudalert.com/api/kabkota/get/?d_provinsi_id=${provinceId}`,
+    provinceId
+      ? `https://alamat.thecloudalert.com/api/kabkota/get/?d_provinsi_id=${provinceId}`
+      : null,
     fetcher
   );
 
