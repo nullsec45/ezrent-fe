@@ -26,12 +26,13 @@ import useCities from '@/hooks/api/useCities';
 import useDistricts from '@/hooks/api/useDistricts';
 import useSubDistricts from '@/hooks/api/useSubDistricts';
 import usePostalCode from '@/hooks/api/usePostalCode';
-import { Button } from '@/components/ui/button';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { initialStore } from '@/config/constant/store/initialStoreValues';
+import ButtonCancel from '@/components/elements/button/ButtonCancel';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { storeSchema } from '@/config/schema/store/storeSchema';
 import { banks } from '@/data/banks';
+import { CheckCircle, Info } from 'lucide-react';
 
 export default function OpenStoreForm() {
   const { edgestore } = useEdgeStore();
@@ -56,7 +57,7 @@ export default function OpenStoreForm() {
   const [provinceId, setProvinceId] = useState(null);
   const [cityId, setCityId] = useState(null);
   const [districtId, setDistrictId] = useState(null);
-  const [position, setPosition] = useState(null); // {last, lng}
+  const [position, setPosition] = useState(null);
 
   const { data: provinces } = useProvinces();
   const { data: cities } = useCities(provinceId);
@@ -64,7 +65,7 @@ export default function OpenStoreForm() {
   const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
 
-  const router = useRouter();
+  const { push, back } = useRouter();
 
   const handleOpenStore = async (data) => {
     const profilePicture = data?.profilePicture?.[0];
@@ -96,12 +97,13 @@ export default function OpenStoreForm() {
         };
 
         const response = await addStore(store);
-        if (response.status === 201) {
+        if (response?.status === 201) {
           reset(initialStore);
-          router.push('/products');
+          push('/products');
           toast({
             title: 'Success',
             description: response.data?.message,
+            action: <CheckCircle />,
           });
         }
       } catch (error) {
@@ -109,6 +111,7 @@ export default function OpenStoreForm() {
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
           description: error?.message,
+          action: <Info />,
         });
       }
     } else {
@@ -116,6 +119,7 @@ export default function OpenStoreForm() {
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: 'Please pick one picture',
+        action: <Info />,
       });
     }
   };
@@ -423,9 +427,7 @@ export default function OpenStoreForm() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-end mt-7 gap-5 px-0">
-            <Button variant="ghost" className="px-8 py-6">
-              Batal
-            </Button>
+            <ButtonCancel back={back} />
             <ButtonSubmit
               isSubmitting={isSubmitting}
               text="Buka Toko"
