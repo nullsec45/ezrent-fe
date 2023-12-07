@@ -18,6 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { login } from '@/utils/api';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -39,7 +40,6 @@ export default function LoginForm() {
       const response = await login(data);
       if (response?.data.statusCode === 200) {
         reset(initialLogin);
-
         callbackUrl ? push(callbackUrl) : push('/products');
       }
     } catch (error) {

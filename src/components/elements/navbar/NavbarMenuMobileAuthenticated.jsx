@@ -12,8 +12,12 @@ import {
 import OpenStoreIcon from '@/components/icons/OpenStoreIcon';
 import ButtonLogout from '@/components/elements/button/ButtonLogout';
 import PropTypes from 'prop-types';
+import useMyStore from '@/hooks/api/useMyStore';
+import StoreIcon from '@/components/icons/StoreIcon';
 
 export default function NavbarMenuMobileAuthenticated({ user }) {
+  const { data: store } = useMyStore();
+
   return (
     <>
       <div className="font-medium px-5 flex flex-col bg-white rounded-b-lg pb-4 pt-2">
@@ -25,12 +29,22 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
             </Avatar>
             <p>{user.username}</p>
           </Link>
-          <Link href="/store/add-store">
-            <Button className="flex gap-3 items-center">
-              <span> Buka Toko</span>
-              <OpenStoreIcon />
-            </Button>
-          </Link>
+
+          {store ? (
+            <Link href="/store/dashboard">
+              <Button className="flex gap-3 items-center px-8">
+                <span>Toko Saya</span>
+                <StoreIcon />
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/store/open-store">
+              <Button className="flex gap-3 items-center">
+                <span> Buka Toko</span>
+                <OpenStoreIcon />
+              </Button>
+            </Link>
+          )}
         </div>
 
         <ul className="flex flex-col space-y-4 mt-3">

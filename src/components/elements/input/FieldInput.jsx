@@ -11,12 +11,20 @@ export default function FieldInput({
   min,
   required,
   autoComplete,
+  helperTextTop,
+  helperTextBottom,
+  ...props
 }) {
   return (
     <>
       <Label htmlFor={name} className="capitalize">
         {label ? label : name}
       </Label>
+
+      {helperTextTop && (
+        <div className="text-xs text-gray-500 font-medium">{helperTextTop}</div>
+      )}
+
       <Input
         id={name}
         name={name}
@@ -28,7 +36,14 @@ export default function FieldInput({
         autoComplete={autoComplete}
         aria-label={name}
         className={type == 'file' ? 'cursor-pointer' : null}
+        {...props}
       />
+
+      {helperTextBottom && (
+        <div className="text-xs text-gray-500 font-medium">
+          {helperTextBottom}
+        </div>
+      )}
     </>
   );
 }
@@ -40,5 +55,7 @@ FieldInput.propTypes = {
   placeholder: PropTypes.string,
   min: PropTypes.number,
   autoComplete: PropTypes.string,
+  helperTextTop: PropTypes.string,
+  helperTextBottom: PropTypes.string,
   required: PropTypes.bool,
 };
