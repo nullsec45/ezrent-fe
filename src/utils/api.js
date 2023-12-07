@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast';
 import { api } from '@/utils/axios';
 import { deleteCookie, setCookie } from 'cookies-next';
 
@@ -20,6 +21,14 @@ export const login = async (data) => {
       return response;
     }
   } catch (error) {
+    if (error?.response?.status === 401) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Credentials',
+        description: 'Email atau Password yang anda masukkan salah',
+      });
+    }
+
     console.log(error?.message);
   }
 };
