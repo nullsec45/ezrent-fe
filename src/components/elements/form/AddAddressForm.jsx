@@ -14,6 +14,8 @@ import { addressSchema } from '@/config/schema/address/addressSchema';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
 import ButtonCancel from '@/components/elements/button/ButtonCancel';
+import FieldInput from '@/components/elements/input/FieldInput';
+import useSubDistricts from '@/hooks/api/useSubDistricts';
 import { Controller, useForm } from 'react-hook-form';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import usePostalCode from '@/hooks/api/usePostalCode';
@@ -26,8 +28,8 @@ import { CheckCircle, Info } from 'lucide-react';
 import useCities from '@/hooks/api/useCities';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
 import { createAddress } from '@/utils/api';
+import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 export default function AddAddressForm() {
@@ -56,6 +58,7 @@ export default function AddAddressForm() {
   const { data: provinces } = useProvinces();
   const { data: cities } = useCities(provinceId);
   const { data: districts } = useDistricts(cityId);
+  const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
 
   const { back } = useRouter();
@@ -63,9 +66,13 @@ export default function AddAddressForm() {
   const handleAddAddress = async (data) => {
     try {
       const address = {
+        label: data?.label,
+        recipientName: data?.recipientName,
+        phoneNumber: data?.phoneNumber,
         province: data?.province,
         city: data?.city,
         district: data?.district,
+        subDistrict: data?.subDistrict,
         fullAddress: data?.fullAddress,
         postalCode: data?.postalCode,
         latitude: position?.lat.toString(),
@@ -96,6 +103,41 @@ export default function AddAddressForm() {
       <Card className="border-none shadow-none">
         <form onSubmit={handleSubmit(handleAddAddress)}>
           <CardContent className="space-y-7 p-0">
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Label Alamat"
+                name="label"
+                type="text"
+                placeholder="Rumah"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.label?.message} />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Nama Penerima"
+                name="recipientName"
+                type="text"
+                placeholder="John Doe"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.recipientName?.message} />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Nomor Handphone"
+                name="phoneNumber"
+                type="tel"
+                placeholder="0812XXXXXXXX"
+                helperTextTop="Gunakan nomor Whatsapp agar mudah dihubungi"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.phoneNumber?.message} />
+            </div>
+
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="province">Provinsi</Label>
               <Controller
@@ -200,7 +242,39 @@ export default function AddAddressForm() {
               />
               <ErrorMessageInput message={errors.district?.message} />
             </div>
-
+            <div className="flex flex-col space-y-1.5 ">
+              <Label htmlFor="subDistrict">Kelurahan</Label>
+              <Controller
+                control={control}
+                name="subDistrict"
+                render={({ field }) => (
+                  <Select
+                    onValueChange={(value) => {
+                      const subDistrict = value.split(',');
+                      field.onChange(subDistrict[1]);
+                    }}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Kelurahan" />
+                    </SelectTrigger>
+                    <SelectContent className="z-[9999]">
+                      <SelectGroup>
+                        {subDistricts?.map((subDistrict) => (
+                          <SelectItem
+                            value={`${subDistrict.id},${subDistrict.text}`}
+                            key={subDistrict.id}
+                          >
+                            {subDistrict.text}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              <ErrorMessageInput message={errors.subDistrict?.message} />
+            </div>
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="postalCode">Kode POS</Label>
               <Controller
