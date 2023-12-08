@@ -77,9 +77,11 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        <Button className="mt-4 w-full py-6" disabled={availableStock < 1}>
-          <Link href={`/products/${id}`}>Sewa Sekarang</Link>
-        </Button>
+        <Link href={`/products/${id}`}>
+          <Button className="mt-4 w-full py-6" disabled={availableStock < 1}>
+            Sewa Sekarang
+          </Button>
+        </Link>
       </div>
     </div>
   );
