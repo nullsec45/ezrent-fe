@@ -88,9 +88,12 @@ export default function Address() {
             <div className="font-extralight bg-clip-text text-transparent bg-gradient-to-r from-gray-50 via-black to-black">
               -----------------------------------------------------
             </div>
-            <button className="rounded-full absolute top-0 min-w-[1.5rem] min-h-[1.5rem] inline-flex justify-center items-center bg-black text-white">
+            <Link
+              href="/dashboard/address/add"
+              className="rounded-full absolute top-0 min-w-[1.5rem] min-h-[1.5rem] inline-flex justify-center items-center bg-black text-white"
+            >
               <Plus className="w-4 h-4" />
-            </button>
+            </Link>
             <div className="font-extralight bg-clip-text text-transparent bg-gradient-to-l from-gray-50 via-black to-black">
               -----------------------------------------------------
             </div>
