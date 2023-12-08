@@ -427,7 +427,11 @@ export default function OpenStoreForm() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-end mt-7 gap-5 px-0">
-            <ButtonCancel back={back} />
+            <ButtonCancel
+              back={back}
+              title={'Batal Buka Toko?'}
+              message={'Apakah anda yakin ingin membatalkan pembukaan toko?'}
+            />
             <ButtonSubmit
               isSubmitting={isSubmitting}
               text="Buka Toko"
