@@ -62,3 +62,14 @@ export const addStore = async (data) => {
     console.log(error?.message);
   }
 };
+
+export const createAddress = async (data) => {
+  try {
+    const response = await api.post('/addresses', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
