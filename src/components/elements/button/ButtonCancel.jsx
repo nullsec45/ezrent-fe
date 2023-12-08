@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
-export default function ButtonCancel({ back }) {
+export default function ButtonCancel({ back, title, message }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -23,10 +23,8 @@ export default function ButtonCancel({ back }) {
       </AlertDialogTrigger>
       <AlertDialogContent className="z-[99999]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Batal buka toko?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Apakah anda yakin ingin membatalkan pembukaan toko?
-          </AlertDialogDescription>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{message}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Tidak</AlertDialogCancel>

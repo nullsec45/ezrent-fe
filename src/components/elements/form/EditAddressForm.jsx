@@ -1,9 +1,5 @@
 'use client';
 
-import { Controller, useForm } from 'react-hook-form';
-import ErrorMessageInput from '../errors/ErrorMessageInput';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import ButtonSubmit from '../button/ButtonSubmit';
 import {
   Select,
   SelectContent,
@@ -12,30 +8,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import FieldInput from '../input/FieldInput';
+import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
+import { addressSchema } from '@/config/schema/address/addressSchema';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
+import ButtonCancel from '@/components/elements/button/ButtonCancel';
+import FieldInput from '@/components/elements/input/FieldInput';
+import useDetailAddress from '@/hooks/api/useDetailAddress';
+import useSubDistricts from '@/hooks/api/useSubDistricts';
+import { Controller, useForm } from 'react-hook-form';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
+import usePostalCode from '@/hooks/api/usePostalCode';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Textarea } from '@/components/ui/textarea';
 import useProvinces from '@/hooks/api/useProvinces';
-import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import { useEdgeStore } from '@/lib/edgestore';
-import { toast } from '@/components/ui/use-toast';
-import { addStore } from '@/utils/api';
-import useCities from '@/hooks/api/useCities';
 import useDistricts from '@/hooks/api/useDistricts';
-import useSubDistricts from '@/hooks/api/useSubDistricts';
-import usePostalCode from '@/hooks/api/usePostalCode';
-import { BsFillInfoCircleFill } from 'react-icons/bs';
-import { initialStore } from '@/config/constant/store/initialStoreValues';
-import ButtonCancel from '@/components/elements/button/ButtonCancel';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { storeSchema } from '@/config/schema/store/storeSchema';
-import { banks } from '@/data/banks';
+import { toast } from '@/components/ui/use-toast';
 import { CheckCircle, Info } from 'lucide-react';
+import useCities from '@/hooks/api/useCities';
+import { Label } from '@/components/ui/label';
+import { useRouter } from 'next/navigation';
+import { updateAddress } from '@/utils/api';
+import { useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 
-export default function OpenStoreForm() {
-  const { edgestore } = useEdgeStore();
+export default function EditAddressForm({ addressId }) {
+  const { data: address } = useDetailAddress(addressId);
 
   const Map = useMemo(
     () =>
@@ -47,11 +45,10 @@ export default function OpenStoreForm() {
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: initialStore,
-    resolver: yupResolver(storeSchema),
+    defaultValues: address,
+    resolver: yupResolver(addressSchema),
   });
 
   const [provinceId, setProvinceId] = useState(null);
@@ -65,160 +62,82 @@ export default function OpenStoreForm() {
   const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
 
-  const { push, back } = useRouter();
+  const { back } = useRouter();
 
-  const handleOpenStore = async (data) => {
-    const profilePicture = data?.profilePicture?.[0];
+  const handleAddAddress = async (data) => {
+    try {
+      const address = {
+        label: data?.label,
+        recipientName: data?.recipientName,
+        phoneNumber: data?.phoneNumber,
+        province: data?.province,
+        city: data?.city,
+        district: data?.district,
+        subDistrict: data?.subDistrict,
+        fullAddress: data?.fullAddress,
+        postalCode: data?.postalCode,
+        latitude: position?.lat.toString(),
+        longitude: position?.lng.toString(),
+      };
 
-    if (data.profilePicture.length !== 0) {
-      try {
-        const res = await edgestore.publicFiles.upload({
-          file: profilePicture,
-        });
-
-        const store = {
-          name: data?.name,
-          profilePicture: res?.url,
-          description: data?.description,
-          phoneNumber: data?.phoneNumber,
-          bank: data?.bank,
-          accountNumber: data?.accountNumber,
-          status: true,
-          storeAddress: {
-            province: data?.province,
-            city: data?.city,
-            district: data?.district,
-            subDistrict: data?.subDistrict,
-            fullAddress: data?.fullAddress,
-            postalCode: data?.postalCode,
-            latitude: position?.lat.toString(),
-            longitude: position?.lng.toString(),
-          },
-        };
-
-        const response = await addStore(store);
-        if (response?.status === 201) {
-          reset(initialStore);
-          push('/products');
-          toast({
-            title: 'Success',
-            description: response.data?.message,
-            action: <CheckCircle />,
-          });
-        }
-      } catch (error) {
+      const response = await updateAddress(address, address?.id);
+      if (response?.status === 200) {
+        back();
         toast({
-          variant: 'destructive',
-          title: 'Uh oh! Something went wrong.',
-          description: error?.message,
-          action: <Info />,
+          title: 'Success',
+          description: response.data?.message,
+          action: <CheckCircle />,
         });
       }
-    } else {
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: 'Please pick one picture',
+        description: error?.message,
         action: <Info />,
       });
     }
   };
+  if (!address) return null;
+
   return (
     <>
       <Card className="border-none shadow-none">
-        <form onSubmit={handleSubmit(handleOpenStore)}>
+        <form onSubmit={handleSubmit(handleAddAddress)}>
           <CardContent className="space-y-7 p-0">
             <div className="flex flex-col space-y-1.5">
               <FieldInput
-                label="Nama Toko"
-                name="name"
+                label="Label Alamat"
+                name="label"
                 type="text"
-                placeholder="Nama Toko Anda"
+                placeholder="Rumah"
                 register={register}
                 required={true}
               />
-              <ErrorMessageInput message={errors.name?.message} />
+              <ErrorMessageInput message={errors.label?.message} />
             </div>
-
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Nama Penerima"
+                name="recipientName"
+                type="text"
+                placeholder="John Doe"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.recipientName?.message} />
+            </div>
             <div className="flex flex-col space-y-1.5">
               <FieldInput
                 label="Nomor Handphone"
                 name="phoneNumber"
                 type="tel"
                 placeholder="0812XXXXXXXX"
-                helperTextTop="Gunakan nomor Whatsapp agar mudah dihubungi oleh pelanggan anda"
+                helperTextTop="Gunakan nomor Whatsapp agar mudah dihubungi"
                 register={register}
                 required={true}
               />
               <ErrorMessageInput message={errors.phoneNumber?.message} />
-            </div>
-
-            <div className="flex flex-col space-y-1.5">
-              <div className="flex flex-col mt-4 space-y-1.5">
-                <Label htmlFor="description">Deskripsi</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  placeholder="Deskripsikan toko anda secara singkat"
-                  className="min-h-[10rem]"
-                  {...register('description')}
-                />
-                <ErrorMessageInput message={errors.description?.message} />
-              </div>
-            </div>
-
-            <div className="flex flex-col space-y-1.5 ">
-              <Label htmlFor="bank">Bank</Label>
-              <Controller
-                control={control}
-                name="bank"
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Bank" />
-                    </SelectTrigger>
-                    <SelectContent className="z-[9999]">
-                      <SelectGroup>
-                        {banks?.map((bank) => (
-                          <SelectItem value={bank.id} key={bank.id}>
-                            {bank.name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              <ErrorMessageInput message={errors.bank?.message} />
-            </div>
-
-            <div className="flex flex-col space-y-1.5">
-              <FieldInput
-                label="Nomor Rekening"
-                name="accountNumber"
-                type="text"
-                placeholder="XXXX XXXX XXXX XXXX"
-                helperTextTop="Nomor rekening ini akan digunakan sebagai tujuan pembayaran pelanggan anda"
-                helperTextBottom="Masukkan 16 digit nomor rekening tanpa spasi"
-                register={register}
-                required={true}
-                pattern="[0-9\s]{13,19}"
-              />
-              <ErrorMessageInput message={errors.accountNumber?.message} />
-            </div>
-
-            <div className="flex flex-col space-y-1.5">
-              <FieldInput
-                label="Foto Profil Toko"
-                name="profilePicture"
-                type="file"
-                register={register}
-                className="cursor-pointer"
-              />
-              <ErrorMessageInput message={errors.profilePicture?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5 ">
@@ -236,7 +155,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Provinsi" />
+                      <SelectValue placeholder={address?.province} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -271,7 +190,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kota" />
+                      <SelectValue placeholder={address?.city} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -306,7 +225,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kecamatan" />
+                      <SelectValue placeholder={address?.district} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -325,7 +244,6 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.district?.message} />
             </div>
-
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="subDistrict">Kelurahan</Label>
               <Controller
@@ -340,7 +258,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kelurahan" />
+                      <SelectValue placeholder={address?.subDistrict} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -359,7 +277,6 @@ export default function OpenStoreForm() {
               />
               <ErrorMessageInput message={errors.subDistrict?.message} />
             </div>
-
             <div className="flex flex-col space-y-1.5 ">
               <Label htmlFor="postalCode">Kode POS</Label>
               <Controller
@@ -374,7 +291,7 @@ export default function OpenStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kelurahan" />
+                      <SelectValue placeholder={address?.postalCode} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -412,29 +329,31 @@ export default function OpenStoreForm() {
             <div className="flex flex-col space-y-1.5 ">
               <Label>Pilih Lokasi Anda</Label>
               <div className="text-xs text-gray-500 font-medium max-w-md">
-                Pilih lokasi toko anda dengan memberikan PIN pada peta.
+                Pilih lokasi anda dengan memberikan PIN pada peta.
               </div>
-              <Map position={position} setPosition={setPosition} />
+              <Map
+                latitude={address?.latitude}
+                position={position}
+                setPosition={setPosition}
+              />
             </div>
 
             <div className="flex flex-col gap-3 items-end max-w-lg ml-auto mt-7 text-gray-500">
               <BsFillInfoCircleFill className="w-5 h-5 inline-block" />
               <span className="text-xs font-medium text-end">
-                Pastikan lokasi toko anda tepat dan sesuai agar penyewa mudah
-                menemukan toko anda ketika penyewa ingin mengambil barang sewaan
-                secara langsung ditoko anda.
+                Pastikan alamat sesuai dengan tempat tinggal anda saat ini
               </span>
             </div>
           </CardContent>
           <CardFooter className="flex justify-end mt-7 gap-5 px-0">
             <ButtonCancel
               back={back}
-              title={'Batal Buka Toko?'}
-              message={'Apakah anda yakin ingin membatalkan pembukaan toko?'}
+              title={'Batal Ubah Alamat?'}
+              message={'Apakah anda yakin akan membatalkan perubahan alamat?'}
             />
             <ButtonSubmit
               isSubmitting={isSubmitting}
-              text="Buka Toko"
+              text="Perbarui Alamat"
               className="px-10 py-6"
             />
           </CardFooter>
