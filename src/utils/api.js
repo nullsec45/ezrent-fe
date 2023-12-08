@@ -73,3 +73,25 @@ export const createAddress = async (data) => {
     console.log(error?.message);
   }
 };
+
+export const updateAddress = async (data, id) => {
+  try {
+    const response = await api.patch(`/addresses/${id}`, data);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const deleteAddress = async (id) => {
+  try {
+    const response = await api.delete(`/addresses/${id}`);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
