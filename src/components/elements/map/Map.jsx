@@ -44,7 +44,7 @@ function LocationMarker({ position, setPosition }) {
   );
 }
 
-export default function Map({ position, setPosition }) {
+export default function Map({ position, setPosition, latitude }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Map({ position, setPosition }) {
   return (
     <div>
       <MapContainer
-        center={[-6.2, 106.816666]}
+        center={latitude ? [Number(latitude)] : [-6.2, 106.816666]}
         zoom={13}
         scrollWheelZoom={true}
         className="h-96 block"
