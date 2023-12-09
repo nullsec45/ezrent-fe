@@ -30,7 +30,7 @@ export default function CheckoutSteps({ activePage }) {
           <GiHandTruck className="w-4 h-4 p-1 box-content bg-black text-white rounded-full" />
         }
         title="Step 2"
-        label="Pengiriman"
+        label="Metode"
         disabled={activePage !== 'shipping'}
       />
 

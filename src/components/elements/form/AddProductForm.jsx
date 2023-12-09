@@ -27,13 +27,13 @@ import { toast } from '@/components/ui/use-toast';
 import { useEdgeStore } from '@/lib/edgestore';
 import { Label } from '@/components/ui/label';
 import { addProduct } from '@/utils/api';
-
-const categories = [
-  { name: 'Elektronik', id: 'c58d789f-c681-4b36-9710-411bfbb6f7b3' },
-  { name: 'Lainnya', id: '6agwh9f-c681-827b-9710-813501bf7b3' },
-];
+import useCategories from '@/hooks/api/useCategories';
+import useMyStore from '@/hooks/api/useMyStore';
 
 export default function AddProductForm() {
+  const { data: categories } = useCategories();
+  const { data: store } = useMyStore();
+
   const { edgestore } = useEdgeStore();
   const {
     register,
@@ -56,7 +56,7 @@ export default function AddProductForm() {
         });
         const product = {
           name: data?.name,
-          storeId: 'f1119eed-14ee-4ebd-9a32-d8661990f66b',
+          storeId: store?.id,
           description: data?.description,
           price: Number(data?.price),
           maximumRental: Number(data?.maximumRental),
@@ -159,9 +159,9 @@ export default function AddProductForm() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {categories?.map((item, i) => (
-                            <SelectItem value={item.id.toString()} key={i}>
-                              {item.name}
+                          {categories?.map((category) => (
+                            <SelectItem value={category.id} key={category.id}>
+                              {category.name}
                             </SelectItem>
                           ))}
                         </SelectGroup>

@@ -1,28 +1,26 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import Counter from '@/components/elements/input/Counter';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useBoundStore } from '@/components/store/useBoundStore';
+import useDetailProduct from '@/hooks/api/useDetailProduct';
+import { Badge } from '../ui/badge';
+import {
+  calculateRentalDurationDay,
+  formatPrice,
+} from '@/utils/helperFunction';
+import DirectRentPageSkeleton from '../elements/skeleton/DirectRentPageSkeleton';
 
 function DirectRent() {
-  const [productCounter, setProductCounter] = useState(1);
+  const order = useBoundStore((state) => state.order);
+  const { data: product, isLoading } = useDetailProduct(order?.products[0]?.id);
 
-  const incrementCounter = () => setProductCounter(productCounter + 1);
+  if (isLoading || !product) return <DirectRentPageSkeleton />;
 
-  const decrementCounter = () => {
-    if (productCounter > 1) {
-      setProductCounter(productCounter - 1);
-    }
-  };
-
-  const inputCounterChange = (e) => {
-    const value = e?.target.value.replace(/[^0-9]/g, '');
-    if (value === 0) return;
-    setProductCounter(+value);
-  };
+  const dayFrom = new Date(order.products[0].rentPeriod.from);
+  const dayTo = new Date(order.products[0].rentPeriod.to);
+  const rentalDurationInDay = calculateRentalDurationDay(dayFrom, dayTo);
 
   return (
     <main className="container px-4 lg:px-10 py-16 flex flex-col gap-10 lg:flex-row">
@@ -31,32 +29,36 @@ function DirectRent() {
         <div className="space-y-10">
           <h1 className="text-2xl font-semibold">Sewa Langsung</h1>
 
-          <div className="flex gap-5">
+          <div className="flex gap-5 py-4 px-5 bg-gray-100 rounded-xl">
             <div className="w-20 shrink-0 aspect-square rounded-lg relative">
               <Image
-                src={'/iphone.png'}
-                alt="produk photo"
+                src={product.productPictures[0]?.url}
+                alt={product.name}
                 fill
                 objectFit="contain"
               />
             </div>
-            <div className="flex flex-col lg:flex-row lg:items-center gap-3">
-              <div className="lg:w-60">
-                <p className="font-medium">
-                  Apple iPhone 14 Pro Max 128Gb Deep Purple
+
+            <div className="w-full flex flex-col lg:flex-row lg:items-center gap-6">
+              <div className="lg:flex-grow">
+                <p className="text-base">{product.name}</p>
+                <p className="font-bold text-sm">
+                  Rp{formatPrice(product.price)}{' '}
+                  <span className="text-gray-600 font-normal"> / Hari</span>
                 </p>
+                <div className="space-x-2 mt-3">
+                  <Badge className="rounded-md">
+                    {order.products[0].quantity} Barang
+                  </Badge>
+                  <Badge className="rounded-md">
+                    {rentalDurationInDay} Hari
+                  </Badge>
+                </div>
               </div>
-              <div className="flex items-center justify-between lg:w-full">
-                <Counter
-                  value={productCounter}
-                  onIncement={incrementCounter}
-                  onDecrement={decrementCounter}
-                  onInputChange={inputCounterChange}
-                />
-                <div className="text-lg font-medium">Rp200.000</div>
-                <Button variant="ghost" className="group">
-                  <RiDeleteBin5Line className="w-4 h-4 group-hover:text-red-600 transition-all duration-300" />
-                </Button>
+              <div className="flex items-center justify-between gap-5">
+                <div className="text-lg font-medium">
+                  Rp{formatPrice(order.products[0].subTotal)}
+                </div>
               </div>
             </div>
           </div>
@@ -64,14 +66,14 @@ function DirectRent() {
       </section>
 
       {/* Order Summary */}
-      <section className="lg:min-w-[30rem]">
-        <div className="border-2 border-gray-200 px-4 py-14 rounded-xl w-full lg:px-16">
+      <section className="lg:min-w-[27rem]">
+        <div className="border-2 border-gray-200 px-4 py-14 rounded-xl w-full lg:px-10">
           <h2 className="text-xl font-bold mb-10">Ringkasan Order</h2>
 
           <div className="space-y-4">
             <div className="flex justify-between font-semibold">
               <span>Subtotal</span>
-              <span>Rp200.000</span>
+              <span>Rp{formatPrice(order.products[0].subTotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>Diskon</span>
@@ -83,14 +85,14 @@ function DirectRent() {
             </div>
             <div className="flex justify-between font-semibold">
               <span>Total</span>
-              <span>Rp200.000</span>
+              <span>Rp{formatPrice(order.products[0].subTotal)}</span>
             </div>
           </div>
 
           <div className="mt-12">
-            <Button className="w-full py-6">
-              <Link href="/checkout?step=address">Checkout</Link>
-            </Button>
+            <Link href="/checkout?step=address">
+              <Button className="w-full py-6">Checkout</Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -22,7 +22,7 @@ export default function ProductCheckoutCard({
 
   return (
     <div className="flex items-center gap-3 bg-gray-100 py-2 pl-2 pr-6 rounded-xl">
-      <div className="w-12 h-12 relative overflow-hidden rounded-md bg-gray-300">
+      <div className="w-12 h-12 relative overflow-hidden rounded-md">
         <Image src={product.productPictures[0]?.url} alt={product.name} fill />
       </div>
 
