@@ -74,6 +74,17 @@ export const createAddress = async (data) => {
   }
 };
 
+export const makeOrder = async (data) => {
+  try {
+    const response = await api.post('/orders', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
 export const updateAddress = async (data, id) => {
   try {
     const response = await api.patch(`/addresses/${id}`, data);
@@ -88,6 +99,20 @@ export const updateAddress = async (data, id) => {
 export const deleteAddress = async (id) => {
   try {
     const response = await api.delete(`/addresses/${id}`);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const sendPaymentProof = async (transactionId, data) => {
+  try {
+    const response = await api.post(
+      `/transactions/${transactionId}/payment-proof`,
+      data
+    );
     if (response.status === 200) {
       return response;
     }
