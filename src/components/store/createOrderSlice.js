@@ -14,6 +14,8 @@ export const createOrderSlice = persist(
             from: '',
             to: '',
           },
+          price: 0,
+          subTotal: 0,
         },
       ],
       transaction: {
@@ -21,10 +23,18 @@ export const createOrderSlice = persist(
       },
     },
 
-    setOrderProduct: ({ productId, quantity, rentPeriod: { from, to } }) =>
+    setOrderProduct: ({
+      productId,
+      storeId,
+      quantity,
+      rentPeriod: { from, to },
+      price,
+      subTotal,
+    }) =>
       set((state) => ({
         order: {
           ...state.order,
+          storeId,
           products: [
             {
               id: productId,
@@ -33,6 +43,8 @@ export const createOrderSlice = persist(
                 from,
                 to,
               },
+              price,
+              subTotal,
             },
           ],
         },
@@ -51,6 +63,17 @@ export const createOrderSlice = persist(
         order: {
           ...state.order,
           shipping,
+        },
+      })),
+
+    setOrderPaymentMethod: (paymentMethod) =>
+      set((state) => ({
+        order: {
+          ...state.order,
+          transaction: {
+            ...state.order.transaction,
+            paymentMethod,
+          },
         },
       })),
   }),
