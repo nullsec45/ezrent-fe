@@ -29,11 +29,12 @@ import useCities from '@/hooks/api/useCities';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { updateAddress } from '@/utils/api';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { api } from '@/utils/axios';
 
 export default function EditAddressForm({ addressId }) {
-  const { data: address } = useDetailAddress(addressId);
+  const { data: address, isLoading } = useDetailAddress(addressId);
 
   const Map = useMemo(
     () =>
@@ -47,7 +48,32 @@ export default function EditAddressForm({ addressId }) {
     control,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: address,
+    defaultValues: async () => {
+      const response = await api.get(`/addresses/${addressId}`);
+      const {
+        label,
+        recipientName,
+        phoneNumber,
+        province,
+        city,
+        district,
+        subDistrict,
+        fullAddress,
+        postalCode,
+      } = response.data.data;
+
+      return {
+        label,
+        recipientName,
+        phoneNumber,
+        province,
+        city,
+        district,
+        subDistrict,
+        fullAddress,
+        postalCode,
+      };
+    },
     resolver: yupResolver(addressSchema),
   });
 
@@ -61,8 +87,18 @@ export default function EditAddressForm({ addressId }) {
   const { data: districts } = useDistricts(cityId);
   const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
-
   const { back } = useRouter();
+
+  useEffect(() => {
+    if (address) {
+      setPosition({
+        lat: address.latitude,
+        lng: address.longitude,
+      });
+    }
+  }, [address, setPosition]);
+
+  if (isLoading) return null;
 
   const handleAddAddress = async (data) => {
     try {
@@ -80,7 +116,7 @@ export default function EditAddressForm({ addressId }) {
         longitude: position?.lng.toString(),
       };
 
-      const response = await updateAddress(address, address?.id);
+      const response = await updateAddress(address, addressId);
       if (response?.status === 200) {
         back();
         toast({
@@ -98,6 +134,7 @@ export default function EditAddressForm({ addressId }) {
       });
     }
   };
+
   if (!address) return null;
 
   return (
@@ -332,9 +369,12 @@ export default function EditAddressForm({ addressId }) {
                 Pilih lokasi anda dengan memberikan PIN pada peta.
               </div>
               <Map
-                latitude={address?.latitude}
                 position={position}
                 setPosition={setPosition}
+                initialCoord={{
+                  latitude: address?.latitude,
+                  longitude: address?.longitude,
+                }}
               />
             </div>
 

@@ -82,6 +82,7 @@ export default function OpenStoreForm() {
           description: data?.description,
           phoneNumber: data?.phoneNumber,
           bank: data?.bank,
+          accountHolder: data?.accountHolder,
           accountNumber: data?.accountNumber,
           status: true,
           storeAddress: {
@@ -193,6 +194,18 @@ export default function OpenStoreForm() {
                 )}
               />
               <ErrorMessageInput message={errors.bank?.message} />
+            </div>
+
+            <div className="flex flex-col space-y-1.5">
+              <FieldInput
+                label="Atas Nama"
+                name="accountHolder"
+                type="text"
+                placeholder="Atas Nama No.Rek Anda"
+                register={register}
+                required={true}
+              />
+              <ErrorMessageInput message={errors.accountHolder?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5">
