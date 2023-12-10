@@ -29,6 +29,7 @@ import { Label } from '@/components/ui/label';
 import { addProduct } from '@/utils/api';
 import useCategories from '@/hooks/api/useCategories';
 import useMyStore from '@/hooks/api/useMyStore';
+import { CheckCircle, Info } from 'lucide-react';
 
 export default function AddProductForm() {
   const { data: categories } = useCategories();
@@ -73,6 +74,7 @@ export default function AddProductForm() {
           toast({
             title: 'Success',
             description: response.data?.message,
+            action: <CheckCircle />,
           });
         }
       } catch (error) {
@@ -80,6 +82,7 @@ export default function AddProductForm() {
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
           description: error?.message,
+          action: <Info />,
         });
       }
     } else {
@@ -87,6 +90,7 @@ export default function AddProductForm() {
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: 'Please pick one picture',
+        action: <Info />,
       });
     }
   };
