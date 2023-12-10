@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { initialProduct } from '@/config/constant/product/productInitialValues';
 import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
 import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
 import { productSchema } from '@/config/schema/product/productShema';
@@ -26,28 +25,29 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { useEdgeStore } from '@/lib/edgestore';
 import { Label } from '@/components/ui/label';
-import { addProduct } from '@/utils/api';
+import { updateProduct } from '@/utils/api';
 import useCategories from '@/hooks/api/useCategories';
 import useMyStore from '@/hooks/api/useMyStore';
 import { CheckCircle, Info } from 'lucide-react';
+import useDetailProduct from '@/hooks/api/useDetailProduct';
+import ButtonCancel from '../button/ButtonCancel';
 
-export default function AddProductForm() {
+export default function EditProductForm({ productId }) {
   const { data: categories } = useCategories();
-  const { data: store } = useMyStore();
+  const { data: product } = useDetailProduct(productId);
+  console.log(product);
 
   const { edgestore } = useEdgeStore();
   const {
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: initialProduct,
     resolver: yupResolver(productSchema),
   });
 
-  const handleAddProduct = async (data) => {
+  const handleUpdateProduct = async (data) => {
     const picture = data?.productPicture?.[0];
 
     if (data.productPicture.length !== 0) {
@@ -67,10 +67,9 @@ export default function AddProductForm() {
           productPictures: [res?.url],
         };
 
-        const response = await addProduct(product);
+        const response = await updateProduct(product, productId);
 
-        if (response.status === 201) {
-          reset(initialProduct);
+        if (response.status === 200) {
           toast({
             title: 'Success',
             description: response.data?.message,
@@ -86,20 +85,33 @@ export default function AddProductForm() {
         });
       }
     } else {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'Please pick one picture',
-        action: <Info />,
-      });
+      const product = {
+        name: data?.name,
+        storeId: store?.id,
+        description: data?.description,
+        price: Number(data?.price),
+        maximumRental: Number(data?.maximumRental),
+        stock: Number(data?.stock),
+        availableStock: Number(data?.stock),
+        categoryId: data?.categoryId,
+      };
+      const response = await updateProduct(product, productId);
+
+      if (response.status === 200) {
+        toast({
+          title: 'Success',
+          description: response.data?.message,
+          action: <CheckCircle />,
+        });
+      }
     }
   };
   return (
     <div className="max-w-4xl mx-auto mt-5 p-4">
       <Card>
-        <form onSubmit={handleSubmit(handleAddProduct)}>
+        <form onSubmit={handleSubmit(handleUpdateProduct)}>
           <CardHeader>
-            <CardTitle>Add Product</CardTitle>
+            <CardTitle>Ubah Produk</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 w-full items-center gap-4">
@@ -107,7 +119,7 @@ export default function AddProductForm() {
                 <FieldInput
                   name={'name'}
                   type={'text'}
-                  placeholder={'Name of your product'}
+                  placeholder={'PS5'}
                   register={register}
                   required={true}
                 />
@@ -159,7 +171,7 @@ export default function AddProductForm() {
                       defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder={product?.category} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -198,8 +210,19 @@ export default function AddProductForm() {
               <ErrorMessageInput message={errors.description?.message} />
             </div>
           </CardContent>
-          <CardFooter>
-            <ButtonSubmit isSubmitting={isSubmitting} text={'Add Product'} />
+          <CardFooter className="flex justify-end mt-7 gap-5 px-0">
+            <ButtonCancel
+              back={back}
+              title={'Batal Ubah Produk?'}
+              message={
+                'Apakah anda yakin akan membatalkan perubahan pada produk?'
+              }
+            />
+            <ButtonSubmit
+              isSubmitting={isSubmitting}
+              text="Perbarui Produk"
+              className="px-10 py-6"
+            />
           </CardFooter>
         </form>
       </Card>

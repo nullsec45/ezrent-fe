@@ -10,8 +10,9 @@ import Link from 'next/link';
 
 export default function SmallMenu() {
   const path = usePathname().split('/')[2];
+
   return (
-    <div className="rounded-xl max-w-xs w-full border-[1.4px] h-fit shadow p-3">
+    <div className="rounded-xl max-w-xs w-full border-[1.4px] hidden md:block h-fit shadow p-3">
       <ul className="flex flex-col gap-1 ">
         <li>
           <Link

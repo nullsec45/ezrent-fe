@@ -52,10 +52,54 @@ export const addProduct = async (data) => {
   }
 };
 
+export const updateProduct = async (data, id) => {
+  try {
+    const response = await api.patch(`/products/${id}`, data);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const deleteProduct = async (id) => {
+  try {
+    const response = await api.delete(`/products/${id}`);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
 export const addStore = async (data) => {
   try {
     const response = await api.post('/stores', data);
     if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const updateStore = async (data, id) => {
+  try {
+    const response = await api.patch(`/stores/${id}`, data);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const deleteStore = async (id) => {
+  try {
+    const response = await api.delete(`/stores/${id}`);
+    if (response.status === 200) {
       return response;
     }
   } catch (error) {
@@ -113,6 +157,60 @@ export const sendPaymentProof = async (transactionId, data) => {
       `/transactions/${transactionId}/payment-proof`,
       data
     );
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const addCategory = async (data) => {
+  try {
+    const response = await api.post('/categories', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const updateCategory = async (data, id) => {
+  try {
+    const response = await api.patch(`/categories/${id}`, data);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const deleteCategory = async (id) => {
+  try {
+    const response = await api.delete(`/categories/${id}`);
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+
+export const addProfile = async (data) => {
+  try {
+    const response = await api.post('/profiles', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
+export const updateProfile = async (data) => {
+  try {
+    const response = await api.patch('/profiles', data);
     if (response.status === 200) {
       return response;
     }
