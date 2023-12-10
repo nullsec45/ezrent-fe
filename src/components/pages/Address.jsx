@@ -19,7 +19,7 @@ export default function Address() {
           },
         ]}
       />
-      <div className="flex lg:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
+      <div className="flex md:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
         <SmallMenu />
         <div className="rounded-xl p-3 w-full border shadow">
           <h1 className="font-semibold text-lg mb-5">Daftar Alamat</h1>
