@@ -8,7 +8,11 @@ import { BsBoxSeam, BsChatText } from 'react-icons/bs';
 import { CiStar } from 'react-icons/ci';
 import { differenceInDays, format, startOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { formatPrice } from '@/utils/helperFunction';
+import {
+  calculateRentalDurationDay,
+  calculateSingleProductPrice,
+  formatPrice,
+} from '@/utils/helperFunction';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -17,7 +21,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDetailProduct from '@/hooks/api/useDetailProduct';
 import DetailProductInfoCard from '@/components/elements/card/DetailProductInfoCard';
 import ErrorFetchApiFallback from '@/components/elements/errors/ErrorFetchApiFallback';
@@ -39,6 +43,12 @@ export default function ProductMainContent({ productId }) {
 
   const [quantity, setQuantity] = useState(1);
   const [day, setDay] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (!product) return;
+    setTotalPrice(calculateSingleProductPrice(product.price, quantity, day));
+  }, [product, day, quantity, setTotalPrice]);
 
   const isStockEmpty = () => product.availableStock < 1;
 
@@ -47,12 +57,9 @@ export default function ProductMainContent({ productId }) {
       const dayFrom = new Date(range?.from);
       const dayTo = new Date(range?.to);
 
-      const INCLUDE_TODAY_SELECTED = 1;
-
-      const rentalDurationInDay =
-        Math.abs(differenceInDays(dayFrom, dayTo)) + INCLUDE_TODAY_SELECTED;
-
-      return setDay(rentalDurationInDay);
+      const rentalDurationInDay = calculateRentalDurationDay(dayFrom, dayTo);
+      setDay(rentalDurationInDay);
+      return;
     }
 
     setDay(0);
@@ -73,6 +80,7 @@ export default function ProductMainContent({ productId }) {
     if (quantity >= product.availableStock) return;
     setQuantity(quantity + 1);
   };
+
   const handleDecrementItem = () => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
@@ -81,14 +89,17 @@ export default function ProductMainContent({ productId }) {
   const handleOnRent = () => {
     setOrderProduct({
       productId,
+      storeId: product.storeId,
       quantity,
       rentPeriod: {
         from: date?.from,
         to: date?.to,
       },
+      price: product.price,
+      subTotal: totalPrice,
     });
 
-    router.push('/checkout?step=address');
+    router.push('/direct-rent');
   };
 
   if (isLoading) return <ProductMainContentSkeleton />;
@@ -99,7 +110,7 @@ export default function ProductMainContent({ productId }) {
     <div className="my-12 flex flex-col lg:flex-row h-full max-h-fit items-center gap-7">
       <div className="w-full lg:max-w-lg h-[27rem]">
         <Image
-          src={product.productPictures[0].url}
+          src={product.productPictures[0]?.url}
           alt={product.name}
           width={100}
           height={100}
@@ -250,6 +261,17 @@ export default function ProductMainContent({ productId }) {
               </div>
             </div>
           </div>
+
+          <div className="flex gap-5 justify-between mt-7 border-t border-gray-300 py-4">
+            <div className="md:flex md:gap-3 md:items-center">
+              <p className="font-bold">Total</p>
+              <p className="text-[11px] md:text-sm text-gray-600 ">
+                ( Rp{formatPrice(product?.price)} x {quantity} Barang x {day}{' '}
+                Hari )
+              </p>
+            </div>
+            <p className="font-bold">Rp{formatPrice(totalPrice)}</p>
+          </div>
         </div>
         {/* order */}
 
@@ -276,5 +298,5 @@ export default function ProductMainContent({ productId }) {
 }
 
 ProductMainContent.propTypes = {
-  productId: PropTypes.number.isRequired,
+  productId: PropTypes.string.isRequired,
 };

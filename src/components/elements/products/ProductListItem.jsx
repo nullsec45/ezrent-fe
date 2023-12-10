@@ -2,6 +2,7 @@ import ProductCard from '@/components/elements/card/ProductCard';
 import useProducts from '@/hooks/api/useProducts';
 import ProductListSkeleton from '@/components/elements/skeleton/ProductListSkeleton';
 import ErrorFetchApiFallback from '@/components/elements/errors/ErrorFetchApiFallback';
+import NotFoundProductsFallback from '@/components/elements/errors/NotFoundProductsFallback';
 
 export default function ProductListItem() {
   const { data: products, isLoading, error } = useProducts();
@@ -9,6 +10,8 @@ export default function ProductListItem() {
   if (isLoading) return <ProductListSkeleton />;
 
   if (error) return <ErrorFetchApiFallback />;
+
+  if (!products.length) return <NotFoundProductsFallback />;
 
   return (
     <>

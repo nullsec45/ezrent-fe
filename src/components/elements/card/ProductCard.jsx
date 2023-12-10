@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
     <div className="w-full min-w-[150px] lg:min-w-[220px] max-w-xs bg-gray-50 shadow-md rounded-xl overflow-hidden">
       <div className="relative w-full aspect-[9/8] max-h-56">
         <Image
-          src={productPictures[0].url}
+          src={productPictures[0]?.url}
           fill={true}
           alt="product image"
           className="object-contain"
@@ -77,9 +77,11 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        <Button className="mt-4 w-full py-6" disabled={availableStock < 1}>
-          <Link href={`/products/${id}`}>Sewa Sekarang</Link>
-        </Button>
+        <Link href={`/products/${id}`}>
+          <Button className="mt-4 w-full py-6" disabled={availableStock < 1}>
+            Sewa Sekarang
+          </Button>
+        </Link>
       </div>
     </div>
   );
