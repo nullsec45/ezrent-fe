@@ -10,6 +10,7 @@ export const storeSchema = yup
       .max(15, 'Nomor Handphone must be at most 15 characters'),
     description: yup.string().required(),
     bank: yup.string().required(),
+    accountHolder: yup.string().required(),
     accountNumber: yup.string().required(),
     province: yup.string().required(),
     city: yup.string().required(),

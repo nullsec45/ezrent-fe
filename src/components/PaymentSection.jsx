@@ -129,9 +129,11 @@ export default function PaymentSection() {
             <>
               <p>
                 <span>Bank:</span>
-                <span className=" font-bold"> {store.bank.toUpperCase()}</span>
+                <span className="font-bold"> {store.bank.toUpperCase()}</span>
               </p>
-              {/* <p>a.n Irfan Saputra Naution</p> */}
+              <p>
+                a.n <span className="font-bold">{store.accountHolder}</span>
+              </p>
               <p className="mb-3">
                 <span>No. Rek: </span>
                 <span className="font-bold">{store.accountNumber}</span>
