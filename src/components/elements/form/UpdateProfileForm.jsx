@@ -16,62 +16,59 @@ import axios from 'axios';
 import { toast } from '@/components/ui/use-toast';
 import ErrorMessageInput from '../errors/ErrorMessageInput';
 import PropTypes from 'prop-types';
+import { updateProfile } from '@/utils/api';
+import { CheckCircle } from 'lucide-react';
 
 export default function UpdateProfileForm({
   register,
   control,
   Controller,
-  reset,
   handleSubmit,
   errors,
   isSubmitting,
 }) {
   const { edgestore } = useEdgeStore();
 
-  const handleUpdate = async (data) => {
+  const handleUpdateProfile = async (data) => {
     const profilePicture = data?.profilePicture?.[0];
     if (data.profilePicture.length !== 0) {
       try {
         const res = await edgestore.publicFiles.upload({
           file: profilePicture,
         });
-        const updateProfile = {
+        const profile = {
           fullname: data?.fullname,
           gender: data?.gender,
-          dateOfbirth: data?.dateOfbirth,
+          dateOfbirth: new Date(data?.dateOfbirth).toISOString(),
           phoneNumber: data?.phoneNumber,
           profilePicture: res?.url,
         };
-        const response = await axios.patch(
-          `${process.env.API_BASE_URL}/profile`,
-          updateProfile
-        );
-        if (response?.data.statusCode === 200) {
-          // reset()
+        const response = await updateProfile(profile);
+
+        if (response?.status === 200) {
           toast({
             title: 'Success',
             description: response?.data?.message,
+            action: <CheckCircle />,
           });
         }
       } catch (error) {
         console.log(error?.message);
       }
     } else {
-      const updateProfile = {
+      const profile = {
         fullname: data?.fullname,
         gender: data?.gender,
         dateOfbirth: data?.dateOfbirth,
         phoneNumber: data?.phoneNumber,
       };
-      const response = await axios.patch(
-        `${process.env.API_BASE_URL}/profile`,
-        updateProfile
-      );
-      if (response?.data.statusCode === 200) {
-        // reset()
+      const response = await updateProfile(profile);
+
+      if (response?.status === 200) {
         toast({
           title: 'Success',
           description: response?.data?.message,
+          action: <CheckCircle />,
         });
       }
     }
@@ -91,7 +88,7 @@ export default function UpdateProfileForm({
       </div>
       <div className="lg:col-span-1 col-span-2">
         <FieldInput
-          name={'dateOfbirt'}
+          name={'dateOfbirth'}
           label={'Tanggal Lahir'}
           type={'date'}
           required={true}
@@ -140,7 +137,7 @@ export default function UpdateProfileForm({
       </div>
       <div className="flex justify-end col-span-2 mt-2">
         <Button
-          onClick={handleSubmit(handleUpdate)}
+          onClick={handleSubmit(handleUpdateProfile)}
           className="block px-12"
           type="submit"
           disabled={isSubmitting}
