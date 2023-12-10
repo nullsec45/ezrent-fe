@@ -39,7 +39,7 @@ export default function Profile() {
           },
         ]}
       />
-      <div className="flex lg:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
+      <div className="flex md:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
         {/* menu */}
         <SmallMenu />
         {/* menu */}
