@@ -19,7 +19,7 @@ function LocationMarker({ position, setPosition }) {
     },
     dragstart() {
       setIsLocated(true);
-      if (!isLocated) return map.locate();
+      if (!isLocated && !position) return map.locate();
     },
     locationerror() {
       alert('Silahkan ijinkan lokasi untuk menggunakan lokasi saat ini');
@@ -44,7 +44,7 @@ function LocationMarker({ position, setPosition }) {
   );
 }
 
-export default function Map({ position, setPosition, latitude }) {
+export default function Map({ position, setPosition, initialCoord }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,11 @@ export default function Map({ position, setPosition, latitude }) {
   return (
     <div>
       <MapContainer
-        center={latitude ? [Number(latitude)] : [-6.2, 106.816666]}
+        center={
+          initialCoord
+            ? [+initialCoord.latitude, +initialCoord.longitude]
+            : [-6.2, 106.816666]
+        }
         zoom={13}
         scrollWheelZoom={true}
         className="h-96 block"
