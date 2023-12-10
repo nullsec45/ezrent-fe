@@ -116,35 +116,90 @@ export default function PaymentSection() {
 
       <div className="border border-gray-200 rounded-md p-4 h-fit">
         <h1 className="text-xl font-semibold mb-8">Pembayaran</h1>
+        <h2>
+          Metode Pembayaran:{' '}
+          <span className="font-bold">
+            {' '}
+            {order?.transaction?.paymentMethod}
+          </span>
+        </h2>
 
         <div>
-          <h2 className="mb-1">
-            Bank:
-            <span className=" font-medium"> {store.bank.toUpperCase()}</span>
-          </h2>
+          {order?.transaction?.paymentMethod === 'TRANSFER' && (
+            <>
+              <p>
+                <span>Bank:</span>
+                <span className=" font-bold"> {store.bank.toUpperCase()}</span>
+              </p>
+              {/* <p>a.n Irfan Saputra Naution</p> */}
+              <p className="mb-3">
+                <span>No. Rek: </span>
+                <span className="font-bold">{store.accountNumber}</span>
+              </p>
+            </>
+          )}
 
-          <div className="mb-5">
-            {/* <p>a.n Irfan Saputra Naution</p> */}
-            <p className="mb-3">
-              <span>No. Rek: </span>
-              <span className="font-bold">{store.accountNumber}</span>
-            </p>
+          <div className="mt-3 mb-5">
             <Badge className="py-1 rounded-md bg-green-200 text-green-800">
               Order Sewa Anda Berhasil
             </Badge>
+
             <div className="mt-1 bg-gray-100 text-sm py-4 px-3.5 rounded-lg">
               <BsFillInfoCircleFill className="w-5 h-5 inline-block mb-3 text-gray-400" />
-              <p>
-                Silahkan segera{' '}
-                <span className="font-bold">menyelesaikan pembayaran</span>{' '}
-                dengan{' '}
-                <span className="font-bold">transfer ke nomor rekening</span>{' '}
-                yang tertera diatas, selanjutnya{' '}
-                <span className="font-bold">
-                  upload bukti transfer pembayaran
-                </span>{' '}
-                Anda dibawah ini
-              </p>
+
+              {/* Informasi cara pembayaran ketika TRANSFER */}
+              {order?.transaction?.paymentMethod === 'TRANSFER' && (
+                <p>
+                  Silahkan segera{' '}
+                  <span className="font-bold">menyelesaikan pembayaran</span>{' '}
+                  dengan{' '}
+                  <span className="font-bold">transfer ke nomor rekening</span>{' '}
+                  yang tertera diatas, selanjutnya{' '}
+                  <span className="font-bold">
+                    upload bukti transfer pembayaran
+                  </span>{' '}
+                  Anda dibawah ini
+                </p>
+              )}
+
+              {/* Informasi cara pembayaran ketika COD */}
+              {order?.transaction?.paymentMethod === 'COD' && (
+                <>
+                  <p>
+                    Silahkan{' '}
+                    <span className="font-bold">selesaikan pembayaran</span>{' '}
+                    dengan{' '}
+                    <span className="font-bold">
+                      membayar langsung ke pemilik toko jika anda memilih PICKUP
+                      sebagai metode pengiriman{' '}
+                    </span>
+                    atau{' '}
+                    <span className="font-bold">
+                      membayar ke kurir ojek jika anda anda memilih GOSEND
+                      sebagai metode pengiriman,{' '}
+                    </span>
+                    selanjutnya{' '}
+                    <span className="font-bold">upload bukti pembayaran</span>{' '}
+                    Anda dibawah ini.
+                  </p>
+                  <p className="mt-3">
+                    Contoh bukti pembayaran saat COD:{' '}
+                    <span className="font-bold">
+                      foto selfie dengan pemilik toko atau kurir ojek saat
+                      penyerahan uang
+                    </span>{' '}
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="mt-1 bg-gray-100 text-sm py-4 px-3.5 rounded-lg">
+              Jika Anda tidak sengaja{' '}
+              <span className="font-bold">menutup halaman ini</span>, Anda bisa
+              mengakses nya lagi di{' '}
+              <span className="font-bold">
+                {' '}
+                menu Daftar Transaksi di Dashboard Anda
+              </span>
             </div>
           </div>
 
