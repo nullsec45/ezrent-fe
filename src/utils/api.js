@@ -198,6 +198,16 @@ export const deleteCategory = async (id) => {
   }
 };
 
+export const addProfile = async (data) => {
+  try {
+    const response = await api.post('/profiles', data);
+    if (response.status === 201) {
+      return response;
+    }
+  } catch (error) {
+    console.log(error?.message);
+  }
+};
 export const updateProfile = async (data) => {
   try {
     const response = await api.patch('/profiles', data);
