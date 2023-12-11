@@ -71,7 +71,7 @@ export default function ProductCard({ product }) {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
           <div className="flex items-center gap-1">
             <FaLocationDot />
-            <span className="font-medium text-xs lg:text-base">
+            <span className="font-medium text-xs lg:text-xs">
               {store.storeAddress?.city || 'Lokasi'}
             </span>
           </div>

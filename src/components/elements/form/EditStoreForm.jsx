@@ -16,26 +16,27 @@ import { Label } from '@/components/ui/label';
 import FieldInput from '../input/FieldInput';
 import { Textarea } from '@/components/ui/textarea';
 import useProvinces from '@/hooks/api/useProvinces';
-import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useEdgeStore } from '@/lib/edgestore';
 import { toast } from '@/components/ui/use-toast';
-import { addStore } from '@/utils/api';
+import { updateStore } from '@/utils/api';
 import useCities from '@/hooks/api/useCities';
 import useDistricts from '@/hooks/api/useDistricts';
 import useSubDistricts from '@/hooks/api/useSubDistricts';
 import usePostalCode from '@/hooks/api/usePostalCode';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
-import { initialStore } from '@/config/constant/store/initialStoreValues';
-import ButtonCancel from '@/components/elements/button/ButtonCancel';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { storeSchema } from '@/config/schema/store/storeSchema';
 import { banks } from '@/data/banks';
 import { CheckCircle, Info } from 'lucide-react';
 import { PictureUploadDropzone } from '../input/PictureUploadDropzone';
+import { api } from '@/utils/axios';
+import useMyStore from '@/hooks/api/useMyStore';
 
-export default function OpenStoreForm() {
+export default function EditStoreForm() {
+  const { data: store, isLoading } = useMyStore();
+  const [storeId, setStoreId] = useState();
   const { edgestore } = useEdgeStore();
   const [file, setFile] = useState();
 
@@ -45,6 +46,20 @@ export default function OpenStoreForm() {
     []
   );
 
+  const [provinceId, setProvinceId] = useState(null);
+  const [cityId, setCityId] = useState(null);
+  const [districtId, setDistrictId] = useState(null);
+  const [position, setPosition] = useState(null);
+
+  useEffect(() => {
+    if (store) {
+      setPosition({
+        lat: store.storeAddress.latitude,
+        lng: store.storeAddress.longitude,
+      });
+    }
+  }, [store, setPosition]);
+
   const {
     register,
     handleSubmit,
@@ -52,14 +67,47 @@ export default function OpenStoreForm() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: initialStore,
+    defaultValues: async () => {
+      const response = await api.get('/users/my-store');
+      const {
+        id,
+        name,
+        phoneNumber,
+        bank,
+        accountHolder,
+        accountNumber,
+        description,
+        profilePicture,
+        storeAddress: {
+          province,
+          city,
+          district,
+          subDistrict,
+          postalCode,
+          fullAddress,
+        },
+      } = response.data.data;
+
+      setFile(profilePicture);
+      setStoreId(id);
+
+      return {
+        name,
+        phoneNumber,
+        bank,
+        accountHolder,
+        accountNumber,
+        description,
+        province,
+        city,
+        district,
+        subDistrict,
+        postalCode,
+        fullAddress,
+      };
+    },
     resolver: yupResolver(storeSchema),
   });
-
-  const [provinceId, setProvinceId] = useState(null);
-  const [cityId, setCityId] = useState(null);
-  const [districtId, setDistrictId] = useState(null);
-  const [position, setPosition] = useState(null);
 
   const { data: provinces } = useProvinces();
   const { data: cities } = useCities(provinceId);
@@ -67,20 +115,25 @@ export default function OpenStoreForm() {
   const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
 
-  const { push, back } = useRouter();
-
-  const handleOpenStore = async (data) => {
+  const handleEditStore = async (data) => {
     const profilePicture = file;
 
     if (profilePicture) {
       try {
-        const res = await edgestore.publicFiles.upload({
-          file: profilePicture,
-        });
+        let productPictures = profilePicture;
+
+        // cek apakah gambar produk di update, jika productPictures tidak bertipe 'string', berarti gambar diupdate
+        if (typeof productPictures !== 'string') {
+          const res = await edgestore.publicFiles.upload({
+            file: profilePicture,
+          });
+
+          productPictures = res?.url;
+        }
 
         const store = {
           name: data?.name,
-          profilePicture: res?.url,
+          profilePicture: productPictures,
           description: data?.description,
           phoneNumber: data?.phoneNumber,
           bank: data?.bank,
@@ -99,13 +152,12 @@ export default function OpenStoreForm() {
           },
         };
 
-        const response = await addStore(store);
-        if (response?.status === 201) {
-          reset(initialStore);
-          push('/products');
+        const response = await updateStore(store, storeId);
+
+        if (response?.status === 200) {
           toast({
             title: 'Success',
-            description: response.data?.message,
+            description: 'Profile Toko Berhasil di Update',
             action: <CheckCircle />,
           });
         }
@@ -126,10 +178,13 @@ export default function OpenStoreForm() {
       });
     }
   };
+
+  if (isLoading) return null;
+
   return (
     <>
       <Card className="border-none shadow-none">
-        <form onSubmit={handleSubmit(handleOpenStore)}>
+        <form onSubmit={handleSubmit(handleEditStore)}>
           <CardContent className="space-y-7 p-0">
             <div className="flex flex-col space-y-1.5">
               <FieldInput
@@ -184,7 +239,7 @@ export default function OpenStoreForm() {
                       <SelectValue placeholder="Pilih Bank" />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
-                      <SelectGroup>
+                      <SelectGroup defaultValue={field.value}>
                         {banks?.map((bank) => (
                           <SelectItem value={bank.id} key={bank.id}>
                             {bank.name}
@@ -430,7 +485,14 @@ export default function OpenStoreForm() {
               <div className="text-xs text-gray-500 font-medium max-w-md">
                 Pilih lokasi toko anda dengan memberikan PIN pada peta.
               </div>
-              <Map position={position} setPosition={setPosition} />
+              <Map
+                position={position}
+                setPosition={setPosition}
+                initialCoord={{
+                  latitude: position?.lat,
+                  longitude: position?.lng,
+                }}
+              />
             </div>
 
             <div className="flex flex-col gap-3 items-end max-w-lg ml-auto mt-7 text-gray-500">
@@ -443,14 +505,9 @@ export default function OpenStoreForm() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-end mt-7 gap-5 px-0">
-            <ButtonCancel
-              back={back}
-              title={'Batal Buka Toko?'}
-              message={'Apakah anda yakin ingin membatalkan pembukaan toko?'}
-            />
             <ButtonSubmit
               isSubmitting={isSubmitting}
-              text="Buka Toko"
+              text="Perbarui Profil"
               className="px-10 py-6"
             />
           </CardFooter>
