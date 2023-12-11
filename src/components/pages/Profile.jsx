@@ -172,7 +172,6 @@ export default function Profile() {
         >
           <h1 className="font-semibold text-lg mb-5">Ubah Profil</h1>
           <div className="flex gap-2 lg:flex-nowrap flex-wrap h-fit items-center">
-            {/* avatar */}
             <div className="w-40 h-32 rounded-lg">
               {!user ? (
                 previewImage ? (
@@ -205,7 +204,6 @@ export default function Profile() {
                 />
               )}
             </div>
-            {/* avatar */}
             <div className="flex lg:flex-col md:flex-col flex-row flex-wrap mt-2 lg:mt-0 gap-3">
               <div className="flex gap-2 items-center cursor-pointer">
                 <Button className="w-fit px-5 relative">
@@ -306,7 +304,6 @@ export default function Profile() {
             </div>
           </div>
         </form>
-        {/* update profile */}
       </div>
     </div>
   );
