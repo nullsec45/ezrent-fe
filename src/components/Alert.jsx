@@ -26,14 +26,14 @@ export default function Alert() {
             <p className="text-white text-sm text-center">
               Segera lengkapi data diri anda agar dapat melakukan transaksi !
               <Link
-                href="/auth"
+                href="/dashboard/data-completeness"
                 className="text-blue-400 underline inline sm:hidden ml-2"
               >
                 Lebih lanjut
               </Link>
             </p>
           </div>
-          <Link href="/" className="hidden sm:block">
+          <Link href="/dashboard/data-completeness" className="hidden sm:block">
             <Button variant="outline" className="text-sm px-6">
               Lebih Lanjut
             </Button>
