@@ -29,17 +29,16 @@ import { Label } from '@/components/ui/label';
 import { addProduct } from '@/utils/api';
 import useCategories from '@/hooks/api/useCategories';
 import useMyStore from '@/hooks/api/useMyStore';
-<<<<<<< HEAD
 import { CheckCircle, Info } from 'lucide-react';
-=======
 import { PictureUploadDropzone } from '../input/PictureUploadDropzone';
 import { useState } from 'react';
->>>>>>> c6feaf0 (fix(store-dashboard): add Add Product and Edit Product page on Store Dashboard)
+import { useRouter } from 'next/navigation';
 
 export default function AddProductForm() {
   const { data: categories } = useCategories();
   const { data: store } = useMyStore();
   const [file, setFile] = useState();
+  const router = useRouter();
 
   const { edgestore } = useEdgeStore();
   const {
@@ -77,6 +76,7 @@ export default function AddProductForm() {
 
         if (response.status === 201) {
           reset(initialProduct);
+          router.push('/store/dashboard/products');
           toast({
             title: 'Success',
             description: response.data?.message,
@@ -194,8 +194,9 @@ export default function AddProductForm() {
                   onChange={(file) => {
                     setFile(file);
                   }}
-                  height={200}
-                  className="w-full h-96"
+                  height={250}
+                  width={250}
+                  required
                 />
               </div>
             </div>
