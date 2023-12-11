@@ -10,7 +10,6 @@ import StoreIcon from '@/components/icons/StoreIcon';
 
 export default function NavbarMenuDekstopAuthenticated({ user }) {
   const { data: store } = useMyStore();
-
   return (
     <ul className="flex gap-4 items-center">
       <li>
@@ -24,10 +23,12 @@ export default function NavbarMenuDekstopAuthenticated({ user }) {
       <li>
         <Link href="/dashboard/profile">
           <Button variant="ghost" className="flex gap-3">
-            <span className="hidden lg:inline-block">{user.username}</span>
+            <span className="hidden lg:inline-block capitalize">
+              {user.username}
+            </span>
             <Avatar className="w-8 h-8">
               <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>{user.username[0]}</AvatarFallback>
+              <AvatarFallback>{user.username}</AvatarFallback>
             </Avatar>
           </Button>
         </Link>
