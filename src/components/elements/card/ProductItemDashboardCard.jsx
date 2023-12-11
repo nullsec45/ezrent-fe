@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import useInputNumber from '@/hooks/custom/useInputNumber';
 import useCounter from '@/hooks/custom/useCounter';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import useUpdatePriceMutation from '@/hooks/api/useUpdatePriceMutation';
 import useUpdateStockMutation from '@/hooks/api/useUpdateStockMutation';
@@ -23,6 +23,8 @@ export default function ProductItemDashboardCard({ product }) {
     incrementStock,
     decrementStock,
   ] = useCounter(product.stock);
+
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [price, handlePrice] = useInputNumber(product.price);
   const [debouncedPrice] = useDebounce(price, 1000);
   const [debouncedStock] = useDebounce(stockCounter, 1000);

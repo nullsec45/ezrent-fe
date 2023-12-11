@@ -3,11 +3,28 @@
 import ProductItemDashboardCard from '@/components/elements/card/ProductItemDashboardCard';
 import Search from '@/components/elements/search/Search';
 import useMyStore from '@/hooks/api/useMyStore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
-  const [searchValue, setSearchValue] = useState('');
   const { data: store, isLoading } = useMyStore();
+  const [searchedProducts, setSearchedProducts] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearchValue(value);
+
+    const products = store.products.filter((product) => {
+      const productName = product.name.toLowerCase();
+      return productName.includes(value.toLowerCase());
+    });
+
+    setSearchedProducts(products);
+  };
+
+  useEffect(() => {
+    if (!isLoading) setSearchedProducts(store.products);
+  }, [isLoading, store]);
 
   if (isLoading) return null;
 
@@ -20,7 +37,7 @@ export default function Page() {
           <Search
             value={searchValue}
             placeholder="Nama Produk"
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={handleSearch}
           />
         </div>
       </div>
@@ -36,11 +53,17 @@ export default function Page() {
 
         <div>
           <ul className="space-y-5">
-            {store.products.map((product) => (
+            {searchedProducts.map((product) => (
               <ProductItemDashboardCard product={product} key={product.id} />
             ))}
           </ul>
         </div>
+
+        {!searchedProducts.length && (
+          <div className="h-40 grid place-content-center text-gray-500 font-medium">
+            <span>Produk Tidak ditemukan</span>
+          </div>
+        )}
       </div>
     </div>
   );

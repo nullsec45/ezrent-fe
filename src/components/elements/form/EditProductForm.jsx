@@ -99,7 +99,6 @@ export default function EditProductForm({ productId }) {
           stock: Number(data?.stock),
           availableStock: Number(data?.availableStock),
           productPictures: [productPictures],
-          availableStock: Number(data?.stock),
           categoryId: data?.categoryId,
         };
 
