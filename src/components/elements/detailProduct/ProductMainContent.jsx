@@ -29,9 +29,13 @@ import { useBoundStore } from '@/components/store/useBoundStore';
 import { useRouter } from 'next/navigation';
 import ProductMainContentSkeleton from '@/components/elements/skeleton/ProductMainContentSkeleton';
 import PropTypes from 'prop-types';
+import { FaWhatsapp } from 'react-icons/fa6';
+import Link from 'next/link';
+import { useLoadingImageStore } from '@/store/useLoadingImage';
 
 export default function ProductMainContent({ productId }) {
   const { data: product, isLoading, error } = useDetailProduct(productId);
+  const { loadingImage, removeLoadingImage } = useLoadingImageStore();
   const setOrderProduct = useBoundStore((state) => state.setOrderProduct);
   const router = useRouter();
 
@@ -105,18 +109,20 @@ export default function ProductMainContent({ productId }) {
   if (isLoading) return <ProductMainContentSkeleton />;
 
   if (error) return <ErrorFetchApiFallback />;
-
   return (
     <div className="my-12 flex flex-col lg:flex-row h-full max-h-fit items-center gap-7">
       <div className="w-full lg:max-w-lg h-[27rem]">
         <Image
           src={product.productPictures[0]?.url}
           alt={product.name}
-          width={100}
-          height={100}
+          width={500}
+          height={500}
           quality={100}
           loading="lazy"
-          className="w-full h-full object-contain"
+          className={`w-full h-full object-contain ${
+            loadingImage ? 'blur-xl' : 'blur-0'
+          }`}
+          onLoadingComplete={() => removeLoadingImage()}
         />
       </div>
 
@@ -132,10 +138,31 @@ export default function ProductMainContent({ productId }) {
 
         <div className="flex items-center gap-2 mt-1">
           <Avatar className="w-7 h-7">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>{product.name[0]}</AvatarFallback>
+            {product.store.profilePicture ? (
+              <>
+                <AvatarImage src={product.store.profilePicture} />
+                <AvatarFallback>{product.store.name}</AvatarFallback>
+              </>
+            ) : (
+              <>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>{product.store.name}</AvatarFallback>
+              </>
+            )}
           </Avatar>
-          <p className="font-semibold text-sm">{product.store.name}</p>
+          <p className="font-semibold text-sm capitalize">
+            {product.store.name}
+          </p>
+          <Link
+            target="_blank"
+            href={`https://wa.me/${
+              product.store.phoneNumber
+            }/?text=${encodeURIComponent(
+              `Hallo min\nSaya mau beli ${product.name}`
+            )}`}
+          >
+            <FaWhatsapp color="green" size={20} />
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">

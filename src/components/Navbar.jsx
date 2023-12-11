@@ -42,7 +42,10 @@ export default function Navbar() {
           isSearchPopUpOpen={isSearchPopUpOpen}
         />
 
-        <NavbarMenuMobile isMenuOpen={isMenuOpen} />
+        <NavbarMenuMobile
+          setIsMenuOpen={setIsMenuOpen}
+          isMenuOpen={isMenuOpen}
+        />
       </nav>
     </header>
   );

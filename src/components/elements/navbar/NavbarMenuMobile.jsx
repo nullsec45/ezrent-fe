@@ -2,7 +2,7 @@ import NavbarMenuMobileAuthenticated from './NavbarMenuMobileAuthenticated';
 import useUser from '@/hooks/api/useUser';
 import NavbarMenuMobileNotAuthenticated from './NavbarMenuMobileNotAuthenticated';
 
-export default function NavbarMenuMobile({ isMenuOpen }) {
+export default function NavbarMenuMobile({ isMenuOpen, setIsMenuOpen }) {
   const { data: user, isLoading } = useUser();
 
   return (
@@ -12,7 +12,10 @@ export default function NavbarMenuMobile({ isMenuOpen }) {
       } origin-top transition-all duration-500 ease-in-out md:hidden absolute top-[4.2rem] sm:top-[3.6rem] z-50 bg-none inset-0 min-h-screen  text-black`}
     >
       {user ? (
-        <NavbarMenuMobileAuthenticated user={user} />
+        <NavbarMenuMobileAuthenticated
+          setIsMenuOpen={setIsMenuOpen}
+          user={user}
+        />
       ) : (
         <NavbarMenuMobileNotAuthenticated />
       )}

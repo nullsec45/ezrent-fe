@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -15,30 +17,30 @@ import PropTypes from 'prop-types';
 import useMyStore from '@/hooks/api/useMyStore';
 import StoreIcon from '@/components/icons/StoreIcon';
 
-export default function NavbarMenuMobileAuthenticated({ user }) {
+export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
   const { data: store } = useMyStore();
 
   return (
     <>
       <div className="font-medium px-5 flex flex-col bg-white rounded-b-lg pb-4 pt-2">
         <div className="w-full border-b border-gray-400 pb-3 flex justify-between">
-          <Link href="/" className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>{user.username[0]}</AvatarFallback>
+              <AvatarFallback>{user.username}</AvatarFallback>
             </Avatar>
             <p>{user.username}</p>
-          </Link>
+          </div>
 
           {store ? (
-            <Link href="/store/dashboard">
+            <Link onClick={() => setIsMenuOpen(false)} href="/store/dashboard">
               <Button className="flex gap-3 items-center px-8">
                 <span>Toko Saya</span>
                 <StoreIcon />
               </Button>
             </Link>
           ) : (
-            <Link href="/store/open-store">
+            <Link onClick={() => setIsMenuOpen(false)} href="/store/open-store">
               <Button className="flex gap-3 items-center">
                 <span> Buka Toko</span>
                 <OpenStoreIcon />
@@ -49,19 +51,27 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
 
         <ul className="flex flex-col space-y-4 mt-3">
           <li>
-            <Link href="/profile/me" className="flex gap-2 items-center">
+            <Link
+              onClick={() => setIsMenuOpen(false)}
+              href="/dashboard/profile"
+              className="flex gap-2 items-center"
+            >
               <User />
               Profile Saya
             </Link>
           </li>
           <li>
-            <Link href="/" className="flex gap-2 items-center">
+            <Link
+              onClick={() => setIsMenuOpen(false)}
+              href="/dashboard/address"
+              className="flex gap-2 items-center"
+            >
               <MapPin />
               Daftar Alamat
             </Link>
           </li>
           <li>
-            <Link href="/" className="flex gap-2 items-center">
+            <Link href="/cart" className="flex gap-2 items-center">
               <ShoppingCart />
               Keranjang Saya
             </Link>
@@ -72,13 +82,21 @@ export default function NavbarMenuMobileAuthenticated({ user }) {
       <div className="mt-2 bg-white pb-4 pt-1 px-5 rounded-lg font-medium">
         <ul className="flex flex-col space-y-4 mt-3">
           <li>
-            <Link href="/" className="flex gap-2 items-center">
+            <Link
+              onClick={() => setIsMenuOpen(false)}
+              href="/"
+              className="flex gap-2 items-center"
+            >
               <CopyCheck />
               Menunggu Pembayaran
             </Link>
           </li>
           <li>
-            <Link href="/" className="flex gap-2 items-center">
+            <Link
+              onClick={() => setIsMenuOpen(false)}
+              href="/"
+              className="flex gap-2 items-center"
+            >
               <History />
               Riwayat Transaksi
             </Link>
