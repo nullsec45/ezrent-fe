@@ -44,8 +44,11 @@ export default function SmallMenu() {
         </li>
         <li>
           <Link
-            href="/"
-            className="py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg"
+            href="/dashboard/data-completeness"
+            className={twMerge(
+              'py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg',
+              path === 'data-completeness' ? 'bg-gray-200 translate-x-2' : ''
+            )}
           >
             <Button className="hover:bg-transparent bg-transparent text-black flex gap-2 items-center">
               <FileText />
@@ -58,23 +61,29 @@ export default function SmallMenu() {
       <ul className="flex flex-col gap-1 ">
         <li>
           <Link
-            href="/"
-            className="py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg"
+            href="/dashboard/history-transactions"
+            className={twMerge(
+              'py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg',
+              path === 'history-transactions' ? 'bg-gray-200 translate-x-2' : ''
+            )}
           >
             <Button className="hover:bg-transparent bg-transparent text-black flex gap-2 items-center">
               <FileClock />
-              Menunggu Pembayaran
+              Riwayat Transaksi
             </Button>
           </Link>
         </li>
         <li>
           <Link
-            href="/"
-            className="py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg"
+            href="/dashboard/history-orders"
+            className={twMerge(
+              'py-1 w-full hover:bg-gray-200 hover:translate-x-2 inline-block transition-all duration-300 rounded-lg',
+              path === 'history-orders' ? 'bg-gray-200 translate-x-2' : ''
+            )}
           >
             <Button className="hover:bg-transparent bg-transparent text-black flex gap-2 items-center">
               <History />
-              Daftar Transaksi
+              Riwayat Order
             </Button>
           </Link>
         </li>
