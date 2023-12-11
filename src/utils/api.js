@@ -52,9 +52,9 @@ export const addProduct = async (data) => {
   }
 };
 
-export const updateProduct = async (data, id) => {
+export const deleteProduct = async (id) => {
   try {
-    const response = await api.patch(`/products/${id}`, data);
+    const response = await api.delete(`/products/${id}`);
     if (response.status === 200) {
       return response;
     }
@@ -63,9 +63,9 @@ export const updateProduct = async (data, id) => {
   }
 };
 
-export const deleteProduct = async (id) => {
+export const updateProduct = async (productId, data) => {
   try {
-    const response = await api.delete(`/products/${id}`);
+    const response = await api.patch(`/products/${productId}`, data);
     if (response.status === 200) {
       return response;
     }
