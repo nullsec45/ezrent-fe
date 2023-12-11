@@ -30,10 +30,15 @@ import { addProduct } from '@/utils/api';
 import useCategories from '@/hooks/api/useCategories';
 import useMyStore from '@/hooks/api/useMyStore';
 import { CheckCircle, Info } from 'lucide-react';
+import { PictureUploadDropzone } from '../input/PictureUploadDropzone';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AddProductForm() {
   const { data: categories } = useCategories();
   const { data: store } = useMyStore();
+  const [file, setFile] = useState();
+  const router = useRouter();
 
   const { edgestore } = useEdgeStore();
   const {
@@ -48,9 +53,9 @@ export default function AddProductForm() {
   });
 
   const handleAddProduct = async (data) => {
-    const picture = data?.productPicture?.[0];
+    const picture = file;
 
-    if (data.productPicture.length !== 0) {
+    if (picture) {
       try {
         const res = await edgestore.publicFiles.upload({
           file: picture,
@@ -71,6 +76,7 @@ export default function AddProductForm() {
 
         if (response.status === 201) {
           reset(initialProduct);
+          router.push('/store/dashboard/products');
           toast({
             title: 'Success',
             description: response.data?.message,
@@ -95,19 +101,23 @@ export default function AddProductForm() {
     }
   };
   return (
-    <div className="max-w-4xl mx-auto mt-5 p-4">
-      <Card>
+    <div className="max-w-4xl mx-auto">
+      <Card className="border-none">
         <form onSubmit={handleSubmit(handleAddProduct)}>
-          <CardHeader>
-            <CardTitle>Add Product</CardTitle>
+          <CardHeader className="p-0">
+            <CardTitle className="font-bold text-xl mb-6">
+              Tambah Produk
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 w-full items-center gap-4">
+
+          <CardContent className="p-0">
+            <div className="grid w-full gap-4">
               <div className="flex flex-col space-y-1.5">
                 <FieldInput
+                  label={'Nama Produk'}
                   name={'name'}
                   type={'text'}
-                  placeholder={'Name of your product'}
+                  placeholder={'Nama Produk dan Tipe'}
                   register={register}
                   required={true}
                 />
@@ -115,6 +125,7 @@ export default function AddProductForm() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <FieldInput
+                  label={'Harga Sewa/Hari'}
                   name={'price'}
                   type={'number'}
                   placeholder={'70.000'}
@@ -126,7 +137,7 @@ export default function AddProductForm() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <FieldInput
-                  label={'Maximum Rental'}
+                  label={'Maksimum Hari Penyewaan'}
                   name={'maximumRental'}
                   type={'number'}
                   placeholder={'70'}
@@ -138,9 +149,10 @@ export default function AddProductForm() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <FieldInput
+                  label={'Stok'}
                   name={'stock'}
                   type={'number'}
-                  placeholder={7}
+                  placeholder={'7'}
                   register={register}
                   min={1}
                   required={true}
@@ -148,7 +160,7 @@ export default function AddProductForm() {
                 <ErrorMessageInput message={errors.stock?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="categoryId">Category</Label>
+                <Label htmlFor="categoryId">Kategori</Label>
                 <Controller
                   control={control}
                   id="categoryId"
@@ -176,30 +188,38 @@ export default function AddProductForm() {
                 <ErrorMessageInput message={errors.categoryId?.message} />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <FieldInput
-                  label={'picture'}
-                  name={'productPicture'}
-                  type={'file'}
-                  register={register}
-                  className="cursor-pointer"
+                <Label>Upload Gambar Produk</Label>
+                <PictureUploadDropzone
+                  value={file}
+                  onChange={(file) => {
+                    setFile(file);
+                  }}
+                  height={250}
+                  width={250}
+                  required
                 />
-                <ErrorMessageInput message={errors.productPicture?.message} />
               </div>
             </div>
             <div className="flex flex-col mt-4 space-y-1.5">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Deskripsi Produk</Label>
+              <p className="text-gray-500 text-xs md:max-w-lg">
+                Deskripsikan produk Anda secara detail, Anda juga bisa
+                menuliskan tipe-tipe barang Anda dan menuliskan syarat-syarat
+                tambahan untuk menyewa barang Anda
+              </p>
               <Textarea
                 id="description"
                 name="description"
-                placeholder="description"
+                placeholder="Tulis deskripsi Anda disini"
                 className="min-h-[10rem]"
                 {...register('description')}
               />
               <ErrorMessageInput message={errors.description?.message} />
             </div>
           </CardContent>
-          <CardFooter>
-            <ButtonSubmit isSubmitting={isSubmitting} text={'Add Product'} />
+
+          <CardFooter className="p-0 mt-5 flex justify-end">
+            <ButtonSubmit isSubmitting={isSubmitting} text={'Tambah Produk'} />
           </CardFooter>
         </form>
       </Card>
