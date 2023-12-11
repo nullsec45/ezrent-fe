@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { TbCubePlus } from 'react-icons/tb';
 import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }) {
@@ -29,6 +30,11 @@ export default function Layout({ children }) {
       icon: <AiOutlineShop className="w-6 h-6" />,
       text: 'Profile Toko',
       href: '/store/dashboard/profile',
+    },
+    {
+      icon: <TbCubePlus className="w-6 h-6" />,
+      text: 'Tambah Produk',
+      href: '/store/dashboard/products/add',
     },
     {
       icon: <LuInbox className="w-6 h-6" />,
@@ -52,14 +58,14 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="container px-4 lg:px-10 py-8 min-h-[700px] flex gap-6 flex-col md:flex-row">
-      <div className="relative z-10 md:static md:z-0">
-        <button onClick={toggleMenu} className="md:hidden">
+    <div className="container px-4 lg:px-10 py-8 min-h-[700px] flex gap-6 flex-col lg:flex-row">
+      <div className="relative z-10 lg:static lg:z-0">
+        <button onClick={toggleMenu} className="lg:hidden">
           <HiMiniBars3BottomLeft className="w-7 h-7" />
         </button>
         <aside
           className={twMerge(
-            'hidden md:block bg-white absolute md:static min-w-[320px] h-fit shadow-lg border border-gray-300 p-4 rounded-xl',
+            'hidden lg:block bg-white absolute lg:static min-w-[300px] h-fit shadow-lg border border-gray-300 p-4 rounded-xl',
             isMenuOpen && 'block'
           )}
         >
@@ -98,7 +104,7 @@ export default function Layout({ children }) {
                   <div>{menu.icon}</div>
                   <span className="font-medium">{menu.text}</span>
                 </Link>
-                {index === 2 && (
+                {index === 3 && (
                   <div className="border-b border-gray-300 my-4"></div>
                 )}
               </div>
@@ -107,7 +113,7 @@ export default function Layout({ children }) {
         </aside>
       </div>
 
-      <main className="bg-white shadow-lg flex-1 border border-gray-300 p-4 rounded-xl">
+      <main className="bg-white shadow-lg flex-1 border border-gray-300 py-6 px-7 rounded-xl">
         {children}
       </main>
     </div>
