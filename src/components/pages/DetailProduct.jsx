@@ -56,7 +56,6 @@ const products = [
 
 export default function DetailProduct({ productId }) {
   const { data: product } = useDetailProduct(productId);
-
   return (
     <div className="container">
       <Breadcrumbs

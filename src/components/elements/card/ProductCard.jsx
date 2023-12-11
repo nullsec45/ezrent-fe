@@ -41,11 +41,20 @@ export default function ProductCard({ product }) {
 
         <Link href={'#'} className="flex items-center gap-2 mt-3">
           <Avatar className="w-4 h-4">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            {store.profilePicture ? (
+              <>
+                <AvatarImage src={store.profilePicture} />
+                <AvatarFallback>{store.name}</AvatarFallback>
+              </>
+            ) : (
+              <>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>{store.name}</AvatarFallback>
+              </>
+            )}
           </Avatar>
 
-          <span className="text-xs">{store.name}</span>
+          <span className="text-xs capitalize">{store.name}</span>
         </Link>
 
         <div className="flex flex-col lg:flex-row-reverse lg:justify-between gap-2 mt-3 mb-2">
