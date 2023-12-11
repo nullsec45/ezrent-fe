@@ -44,18 +44,17 @@ export default function Profile() {
 
   const handleUpdateProfile = async (data) => {
     const profilePicture = data?.profilePicture?.[0];
+
     if (data.profilePicture.length !== 0) {
-      try {
-        const res = await edgestore.publicFiles.upload({
-          file: profilePicture,
-        });
+      if (data?.profilePicture == user?.profilePicture) {
         const profile = {
           fullname: data?.fullname,
           gender: data?.gender,
           dateOfbirth: new Date(data?.dateOfbirth).toISOString(),
           phoneNumber: data?.phoneNumber,
-          profilePicture: res?.url,
+          profilePicture: data?.profilePicture,
         };
+
         const response = await updateProfile(profile);
 
         if (response?.status === 200) {
@@ -65,8 +64,30 @@ export default function Profile() {
             action: <CheckCircle />,
           });
         }
-      } catch (error) {
-        console.log(error?.message);
+      } else {
+        try {
+          const res = await edgestore.publicFiles.upload({
+            file: profilePicture,
+          });
+          const profile = {
+            fullname: data?.fullname,
+            gender: data?.gender,
+            dateOfbirth: new Date(data?.dateOfbirth).toISOString(),
+            phoneNumber: data?.phoneNumber,
+            profilePicture: res?.url,
+          };
+          const response = await updateProfile(profile);
+
+          if (response?.status === 200) {
+            toast({
+              title: 'Success',
+              description: response?.data?.message,
+              action: <CheckCircle />,
+            });
+          }
+        } catch (error) {
+          console.log(error?.message);
+        }
       }
     } else {
       const profile = {
