@@ -84,17 +84,17 @@ export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
           <li>
             <Link
               onClick={() => setIsMenuOpen(false)}
-              href="/"
+              href="/dashboard/history-orders"
               className="flex gap-2 items-center"
             >
               <CopyCheck />
-              Menunggu Pembayaran
+              Riwayat Order
             </Link>
           </li>
           <li>
             <Link
               onClick={() => setIsMenuOpen(false)}
-              href="/"
+              href="/dashboard/history-transactions"
               className="flex gap-2 items-center"
             >
               <History />
