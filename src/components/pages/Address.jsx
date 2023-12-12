@@ -11,7 +11,7 @@ export default function Address() {
         items={[
           {
             name: 'Dashboard',
-            link: '/dashboard',
+            link: '#',
           },
           {
             name: 'Daftar Alamat',

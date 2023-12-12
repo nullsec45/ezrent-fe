@@ -150,7 +150,7 @@ export default function Profile() {
         items={[
           {
             name: 'Dashboard',
-            link: '/dashboard',
+            link: '#',
           },
           {
             name: 'Profil Saya',
