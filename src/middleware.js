@@ -27,5 +27,11 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/direct-rent', '/checkout', '/auth'],
+  matcher: [
+    '/direct-rent',
+    '/checkout',
+    '/auth',
+    '/dashboard/:path*',
+    '/store/:path*',
+  ],
 };
