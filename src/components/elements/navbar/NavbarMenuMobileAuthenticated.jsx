@@ -16,9 +16,11 @@ import ButtonLogout from '@/components/elements/button/ButtonLogout';
 import PropTypes from 'prop-types';
 import useMyStore from '@/hooks/api/useMyStore';
 import StoreIcon from '@/components/icons/StoreIcon';
+import useMyProfile from '@/hooks/api/useMyProfile';
 
 export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
   const { data: store } = useMyStore();
+  const { data: profile } = useMyProfile();
 
   return (
     <>
@@ -26,8 +28,8 @@ export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
         <div className="w-full border-b border-gray-400 pb-3 flex justify-between">
           <div className="flex gap-2 items-center">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>{user.username}</AvatarFallback>
+              <AvatarImage src={profile?.profilePicture} />
+              <AvatarFallback>{user.username[0]}</AvatarFallback>
             </Avatar>
             <p>{user.username}</p>
           </div>
@@ -53,7 +55,7 @@ export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
           <li>
             <Link
               onClick={() => setIsMenuOpen(false)}
-              href="/dashboard/profile"
+              href="/dashboard"
               className="flex gap-2 items-center"
             >
               <User />
@@ -84,21 +86,21 @@ export default function NavbarMenuMobileAuthenticated({ user, setIsMenuOpen }) {
           <li>
             <Link
               onClick={() => setIsMenuOpen(false)}
-              href="/"
+              href="/dashboard/history-transactions"
               className="flex gap-2 items-center"
             >
-              <CopyCheck />
+              <History />
               Menunggu Pembayaran
             </Link>
           </li>
           <li>
             <Link
               onClick={() => setIsMenuOpen(false)}
-              href="/"
+              href="/dashboard/history-orders"
               className="flex gap-2 items-center"
             >
-              <History />
-              Riwayat Transaksi
+              <CopyCheck />
+              Riwayat Order
             </Link>
           </li>
         </ul>
