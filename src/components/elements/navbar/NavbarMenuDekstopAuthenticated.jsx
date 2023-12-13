@@ -7,9 +7,12 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import useMyStore from '@/hooks/api/useMyStore';
 import StoreIcon from '@/components/icons/StoreIcon';
+import useMyProfile from '@/hooks/api/useMyProfile';
 
 export default function NavbarMenuDekstopAuthenticated({ user }) {
   const { data: store } = useMyStore();
+  const { data: profile } = useMyProfile();
+
   return (
     <ul className="flex gap-4 items-center">
       <li>
@@ -21,14 +24,12 @@ export default function NavbarMenuDekstopAuthenticated({ user }) {
       </li>
 
       <li>
-        <Link href="/dashboard/profile">
+        <Link href="/dashboard">
           <Button variant="ghost" className="flex gap-3">
-            <span className="hidden lg:inline-block capitalize">
-              {user.username}
-            </span>
+            <span className="hidden lg:inline-block">{user.username}</span>
             <Avatar className="w-8 h-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>{user.username}</AvatarFallback>
+              <AvatarImage src={profile?.profilePicture} />
+              <AvatarFallback>{user.username[0]}</AvatarFallback>
             </Avatar>
           </Button>
         </Link>

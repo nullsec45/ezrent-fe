@@ -1,4 +1,4 @@
-import { addDays, differenceInDays, format } from 'date-fns';
+import { addDays, differenceInDays, format, parseISO } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 
 function formatPrice(number) {
@@ -55,6 +55,36 @@ function mapOrderObjectToBeSendToAPI(order) {
   return mapped;
 }
 
+function formatISODateToLocalDate(isoDate) {
+  // Parse ISO datetime menjadi objek Date
+  const dateObject = parseISO(isoDate);
+
+  // Format tanggal menggunakan date-fns
+  const formattedDate = format(dateObject, 'd MMMM yyyy', { locale: idLocale }); // enLocale adalah locale bahasa Inggris
+
+  return formattedDate;
+}
+
+function formatISODateToLocalDateTime(isoDate) {
+  // Parse ISO datetime menjadi objek Date
+  const dateObject = parseISO(isoDate);
+
+  // Format tanggal dan waktu menggunakan date-fns dan locale bahasa Indonesia
+  const formattedDateTime = format(dateObject, 'd MMMM yyyy HH:mm:ss', {
+    locale: idLocale,
+  });
+
+  return formattedDateTime;
+}
+
+const calculateAverageRating = (reviews) => {
+  const total = reviews.reduce((acc, current) => {
+    return acc + current.rating;
+  }, 0);
+
+  return total / reviews.length;
+};
+
 export {
   formatPrice,
   calculateSingleProductPrice,
@@ -62,4 +92,7 @@ export {
   getEstimationDate,
   calculateTotalPriceOrder,
   mapOrderObjectToBeSendToAPI,
+  formatISODateToLocalDate,
+  formatISODateToLocalDateTime,
+  calculateAverageRating,
 };

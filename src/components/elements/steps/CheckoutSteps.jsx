@@ -12,14 +12,14 @@ export default function CheckoutSteps({ activePage }) {
         title="Step 1"
         label="Alamat"
         disabled={activePage !== 'address'}
-        hidden={activePage === 'payment' || activePage === 'shipping'}
+        hidden={activePage === 'payment' || activePage === 'shipped'}
       />
 
       {/* Separator */}
       <div
         className={twMerge(
           'border-t-2 border-dashed w-full max-w-xs text-gray-700',
-          (activePage === 'payment' || activePage === 'shipping') &&
+          (activePage === 'payment' || activePage === 'shipped') &&
             'hidden md:block'
         )}
       ></div>
@@ -31,7 +31,7 @@ export default function CheckoutSteps({ activePage }) {
         }
         title="Step 2"
         label="Metode"
-        disabled={activePage !== 'shipping'}
+        disabled={activePage !== 'shipped'}
       />
 
       {/* Separator */}

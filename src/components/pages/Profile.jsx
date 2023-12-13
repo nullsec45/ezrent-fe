@@ -145,166 +145,138 @@ export default function Profile() {
     }
   };
   return (
-    <div className="container">
-      <Breadcrumbs
-        items={[
-          {
-            name: 'Dashboard',
-            link: '/dashboard',
-          },
-          {
-            name: 'Profil Saya',
-            link: '/dashboard/profile',
-          },
-        ]}
-      />
-      <div className="flex md:flex-nowrap flex-wrap gap-4 my-12 lg:px-3">
-        {/* menu */}
-        <SmallMenu />
-        {/* menu */}
-
-        {/* update profile */}
-        <form
-          onSubmit={handleSubmit(
-            user ? handleUpdateProfile : handleCreateProfile
-          )}
-          className="rounded-xl p-3 w-full border shadow"
-        >
-          <h1 className="font-semibold text-lg mb-5">Ubah Profil</h1>
-          <div className="flex gap-2 lg:flex-nowrap flex-wrap h-fit items-center">
-            <div className="w-40 h-32 rounded-lg">
-              {!user ? (
-                previewImage ? (
-                  <Image
-                    src={previewImage}
-                    alt="foto profil"
-                    width={200}
-                    height={200}
-                    loading="lazy"
-                    quality={100}
-                    className="h-full w-full rounded-lg object-contain"
-                  />
-                ) : (
-                  <div className="rounded-lg bg-gray-200 shadow h-full flex text-gray-600 items-center flex-col justify-center">
-                    <ImageOff />
-                    <h1 className="text-center text-sm font-medium mt-2">
-                      Tidak ada Foto
-                    </h1>
-                  </div>
-                )
-              ) : (
-                <Image
-                  src={previewImage ? previewImage : user?.profilePicture}
-                  alt="foto profil"
-                  width={200}
-                  height={200}
-                  loading="lazy"
-                  quality={100}
-                  className="h-full w-full rounded-lg object-contain"
-                />
-              )}
-            </div>
-            <div className="flex lg:flex-col md:flex-col flex-row flex-wrap mt-2 lg:mt-0 gap-3">
-              <div className="flex gap-2 items-center cursor-pointer">
-                <Button className="w-fit px-5 relative">
-                  Ubah Foto
-                  <input
-                    type="file"
-                    {...register('profilePicture')}
-                    name="profilePicture"
-                    accept="image/*"
-                    onChange={(e) =>
-                      setPreviewImage(
-                        URL?.createObjectURL?.(e.target?.files?.[0])
-                      )
-                    }
-                    className="absolute top-0 right-0 left-0 z-30 w-full h-10 rounded-md cursor-pointer opacity-0 overflow-hidden"
-                  />
-                </Button>
+    <form
+      onSubmit={handleSubmit(user ? handleUpdateProfile : handleCreateProfile)}
+      className="rounded-xl w-full"
+    >
+      <h1 className="font-semibold text-lg mb-5">Ubah Profil</h1>
+      <div className="flex gap-2 lg:flex-nowrap flex-wrap h-fit items-center">
+        <div className="w-40 h-32 rounded-lg">
+          {!user ? (
+            previewImage ? (
+              <Image
+                src={previewImage}
+                alt="foto profil"
+                width={200}
+                height={200}
+                loading="lazy"
+                quality={100}
+                className="h-full w-full rounded-lg object-contain"
+              />
+            ) : (
+              <div className="rounded-lg bg-gray-200 shadow h-full flex text-gray-600 items-center flex-col justify-center">
+                <ImageOff />
+                <h1 className="text-center text-sm font-medium mt-2">
+                  Tidak ada Foto
+                </h1>
               </div>
-              <Button variant="outline" className="w-fit">
-                Hapus Foto
-              </Button>
-              <p className="text-xs text-gray-500">
-                Gambar Profile Anda sebaiknya memiliki rasio 1:1 dan berukuran
-                tidak lebih dari 2MB.
-              </p>
-            </div>
+            )
+          ) : (
+            <Image
+              src={previewImage ? previewImage : user?.profilePicture}
+              alt="foto profil"
+              width={200}
+              height={200}
+              loading="lazy"
+              quality={100}
+              className="h-full w-full rounded-lg object-contain"
+            />
+          )}
+        </div>
+        <div className="flex lg:flex-col md:flex-col flex-row flex-wrap mt-2 lg:mt-0 gap-3">
+          <div className="flex gap-2 items-center cursor-pointer">
+            <Button className="w-fit px-5 relative">
+              Ubah Foto
+              <input
+                type="file"
+                {...register('profilePicture')}
+                name="profilePicture"
+                accept="image/*"
+                onChange={(e) =>
+                  setPreviewImage(URL?.createObjectURL?.(e.target?.files?.[0]))
+                }
+                className="absolute top-0 right-0 left-0 z-30 w-full h-10 rounded-md cursor-pointer opacity-0 overflow-hidden"
+              />
+            </Button>
           </div>
-          <div className="grid gap-4 mt-7 lg:grid-cols-2 grid-cols-1">
-            <div className="col-span-2">
-              <FieldInput
-                name={'fullname'}
-                label={'Nama Lengkap'}
-                type={'text'}
-                required={true}
-                placeholder={'ex. John Doe'}
-                register={register}
-              />
-              <ErrorMessageInput message={errors?.fullname?.message} />
-            </div>
-            <div className="lg:col-span-1 col-span-2">
-              <FieldInput
-                name={'dateOfbirth'}
-                label={'Tanggal Lahir'}
-                type={'date'}
-                required={true}
-                register={register}
-              />
-              <ErrorMessageInput message={errors?.dateOfbirth?.message} />
-            </div>
-            <div className="lg:col-span-1 col-span-2">
-              <Label
-                htmlFor={'gender'}
-                className="capitalize block mb-2 text-gray-600"
-              >
-                Jenis Kelamin
-              </Label>
-              <Controller
-                control={control}
-                id="gender"
-                name="gender"
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger className="w-full text-gray-600">
-                      <SelectValue placeholder="Pilih Jenis Kelamin" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value={'LAKI'}>LAKI - LAKI</SelectItem>
-                        <SelectItem value={'PEREMPUAN'}>PEREMPUAN</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              <ErrorMessageInput message={errors?.gender?.message} />
-            </div>
-            <div className="col-span-2">
-              <FieldInput
-                name={'phoneNumber'}
-                label={'Nomor Telepon'}
-                type={'number'}
-                min={1}
-                required={true}
-                register={register}
-                placeholder={'ex. 08xxxx'}
-              />
-              <ErrorMessageInput message={errors?.phoneNumber?.message} />
-            </div>
-            <div className="flex justify-end col-span-2 mt-2">
-              <ButtonSubmit
-                className={'px-12'}
-                text={'Update Profil'}
-                isSubmitting={isSubmitting}
-              />
-            </div>
-          </div>
-        </form>
+          <Button variant="outline" className="w-fit">
+            Hapus Foto
+          </Button>
+          <p className="text-xs text-gray-500">
+            Gambar Profile Anda sebaiknya memiliki rasio 1:1 dan berukuran tidak
+            lebih dari 2MB.
+          </p>
+        </div>
       </div>
-    </div>
+      <div className="grid gap-4 mt-7 lg:grid-cols-2 grid-cols-1">
+        <div className="col-span-2">
+          <FieldInput
+            name={'fullname'}
+            label={'Nama Lengkap'}
+            type={'text'}
+            required={true}
+            placeholder={'ex. John Doe'}
+            register={register}
+          />
+          <ErrorMessageInput message={errors?.fullname?.message} />
+        </div>
+        <div className="lg:col-span-1 col-span-2">
+          <FieldInput
+            name={'dateOfbirth'}
+            label={'Tanggal Lahir'}
+            type={'date'}
+            required={true}
+            register={register}
+          />
+          <ErrorMessageInput message={errors?.dateOfbirth?.message} />
+        </div>
+        <div className="lg:col-span-1 col-span-2">
+          <Label
+            htmlFor={'gender'}
+            className="capitalize block mb-2 text-gray-600"
+          >
+            Jenis Kelamin
+          </Label>
+          <Controller
+            control={control}
+            id="gender"
+            name="gender"
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger className="w-full text-gray-600">
+                  <SelectValue placeholder="Pilih Jenis Kelamin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={'LAKI'}>LAKI - LAKI</SelectItem>
+                    <SelectItem value={'PEREMPUAN'}>PEREMPUAN</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          <ErrorMessageInput message={errors?.gender?.message} />
+        </div>
+        <div className="col-span-2">
+          <FieldInput
+            name={'phoneNumber'}
+            label={'Nomor Telepon'}
+            type={'number'}
+            min={1}
+            required={true}
+            register={register}
+            placeholder={'ex. 08xxxx'}
+          />
+          <ErrorMessageInput message={errors?.phoneNumber?.message} />
+        </div>
+        <div className="flex justify-end col-span-2 mt-2">
+          <ButtonSubmit
+            className={'px-12'}
+            text={'Update Profil'}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+      </div>
+    </form>
   );
 }

@@ -208,6 +208,7 @@ export const addProfile = async (data) => {
     console.log(error?.message);
   }
 };
+
 export const updateProfile = async (data) => {
   try {
     const response = await api.patch('/profiles', data);

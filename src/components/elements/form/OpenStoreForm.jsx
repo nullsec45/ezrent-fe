@@ -33,9 +33,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { storeSchema } from '@/config/schema/store/storeSchema';
 import { banks } from '@/data/banks';
 import { CheckCircle, Info } from 'lucide-react';
+import { PictureUploadDropzone } from '../input/PictureUploadDropzone';
 
 export default function OpenStoreForm() {
   const { edgestore } = useEdgeStore();
+  const [file, setFile] = useState();
 
   const Map = useMemo(
     () =>
@@ -68,9 +70,9 @@ export default function OpenStoreForm() {
   const { push, back } = useRouter();
 
   const handleOpenStore = async (data) => {
-    const profilePicture = data?.profilePicture?.[0];
+    const profilePicture = file;
 
-    if (data.profilePicture.length !== 0) {
+    if (profilePicture) {
       try {
         const res = await edgestore.publicFiles.upload({
           file: profilePicture,
@@ -213,25 +215,25 @@ export default function OpenStoreForm() {
                 label="Nomor Rekening"
                 name="accountNumber"
                 type="text"
-                placeholder="XXXX XXXX XXXX XXXX"
+                placeholder="XXXXXXXXXXXXXXXX"
                 helperTextTop="Nomor rekening ini akan digunakan sebagai tujuan pembayaran pelanggan anda"
-                helperTextBottom="Masukkan 16 digit nomor rekening tanpa spasi"
+                helperTextBottom="Masukkan nomor rekening tanpa spasi"
                 register={register}
                 required={true}
-                pattern="[0-9\s]{13,19}"
               />
               <ErrorMessageInput message={errors.accountNumber?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5">
-              <FieldInput
-                label="Foto Profil Toko"
-                name="profilePicture"
-                type="file"
-                register={register}
-                className="cursor-pointer"
+              <Label>Foto Profil Toko</Label>
+              <PictureUploadDropzone
+                value={file}
+                onChange={(file) => {
+                  setFile(file);
+                }}
+                height={200}
+                width={200}
               />
-              <ErrorMessageInput message={errors.profilePicture?.message} />
             </div>
 
             <div className="flex flex-col space-y-1.5 ">

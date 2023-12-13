@@ -59,7 +59,7 @@ export default function PaymentSection() {
 
           localStorage.removeItem('product-rent');
           localStorage.removeItem('current-transaction');
-          router.push('/dashboard/transaction-list');
+          router.push('/dashboard/history-orders');
         }
       } catch (error) {
         toast({
