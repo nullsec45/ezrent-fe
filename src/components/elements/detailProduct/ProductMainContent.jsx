@@ -9,6 +9,7 @@ import { CiStar } from 'react-icons/ci';
 import { differenceInDays, format, startOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
+  calculateAverageRating,
   calculateRentalDurationDay,
   calculateSingleProductPrice,
   formatPrice,
@@ -177,7 +178,7 @@ export default function ProductMainContent({ productId }) {
           <DetailProductInfoCard
             icon={<IoBagCheckOutline size={23} />}
             title="Tersewa"
-            value="10x"
+            value={`${product.orders.length}x`}
           />
           <DetailProductInfoCard
             icon={<BsBoxSeam size={23} />}
@@ -187,7 +188,11 @@ export default function ProductMainContent({ productId }) {
           <DetailProductInfoCard
             icon={<CiStar size={23} />}
             title="Rating"
-            value="4.7"
+            value={
+              product.reviews.length === 0
+                ? 0
+                : calculateAverageRating(product.reviews)
+            }
           />
           <DetailProductInfoCard
             icon={<BsChatText size={23} />}

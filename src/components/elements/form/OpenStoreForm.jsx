@@ -215,12 +215,11 @@ export default function OpenStoreForm() {
                 label="Nomor Rekening"
                 name="accountNumber"
                 type="text"
-                placeholder="XXXX XXXX XXXX XXXX"
+                placeholder="XXXXXXXXXXXXXXXX"
                 helperTextTop="Nomor rekening ini akan digunakan sebagai tujuan pembayaran pelanggan anda"
-                helperTextBottom="Masukkan 16 digit nomor rekening tanpa spasi"
+                helperTextBottom="Masukkan nomor rekening tanpa spasi"
                 register={register}
                 required={true}
-                pattern="[0-9\s]{13,19}"
               />
               <ErrorMessageInput message={errors.accountNumber?.message} />
             </div>

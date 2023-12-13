@@ -77,6 +77,14 @@ function formatISODateToLocalDateTime(isoDate) {
   return formattedDateTime;
 }
 
+const calculateAverageRating = (reviews) => {
+  const total = reviews.reduce((acc, current) => {
+    return acc + current.rating;
+  }, 0);
+
+  return total / reviews.length;
+};
+
 export {
   formatPrice,
   calculateSingleProductPrice,
@@ -86,4 +94,5 @@ export {
   mapOrderObjectToBeSendToAPI,
   formatISODateToLocalDate,
   formatISODateToLocalDateTime,
+  calculateAverageRating,
 };
