@@ -205,7 +205,7 @@ export default function Page({ params }) {
                   bisa mengakses nya lagi di{' '}
                   <span className="font-bold">
                     {' '}
-                    menu Daftar Transaksi di Dashboard Anda
+                    menu Menunggu Pembayaran di Dashboard Anda
                   </span>
                 </div>
               </div>

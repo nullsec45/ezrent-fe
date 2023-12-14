@@ -24,6 +24,22 @@ function calculateRentalDurationDay(dayFrom, dayTo) {
   return rentalDurationInDay;
 }
 
+function calculateSubtotalInCart(cart) {
+  const subTotal = cart.reduce((acc, current) => {
+    const totalPricePerProduct =
+      current.quantity *
+      calculateRentalDurationDay(
+        new Date(current.rentFrom),
+        new Date(current.rentTo)
+      ) *
+      current.product.price;
+
+    return acc + totalPricePerProduct;
+  }, 0);
+
+  return subTotal;
+}
+
 function getEstimationDate(rangeDay) {
   const startDate = new Date(); // Tanggal awal (misalnya, hari ini)
   const endDate = addDays(startDate, rangeDay); // Tambahkan 1 hari ke tanggal awal
@@ -78,12 +94,40 @@ function formatISODateToLocalDateTime(isoDate) {
 }
 
 const calculateAverageRating = (reviews) => {
+  if (reviews.length === 0) return 0;
+
   const total = reviews.reduce((acc, current) => {
     return acc + current.rating;
   }, 0);
 
   return total / reviews.length;
 };
+
+function groupCartsByStore(carts) {
+  const groupedCarts = Object.groupBy(
+    carts,
+    ({ product }) => product.store.name
+  );
+
+  const storeCartsArray = Object.entries(groupedCarts).map(
+    ([store, items]) => ({
+      store,
+      items,
+    })
+  );
+
+  return storeCartsArray;
+}
+
+function sortFromNewestCallback(a, b) {
+  return new Date(b.createdAt) - new Date(a.createdAt);
+}
+
+function sortDataFromNewest(data) {
+  const sortedData = data.sort(sortFromNewestCallback);
+
+  return sortedData;
+}
 
 export {
   formatPrice,
@@ -95,4 +139,8 @@ export {
   formatISODateToLocalDate,
   formatISODateToLocalDateTime,
   calculateAverageRating,
+  calculateSubtotalInCart,
+  groupCartsByStore,
+  sortDataFromNewest,
+  sortFromNewestCallback,
 };

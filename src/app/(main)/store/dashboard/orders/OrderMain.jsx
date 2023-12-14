@@ -2,6 +2,7 @@
 
 import OrderCard from '@/components/elements/card/OrderCard';
 import useMyStore from '@/hooks/api/useMyStore';
+import { sortFromNewestCallback } from '@/utils/helperFunction';
 import { useSearchParams } from 'next/navigation';
 
 export const statusOrderNameMap = {
@@ -44,6 +45,7 @@ export default function OrderMain() {
 
           return order.status.toLowerCase() === activeStatus.toLowerCase();
         })
+        .sort(sortFromNewestCallback)
         .map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}

@@ -30,15 +30,23 @@ import { useBoundStore } from '@/components/store/useBoundStore';
 import { useRouter } from 'next/navigation';
 import ProductMainContentSkeleton from '@/components/elements/skeleton/ProductMainContentSkeleton';
 import PropTypes from 'prop-types';
-import { FaWhatsapp } from 'react-icons/fa6';
+import { FaMapLocationDot, FaWhatsapp } from 'react-icons/fa6';
 import Link from 'next/link';
 import { useLoadingImageStore } from '@/store/useLoadingImage';
+import { toast } from '@/components/ui/use-toast';
+import useAddItemToCartMutation from '@/hooks/api/useAddItemToCartMutation';
+import useCart from '@/hooks/api/useCart';
+import useCartUpdateMutation from '@/hooks/api/useCartUpdateMutation';
+import { api } from '@/utils/axios';
 
 export default function ProductMainContent({ productId }) {
   const { data: product, isLoading, error } = useDetailProduct(productId);
   const { loadingImage, removeLoadingImage } = useLoadingImageStore();
+  const { data: carts, mutate: mutateCart } = useCart();
   const setOrderProduct = useBoundStore((state) => state.setOrderProduct);
   const router = useRouter();
+  const { trigger: triggerAddItemToCart } = useAddItemToCartMutation();
+  const { trigger: triggerCartItemUpdate } = useCartUpdateMutation();
 
   const today = startOfDay(new Date());
   const [date, setDate] = useState({
@@ -54,6 +62,10 @@ export default function ProductMainContent({ productId }) {
     if (!product) return;
     setTotalPrice(calculateSingleProductPrice(product.price, quantity, day));
   }, [product, day, quantity, setTotalPrice]);
+
+  if (isLoading) return <ProductMainContentSkeleton />;
+
+  if (error) return <ErrorFetchApiFallback />;
 
   const isStockEmpty = () => product.availableStock < 1;
 
@@ -107,9 +119,45 @@ export default function ProductMainContent({ productId }) {
     router.push('/direct-rent');
   };
 
-  if (isLoading) return <ProductMainContentSkeleton />;
+  const handleOnAddCart = async () => {
+    const cartItem = carts.find((cart) => cart.productId === productId);
 
-  if (error) return <ErrorFetchApiFallback />;
+    try {
+      // jika product item sudah ada didalam cart, maka hanya update quantity dan rentPeriod saja
+      if (cartItem) {
+        await api.patch(`/product-carts/${cartItem.id}`, {
+          productId: cartItem.productId,
+          quantity: cartItem.quantity + quantity,
+          rentFrom: date?.from,
+          rentTo: date?.to,
+        });
+
+        mutateCart();
+      } else {
+        // jika product item belum ada didalam cart, maka tambahkan baru
+        await triggerAddItemToCart({
+          productId,
+          quantity,
+          rentFrom: date?.from,
+          rentTo: date?.to,
+        });
+
+        mutateCart();
+      }
+
+      toast({
+        title: 'Berhasil di tambahkan ke Keranjang',
+        description: 'Pergi ke Menu Keranjang untuk melihat barang Anda',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'Gagal menambahkan barang ke keranjang',
+      });
+    }
+  };
+
   return (
     <div className="my-12 flex flex-col lg:flex-row h-full max-h-fit items-center gap-7">
       <div className="w-full lg:max-w-lg h-[27rem]">
@@ -137,23 +185,26 @@ export default function ProductMainContent({ productId }) {
           <span className="text-gray-500"> / Hari</span>
         </div>
 
-        <div className="flex items-center gap-2 mt-1">
-          <Avatar className="w-7 h-7">
-            {product.store.profilePicture ? (
-              <>
-                <AvatarImage src={product.store.profilePicture} />
-                <AvatarFallback>{product.store.name}</AvatarFallback>
-              </>
-            ) : (
-              <>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{product.store.name}</AvatarFallback>
-              </>
-            )}
-          </Avatar>
-          <p className="font-semibold text-sm capitalize">
-            {product.store.name}
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 ">
+            <Avatar className="w-7 h-7">
+              {product.store.profilePicture ? (
+                <>
+                  <AvatarImage src={product.store.profilePicture} />
+                  <AvatarFallback>{product.store.name}</AvatarFallback>
+                </>
+              ) : (
+                <>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>{product.store.name}</AvatarFallback>
+                </>
+              )}
+            </Avatar>
+            <p className="font-semibold text-sm capitalize">
+              {product.store.name}
+            </p>
+          </div>
+
           <Link
             target="_blank"
             href={`https://wa.me/${
@@ -161,17 +212,36 @@ export default function ProductMainContent({ productId }) {
             }/?text=${encodeURIComponent(
               `Hallo min\nSaya mau beli ${product.name}`
             )}`}
+            className="flex items-center gap-1"
           >
             <FaWhatsapp color="green" size={20} />
+            <p className="text-green-700 text-xs font-medium">Hubungi Toko</p>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2">
-          <PiMapPinFill size={27} />
-          <p className="font-semibold text-sm">
-            {product.store?.storeAddress?.fullAddress ??
-              'Jl. HR Soedimas No.77,Kec. Tempes,Pekanbaru, Riau'}
-          </p>
+        <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
+          <div className="flex items-center gap-2">
+            <PiMapPinFill size={27} />
+            <div>
+              <p className="font-medium text-xs">
+                {`${product.store?.storeAddress?.province}, ${product.store?.storeAddress?.city}, ${product.store?.storeAddress?.district}`}
+              </p>
+              <p className="font-semibold text-sm">
+                {product.store?.storeAddress?.fullAddress}
+              </p>
+            </div>
+          </div>
+
+          <Link
+            target="_blank"
+            href={`https://www.google.com/maps?q=${product.store?.storeAddress?.latitude},${product.store?.storeAddress?.longitude}`}
+            className="flex gap-2 items-center"
+          >
+            <FaMapLocationDot className="w-5 h-5" />
+            <span className="text-dark-700 text-xs font-medium">
+              Lihat Lokasi
+            </span>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 my-2 gap-5 w-full">
@@ -313,6 +383,7 @@ export default function ProductMainContent({ productId }) {
             className="w-full py-7"
             variant="outline"
             disabled={isStockEmpty()}
+            onClick={handleOnAddCart}
           >
             Tambah ke Keranjang
           </Button>

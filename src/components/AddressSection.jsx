@@ -7,6 +7,9 @@ import { useBoundStore } from './store/useBoundStore';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import useAddresses from '@/hooks/api/useAddresses';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCartOrdersStore } from './store/useCartOrdersStore';
+import Link from 'next/link';
 
 export default function AddressSection({ prevPage, nextPage }) {
   const { data: addresses, isLoading } = useAddresses();
@@ -14,6 +17,14 @@ export default function AddressSection({ prevPage, nextPage }) {
   const order = useBoundStore((state) => state.order);
   const setUserAddress = useBoundStore((state) => state.setUserAddress);
   const [selectedAddress, setSelectedAddress] = useState(order.userAddressId);
+
+  // Untuk alur Cart Orders
+  const searchParams = useSearchParams();
+  const isCartOrders = searchParams.get('cartOrders') === 'true' ? true : false;
+  const setAddressCartOrders = useCartOrdersStore(
+    (state) => state.setAddressCartOrders
+  );
+  const router = useRouter();
 
   const onButtonNextStep = () => {
     if (!selectedAddress) {
@@ -24,8 +35,15 @@ export default function AddressSection({ prevPage, nextPage }) {
       });
     }
 
-    setUserAddress(selectedAddress);
-    nextPage();
+    // Jika Order dari Cart
+    if (isCartOrders) {
+      setAddressCartOrders(selectedAddress);
+      router.push('/checkout?step=shipping&cartOrders=true');
+    } else {
+      // Jika Order secara langsung (Direct-Rent)
+      setUserAddress(selectedAddress);
+      nextPage();
+    }
   };
 
   if (isLoading) return <AddressCardSkeleton />;
@@ -58,7 +76,9 @@ export default function AddressSection({ prevPage, nextPage }) {
         <div className="flex items-center">
           <div className="border-t border-gray-400 border-dashed w-full"></div>
           <Button variant="ghost" className="hover:bg-transparent p-0">
-            <FaCirclePlus className="w-6 h-6" />
+            <Link href="/dashboard/address/add">
+              <FaCirclePlus className="w-6 h-6" />
+            </Link>
           </Button>
           <div className="border-t border-gray-400 border-dashed w-full"></div>
         </div>

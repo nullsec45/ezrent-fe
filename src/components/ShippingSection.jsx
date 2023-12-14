@@ -11,6 +11,9 @@ import { toast } from '@/components/ui/use-toast';
 import { CheckCircle } from 'lucide-react';
 import { makeOrder } from '@/utils/api';
 import { useTransactionStore } from './store/useTransactionStore';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCartOrdersStore } from './store/useCartOrdersStore';
+import useEmptyCartItemMutation from '@/hooks/api/useEmptyCartItemMutation';
 
 export default function ShippingSection({ nextPage, prevPage }) {
   const order = useBoundStore((state) => state.order);
@@ -24,6 +27,19 @@ export default function ShippingSection({ nextPage, prevPage }) {
   const selectedShipping = order.shipping;
   const selectedPaymentMethod = order.transaction.paymentMethod;
 
+  // Untuk alur Cart Orders
+  const searchParams = useSearchParams();
+  const isCartOrders = searchParams.get('cartOrders') === 'true' ? true : false;
+  const setPaymentMethodCartOrders = useCartOrdersStore(
+    (state) => state.setPaymentMethodCartOrders
+  );
+  const setShippingMethodCartOrders = useCartOrdersStore(
+    (state) => state.setShippingMethodCartOrders
+  );
+  const cartOrders = useCartOrdersStore((state) => state.cartOrders);
+  const { trigger: triggerEmptyCart } = useEmptyCartItemMutation();
+  const router = useRouter();
+
   const onButtonNextStep = async () => {
     if (!selectedPaymentMethod || !selectedPaymentMethod) {
       return toast({
@@ -34,19 +50,40 @@ export default function ShippingSection({ nextPage, prevPage }) {
     }
 
     try {
-      const mappedOrderObject = mapOrderObjectToBeSendToAPI(order);
+      // Jika Order dari Cart
+      if (isCartOrders) {
+        for (const order of cartOrders) {
+          await makeOrder(order);
+        }
 
-      const response = await makeOrder(mappedOrderObject);
-      if (response?.status === 201) {
-        const transactionId = response?.data?.data?.transaction?.id;
-        setCurrentTransaction(transactionId);
         toast({
           title: 'Order Sewa Berhasil Dibuat',
           description:
-            'Segera Selesaikan Pembayaran dengan Mengirim Bukti Pembayaran',
+            'Segera selesaikan pembayaran dengan Mengirim Bukti Pembayaran melalui Menu Menunggu Pembayaran di Dashboard Anda',
           action: <CheckCircle />,
         });
-        nextPage();
+
+        localStorage.removeItem('cart-orders');
+        await triggerEmptyCart();
+        router.push('/dashboard/history-transactions?status=unpaid');
+      } else {
+        // Jika Order secara langsung (Direct-Rent)
+
+        const mappedOrderObject = mapOrderObjectToBeSendToAPI(order);
+        const response = await makeOrder(mappedOrderObject);
+
+        if (response?.status === 201) {
+          const transactionId = response?.data?.data?.transaction?.id;
+          setCurrentTransaction(transactionId);
+          toast({
+            title: 'Order Sewa Berhasil Dibuat',
+            description:
+              'Segera Selesaikan Pembayaran dengan Mengirim Bukti Pembayaran',
+            action: <CheckCircle />,
+          });
+
+          nextPage();
+        }
       }
     } catch (error) {
       toast({
@@ -74,7 +111,11 @@ export default function ShippingSection({ nextPage, prevPage }) {
               description="Ambil barang di toko"
               estimationLabel="Ambil barang anda pada"
               estimationDate={getEstimationDate(1)}
-              onSelected={() => setOrderShipping('PICKUP')}
+              onSelected={() => {
+                isCartOrders
+                  ? setShippingMethodCartOrders('PICKUP')
+                  : setOrderShipping('PICKUP');
+              }}
             />
             <ShippingCard
               id="gosend"
@@ -83,7 +124,11 @@ export default function ShippingSection({ nextPage, prevPage }) {
               estimationLabel="Estimasi barang sampai"
               description="Barang dikirim melalui layanan Gosend"
               estimationDate={getEstimationDate(2)}
-              onSelected={() => setOrderShipping('GOSEND')}
+              onSelected={() => {
+                isCartOrders
+                  ? setShippingMethodCartOrders('GOSEND')
+                  : setOrderShipping('GOSEND');
+              }}
             />
           </RadioGroup>
         </div>
@@ -102,14 +147,22 @@ export default function ShippingSection({ nextPage, prevPage }) {
               value="transfer"
               title="Transfer BANK"
               description="Bayar dengan cara Transfer ke Nomor Rekening yang tertera di halaman selanjutnya"
-              onSelected={() => setOrderPaymentMethod('TRANSFER')}
+              onSelected={() => {
+                isCartOrders
+                  ? setPaymentMethodCartOrders('TRANSFER')
+                  : setOrderPaymentMethod('TRANSFER');
+              }}
             />
             <PaymentMethodCard
               id="cod"
               value="cod"
               title="COD"
               description="Bayar secara langsung ketika anda PICKUP barang di toko nya, atau ketika barang telah sampai dikirim melalui GOSEND"
-              onSelected={() => setOrderPaymentMethod('COD')}
+              onSelected={() => {
+                isCartOrders
+                  ? setPaymentMethodCartOrders('COD')
+                  : setOrderPaymentMethod('COD');
+              }}
             />
           </RadioGroup>
         </div>
