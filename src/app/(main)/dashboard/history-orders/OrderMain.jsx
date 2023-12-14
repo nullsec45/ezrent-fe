@@ -1,7 +1,7 @@
 'use client';
 
 import OrderCard from '@/components/elements/card/OrderCard';
-import useMyStore from '@/hooks/api/useMyStore';
+import useOrders from '@/hooks/api/useOrders';
 import { useSearchParams } from 'next/navigation';
 
 export const statusOrderNameMap = {
@@ -23,13 +23,13 @@ export const statusOrderStyleMap = {
 };
 
 export default function OrderMain() {
-  const { data: store, isLoading } = useMyStore();
+  const { data: orders, isLoading } = useOrders();
   const searchParams = useSearchParams();
   const activeStatus = searchParams.get('status') || 'all';
 
   if (isLoading) return null;
 
-  if (store?.orders.length === 0)
+  if (orders.length === 0)
     return (
       <div className="h-52 w-full bg-red-400 grid place-content-center">
         Belum Ada Order
@@ -38,7 +38,7 @@ export default function OrderMain() {
 
   return (
     <div className="space-y-5">
-      {store.orders
+      {orders
         .filter((order) => {
           if (activeStatus === 'all') return true;
 

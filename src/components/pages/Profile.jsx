@@ -204,7 +204,7 @@ export default function Profile() {
           </Button>
           <p className="text-xs text-gray-500">
             Gambar Profile Anda sebaiknya memiliki rasio 1:1 dan berukuran tidak
-            lebih dari 2MB.
+            lebih dari 1MB.
           </p>
         </div>
       </div>

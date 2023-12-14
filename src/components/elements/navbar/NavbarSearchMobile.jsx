@@ -5,7 +5,7 @@ export default function NavbarSearchMobile({ isSearchPopUpOpen }) {
   return (
     <div
       className={twMerge(
-        'origin-top transition-all duration-500 ease-in-out md:hidden absolute top-20 z-50 h-fit  bg-white p-2 text-black right-4 left-4 rounded-md',
+        'origin-top transition-all duration-500 ease-in-out lg:hidden absolute top-20 z-50 h-fit  bg-white p-2 text-black right-4 left-4 rounded-md',
         `${
           isSearchPopUpOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 '
         }`

@@ -27,7 +27,8 @@ const isUserInMainPage = (request) => {
     pathname.startsWith('/direct-rent') ||
     pathname.startsWith('/checkout') ||
     pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/store')
+    pathname.startsWith('/store') ||
+    pathname.startsWith('/cart')
   )
     return true;
   return false;

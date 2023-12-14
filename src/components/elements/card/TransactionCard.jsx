@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button';
 import useApproveTransactionsMutation from '@/hooks/api/useApproveTransactionsMutation';
 import useMyStore from '@/hooks/api/useMyStore';
 import useRejectTransactionsMutation from '@/hooks/api/useRejectTransactionsMutation';
-import { formatISODateToLocalDate, formatPrice } from '@/utils/helperFunction';
+import {
+  formatISODateToLocalDate,
+  formatISODateToLocalDateTime,
+  formatPrice,
+} from '@/utils/helperFunction';
 import Image from 'next/image';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
@@ -58,27 +62,27 @@ export default function TransactionCard({ store, order, isUserDashboard }) {
       </div>
 
       <div className="flex flex-col lg:flex-row items-end gap-3">
-        <div className="flex-1 w-full space-y-1 bg-gray-100 p-2 rounded-md mt-3">
-          <p className="text-sm">
+        <div className="flex-1 w-full space-y-1 bg-gray-100 p-2 rounded-md mt-3 text-xs sm:text-sm">
+          <p>
             <span className="font-medium">ID Order: </span>
             <span className="font-bold">{order.id}</span>
           </p>
 
-          <p className="text-sm">
+          <p>
             <span className="font-medium">Total: </span>
             <span className="font-bold">
               Rp{formatPrice(order.totalAmount)}
             </span>
           </p>
 
-          <p className="text-sm">
+          <p>
             <span className="font-medium">Tanggal Transaksi: </span>
             <span className="font-bold">
-              {formatISODateToLocalDate(order.createdAt)}
+              {formatISODateToLocalDateTime(order.createdAt)}
             </span>
           </p>
 
-          <p className="text-sm">
+          <p>
             <span className="font-medium">Metode Pembayaran: </span>
             <span className="font-bold">
               <span>{paymentMethod} </span>
@@ -87,22 +91,6 @@ export default function TransactionCard({ store, order, isUserDashboard }) {
               )}
             </span>
           </p>
-
-          <div className="sm:space-x-2">
-            <p className="text-sm block sm:inline-block">
-              <span className="font-medium">No. Rekening: </span>
-              <span className="font-bold">
-                <span>{store.accountNumber}</span>
-              </span>
-            </p>
-            <span className="hidden sm:inline text-gray-400">|</span>
-            <p className="text-sm inline-block">
-              <span className="font-medium">Atas Nama: </span>
-              <span className="font-bold">
-                <span>{store.accountHolder}</span>
-              </span>
-            </p>
-          </div>
         </div>
 
         <div className="basis-2/12 flex flex-col gap-5 items-end">
@@ -117,6 +105,8 @@ export default function TransactionCard({ store, order, isUserDashboard }) {
 
           {isUserDashboard ? (
             <div className="flex md:flex-col gap-3">
+              <TransactionDetailModal order={order} store={store} />
+
               {status === 'UNPAID' && (
                 <div className="flex gap-3">
                   <Button onClick={handleRejectTransaction}>
@@ -126,30 +116,27 @@ export default function TransactionCard({ store, order, isUserDashboard }) {
                   </Button>
                 </div>
               )}
-
-              {status !== 'UNPAID' && (
-                <TransactionDetailModal order={order} store={store} />
-              )}
             </div>
           ) : (
             <div className="flex md:flex-col gap-3">
+              <TransactionDetailModal order={order} store={store} />
+
               {status === 'AWATING_CONFIRMATION' && (
                 <div className="flex gap-3">
-                  <Button
-                    onClick={handleAcceptTransaction}
-                    className="bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200"
-                  >
-                    Terima
-                  </Button>
                   <Button
                     onClick={handleRejectTransaction}
                     className="bg-red-100 text-red-800 font-semibold hover:bg-red-200"
                   >
                     Tolak
                   </Button>
+                  <Button
+                    onClick={handleAcceptTransaction}
+                    className="bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200"
+                  >
+                    Terima
+                  </Button>
                 </div>
               )}
-              <TransactionDetailModal order={order} store={store} />
             </div>
           )}
         </div>

@@ -40,7 +40,7 @@ export default function SmallMenu() {
   ];
 
   return (
-    <div className="rounded-xl max-w-xs w-full border-[1.4px] hidden md:block h-fit shadow p-3">
+    <div className="rounded-xl max-w-xs w-full border-[1.4px] hidden lg:block h-fit shadow p-3">
       <ul className="flex flex-col gap-1">
         {menus.map((menu, index) => (
           <li key={index}>

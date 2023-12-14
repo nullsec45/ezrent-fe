@@ -23,7 +23,12 @@ export default function ProductCheckoutCard({
   return (
     <div className="flex items-center gap-3 bg-gray-100 py-2 pl-2 pr-6 rounded-xl">
       <div className="w-12 h-12 relative overflow-hidden rounded-md">
-        <Image src={product.productPictures[0]?.url} alt={product.name} fill />
+        <Image
+          src={product.productPictures[0]?.url}
+          alt={product.name}
+          fill
+          className="object-contain"
+        />
       </div>
 
       <div className="flex flex-1 justify-between items-center">
@@ -37,13 +42,13 @@ export default function ProductCheckoutCard({
         </div>
 
         <div className="space-y-2 text-end">
-          <div className="font-bold text-sm">
+          <div className="font-bold text-xs sm:text-sm">
             <span>Rp</span>
             <span>{formatPrice(subTotal)}</span>
           </div>
-          <div className="font-medium text-xs text-gray-500">
+          <div className="font-medium text-[9px] sm:text-xs text-gray-500">
             <span>{quantity}</span>
-            <span> Barang</span>
+            <span> Brg</span>
             <span> | </span>
             <span>{rentalDurationInDay}</span>
             <span> Hari</span>

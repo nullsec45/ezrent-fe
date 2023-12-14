@@ -34,7 +34,7 @@ export default function Checkout() {
     router.push(`${pathname}?${createQueryString('step', 'address')}`);
 
   const goToShippingPage = () =>
-    router.push(`${pathname}?${createQueryString('step', 'shipped')}`);
+    router.push(`${pathname}?${createQueryString('step', 'shipping')}`);
 
   const goToPaymentPage = () =>
     router.push(`${pathname}?${createQueryString('step', 'payment')}`);
