@@ -57,7 +57,7 @@ export default function TransactionHeader() {
   ];
 
   return (
-    <div className="flex flex-nowrap overflow-x-scroll lg:overflow-auto gap-4 mb-6">
+    <div className="flex flex-nowrap overflow-x-scroll lg:overflow-auto gap-4 mb-6 pb-3">
       {menus.map((menu, index) => {
         const variant = menu.status === activeStatus ? 'default' : 'outline';
 

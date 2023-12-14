@@ -2,6 +2,7 @@
 
 import TransactionCard from '@/components/elements/card/TransactionCard';
 import useMyStore from '@/hooks/api/useMyStore';
+import { sortFromNewestCallback } from '@/utils/helperFunction';
 import { useSearchParams } from 'next/navigation';
 
 export const statusTransactionNameMap = {
@@ -43,6 +44,7 @@ export default function TransactionMain() {
             activeStatus.toLowerCase()
           );
         })
+        .sort(sortFromNewestCallback)
         .map((order) => (
           <TransactionCard key={order.id} order={order} store={store} />
         ))}

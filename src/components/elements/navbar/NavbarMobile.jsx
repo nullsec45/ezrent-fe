@@ -7,7 +7,7 @@ export default function NavbarMobile({
   isMenuOpen,
 }) {
   return (
-    <div className="flex gap-4 items-center md:hidden">
+    <div className="flex gap-4 items-center lg:hidden">
       <button onClick={toggleSearchPopUp}>
         <Search />
       </button>

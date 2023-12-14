@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge';
 import ProductCheckoutCard from './ProductCheckoutCard';
 import {
   calculateTotalPriceOrder,
-  formatISODateToLocalDate,
+  formatISODateToLocalDateTime,
   formatPrice,
 } from '@/utils/helperFunction';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,8 @@ import useOrderDeliveredMutation from '@/hooks/api/useOrderDeliveredMutation';
 import useOrderReturnedMutation from '@/hooks/api/useOrderReturnedMutation';
 import { useSWRConfig } from 'swr';
 import { toast } from '@/components/ui/use-toast';
+import OrderDetailModal from '@/components/elements/modal/OrderDetailModal';
+import ReviewModal from '@/components/elements/modal/ReviewModal';
 
 export default function OrderCard({ order, isUserDashboard }) {
   const { trigger: triggerCancelOrder } = useCancelOrderMutation(order.id);
@@ -50,6 +52,7 @@ export default function OrderCard({ order, isUserDashboard }) {
     order.status === 'PENDING' && transaction.status === 'APPROVED';
   const isOrderPaymentRejected =
     order.status === 'PENDING' && transaction.status === 'REJECTED';
+  const isOrderReturned = order.status === 'RETURNED';
 
   const handleCancelOrder = async () => {
     await triggerCancelOrder();
@@ -128,14 +131,14 @@ export default function OrderCard({ order, isUserDashboard }) {
           <div className="scale-[0.65] lg:scale-100">
             <OrderCancelledIcon />
           </div>
-          <span className="text-sm text-red-400 font-semibold">
+          <span className="text-sm text-red-500 font-semibold">
             Pesanan Dibatalkan
           </span>
         </div>
       )}
       {/* STEP */}
 
-      <div>
+      <div className="space-y-2">
         {products.map((product) => (
           <ProductCheckoutCard
             key={product.productId}
@@ -150,8 +153,8 @@ export default function OrderCard({ order, isUserDashboard }) {
           />
         ))}
       </div>
-      <div className="flex flex-col lg:flex-row gap-4 lg:justify-between">
-        <div className="text-sm">
+      <div className="flex flex-col md:flex-row gap-6 md:justify-between">
+        <div className="text-xs sm:text-sm space-y-1">
           <p className="font-bold">
             <span className="font-medium">ID Order: </span>
             {order.id}{' '}
@@ -162,8 +165,9 @@ export default function OrderCard({ order, isUserDashboard }) {
           </p>
           <p className="font-bold">
             <span className="font-medium">Tanggal Checkout: </span>{' '}
-            {formatISODateToLocalDate(order.createdAt)}{' '}
+            {formatISODateToLocalDateTime(order.createdAt)}{' '}
           </p>
+
           <p className="font-bold">
             <span className="font-medium">Status Pembayaran: </span>{' '}
             <span className={statusTransactionTextColorMap[transaction.status]}>
@@ -173,7 +177,7 @@ export default function OrderCard({ order, isUserDashboard }) {
         </div>
 
         {isUserDashboard ? (
-          <div className="text-end lg:max-w-xs">
+          <div className="text-end lg:max-w-xs flex flex-col gap-2">
             {order.status === 'SHIPPED' && (
               <Button onClick={handleDeliveredOrder}>Sudah Sampai</Button>
             )}
@@ -183,9 +187,13 @@ export default function OrderCard({ order, isUserDashboard }) {
                 Batalkan
               </Button>
             )}
+
+            {isOrderReturned && <ReviewModal order={order} />}
+
+            <OrderDetailModal order={order} isUserDashboard={isUserDashboard} />
           </div>
         ) : (
-          <div className="text-end lg:max-w-xs">
+          <div className="text-end md:max-w-[310px] lg:max-w-sm flex flex-col md:items-end gap-2">
             {isOrderPaymentStillAwaiting && (
               <p className="text-[10px] lg:text-xs mb-3 text-gray-600">
                 Anda belum menerima Bukti Pembayaran order ini, Terima
@@ -211,6 +219,8 @@ export default function OrderCard({ order, isUserDashboard }) {
             {order.status === 'DELIVERED' && (
               <Button onClick={handleReturnOrder}>Dikembalikan</Button>
             )}
+
+            <OrderDetailModal order={order} isUserDashboard={isUserDashboard} />
           </div>
         )}
       </div>
