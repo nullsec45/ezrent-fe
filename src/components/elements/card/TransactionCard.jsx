@@ -109,7 +109,7 @@ export default function TransactionCard({ store, order, isUserDashboard }) {
 
               {status === 'UNPAID' && (
                 <div className="flex gap-3">
-                  <Button onClick={handleRejectTransaction}>
+                  <Button>
                     <Link href={`/checkout/${order.id}`} className="px-4">
                       Bayar
                     </Link>

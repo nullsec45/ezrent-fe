@@ -6,7 +6,12 @@ import {
 } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 
-export default function PriceFilter() {
+export default function PriceFilter({
+  minPrice,
+  handleMinPrice,
+  maxPrice,
+  handleMaxPrice,
+}) {
   return (
     <Accordion
       type="single"
@@ -22,15 +27,22 @@ export default function PriceFilter() {
           <div className="space-y-2">
             <span className="text-gray-400">Min</span>
             <Input
-              type="number"
               placeholder="Terendah"
               className="max-w-[150px]"
               min="0"
+              value={minPrice}
+              onChange={handleMinPrice}
             />
           </div>
           <div className="space-y-2 text-end">
             <span className="text-gray-400">Maks</span>
-            <Input placeholder="Tertinggi" className="max-w-[150px]" min="0" />
+            <Input
+              placeholder="Tertinggi"
+              className="max-w-[150px]"
+              min="0"
+              value={maxPrice}
+              onChange={handleMaxPrice}
+            />
           </div>
         </AccordionContent>
       </AccordionItem>

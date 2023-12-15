@@ -12,14 +12,19 @@ import DirectRentPageSkeleton from '@/components/elements/skeleton/DirectRentPag
 import useCart from '@/hooks/api/useCart';
 import CartItem from './CartItem';
 import { useCartOrdersStore } from '@/components/store/useCartOrdersStore';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { MdOutlineRemoveShoppingCart } from 'react-icons/md';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
+import useMyProfile from '@/hooks/api/useMyProfile';
 
 export default function Page() {
   const { data: carts, isLoading } = useCart();
   const setOrderList = useCartOrdersStore((state) => state.setOrderList);
   const router = useRouter();
+  const { data: profile } = useMyProfile();
+  const pathname = usePathname();
+  const isProfileFilled = Boolean(profile);
 
   if (isLoading) return <DirectRentPageSkeleton />;
 
@@ -106,11 +111,11 @@ export default function Page() {
         </section>
 
         {/* Order Summary */}
-        <section className="lg:min-w-[24rem]">
+        <section className="lg:max-w-[400px]">
           <div className="border-2 border-gray-200 px-4 py-14 rounded-xl w-full lg:px-6">
             <h2 className="text-xl font-bold mb-10">Ringkasan Order</h2>
 
-            <div className="space-y-4">
+            <div className="space-y-4 mb-12">
               <div className="flex justify-between font-semibold">
                 <span>Subtotal</span>
                 <span>Rp{formatPrice(subTotalInCart)}</span>
@@ -129,10 +134,27 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="mt-12">
+            {!isProfileFilled && (
+              <div className="p-3 rounded-md bg-red-50 text-red-500 text-[11px] md:text-sm flex justify-end items-start md:items-center gap-2">
+                <span>
+                  <BsFillInfoCircleFill />
+                </span>
+                <p>
+                  Silahkan lengkapi profile Anda untuk bisa menyewa barang{' '}
+                  <Link
+                    href={`/dashboard?callback=${pathname}`}
+                    className="font-bold underline"
+                  >
+                    Lengkapi profile disini
+                  </Link>
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4">
               <Button
                 className="w-full py-6"
-                disabled={carts.length === 0}
+                disabled={carts.length === 0 || !isProfileFilled}
                 onClick={handleOnCartOrders}
               >
                 Checkout

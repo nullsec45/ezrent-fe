@@ -3,9 +3,31 @@ import { LuSettings2 } from 'react-icons/lu';
 import SelectMenu from '@/components/elements/input/SelectMenu';
 import ProductListItem from '@/components/elements/products/ProductListItem';
 import useProducts from '@/hooks/api/useProducts';
+import { useSearchParams } from 'next/navigation';
+import useSWR from 'swr';
 
 export default function ProductList({ openFilterMenu }) {
-  const { data: products, isLoading, error } = useProducts();
+  const searchParams = useSearchParams();
+  const queryParams = searchParams.toString();
+
+  const fetcherParams = async (url, query) => {
+    let urlAPI = url;
+    if (query) {
+      urlAPI = `${urlAPI}/filter?${query}`;
+    }
+
+    const response = await api.get(urlAPI);
+
+    return response.data?.data;
+  };
+
+  const {
+    data: products,
+    isLoading,
+    error,
+  } = useSWR(['/products', queryParams], ([url, query]) =>
+    fetcherParams(url, query)
+  );
 
   return (
     <div className="flex-1">
@@ -27,10 +49,6 @@ export default function ProductList({ openFilterMenu }) {
             <span className="text-black">{products?.length || 0}</span>
           </div>
         </div>
-        <SelectMenu
-          placeholder="Sort By"
-          items={['Opsi 1', 'Opsi 2', 'Opsi 3', 'Opsi 4']}
-        />
       </div>
 
       {/* Product list item */}

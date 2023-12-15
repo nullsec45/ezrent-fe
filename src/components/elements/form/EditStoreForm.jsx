@@ -306,7 +306,9 @@ export default function EditStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Provinsi" />
+                      <SelectValue
+                        placeholder={field?.value ?? 'Pilih Provinsi'}
+                      />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -341,7 +343,7 @@ export default function EditStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kota" />
+                      <SelectValue placeholder={field?.value ?? 'Pilih Kota'} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -376,7 +378,9 @@ export default function EditStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kecamatan" />
+                      <SelectValue
+                        placeholder={field?.value ?? 'Pilih Kecamatan'}
+                      />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -410,7 +414,9 @@ export default function EditStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kelurahan" />
+                      <SelectValue
+                        placeholder={field?.value ?? 'Pilih Kelurahan'}
+                      />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>
@@ -444,7 +450,7 @@ export default function EditStoreForm() {
                     defaultValue={field.value}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kelurahan" />
+                      <SelectValue placeholder={field?.value ?? 'Kode Pos'} />
                     </SelectTrigger>
                     <SelectContent className="z-[9999]">
                       <SelectGroup>

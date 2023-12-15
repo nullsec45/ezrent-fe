@@ -25,6 +25,7 @@ export default function ProductReviews({ productId }) {
       </>
     );
   }
+  console.log(reviews);
 
   return (
     <div>
