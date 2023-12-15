@@ -16,7 +16,6 @@ export default function AddressSection({ prevPage, nextPage }) {
   const { toast } = useToast();
   const order = useBoundStore((state) => state.order);
   const setUserAddress = useBoundStore((state) => state.setUserAddress);
-  const [selectedAddress, setSelectedAddress] = useState(order.userAddressId);
 
   // Untuk alur Cart Orders
   const searchParams = useSearchParams();
@@ -24,7 +23,12 @@ export default function AddressSection({ prevPage, nextPage }) {
   const setAddressCartOrders = useCartOrdersStore(
     (state) => state.setAddressCartOrders
   );
+  const cartOrders = useCartOrdersStore((state) => state.cartOrders);
   const router = useRouter();
+
+  const [selectedAddress, setSelectedAddress] = useState(
+    isCartOrders ? cartOrders[0].userAddressId : order.userAddressId
+  );
 
   const onButtonNextStep = () => {
     if (!selectedAddress) {

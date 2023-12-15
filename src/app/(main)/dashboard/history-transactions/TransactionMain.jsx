@@ -34,7 +34,7 @@ export default function TransactionMain() {
 
   if (orders.length === 0)
     return (
-      <div className="h-52 w-full bg-red-400 grid place-content-center">
+      <div className="h-52 w-full grid place-content-center">
         Belum Ada Transaksi
       </div>
     );

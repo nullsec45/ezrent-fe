@@ -240,7 +240,7 @@ export default function PaymentSection() {
               bukti pembayaran Anda dikonfirmasi
             </span>{' '}
             oleh pemilik toko, jika telah terkonfimasi{' '}
-            <span className="font-bold">barang anda akan diproses</span>
+            <span className="font-bold">barang anda akan diproses </span>
             sesuai metode pengiriman yang Anda pilih
           </p>
         </div>

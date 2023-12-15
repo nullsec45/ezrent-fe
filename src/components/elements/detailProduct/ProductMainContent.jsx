@@ -36,8 +36,9 @@ import { useLoadingImageStore } from '@/store/useLoadingImage';
 import { toast } from '@/components/ui/use-toast';
 import useAddItemToCartMutation from '@/hooks/api/useAddItemToCartMutation';
 import useCart from '@/hooks/api/useCart';
-import useCartUpdateMutation from '@/hooks/api/useCartUpdateMutation';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { api } from '@/utils/axios';
+import useMyProfile from '@/hooks/api/useMyProfile';
 
 export default function ProductMainContent({ productId }) {
   const { data: product, isLoading, error } = useDetailProduct(productId);
@@ -46,7 +47,8 @@ export default function ProductMainContent({ productId }) {
   const setOrderProduct = useBoundStore((state) => state.setOrderProduct);
   const router = useRouter();
   const { trigger: triggerAddItemToCart } = useAddItemToCartMutation();
-  const { trigger: triggerCartItemUpdate } = useCartUpdateMutation();
+  const { data: profile } = useMyProfile();
+  const isProfileFilled = Boolean(profile);
 
   const today = startOfDay(new Date());
   const [date, setDate] = useState({
@@ -377,6 +379,20 @@ export default function ProductMainContent({ productId }) {
         </div>
         {/* order */}
 
+        {!isProfileFilled && (
+          <div className="p-3 rounded-md bg-red-50 text-red-500 text-[11px] md:text-sm flex justify-end items-start md:items-center gap-2">
+            <span>
+              <BsFillInfoCircleFill />
+            </span>
+            <p>
+              Silahkan lengkapi profile Anda untuk bisa menyewa barang{' '}
+              <Link href="/dashboard" className="font-bold underline">
+                Lengkapi profile disini
+              </Link>
+            </p>
+          </div>
+        )}
+
         {/*  */}
         <div className="grid sm:grid-cols-2 gap-3 mt-5">
           <Button
@@ -390,7 +406,7 @@ export default function ProductMainContent({ productId }) {
           <Button
             className="w-full py-7"
             onClick={handleOnRent}
-            disabled={isStockEmpty()}
+            disabled={isStockEmpty() || !isProfileFilled}
           >
             {isStockEmpty() ? 'Stok Habis' : 'Sewa Sekarang'}
           </Button>
