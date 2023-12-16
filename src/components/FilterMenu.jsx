@@ -8,15 +8,21 @@ import CategoryFilter from '@/components/elements/filter/CategoryFilter';
 import { useEffect, useState } from 'react';
 import useInputNumber from '@/hooks/custom/useInputNumber';
 import useCategories from '@/hooks/api/useCategories';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function FilterMenu({ closeFilterMenu }) {
-  const [location, setLocation] = useState('');
-  const [minPrice, handleMinPrice] = useInputNumber();
-  const [maxPrice, handleMaxPrice] = useInputNumber();
+  const searchParams = useSearchParams();
+  const initialLocation = searchParams.get('city') || '';
+  const initialCategory = searchParams.get('category') || '';
+  const initialMinPrice = searchParams.get('minPrice') || '';
+  const initialMaxPrice = searchParams.get('maxPrice') || '';
+
+  const [location, setLocation] = useState(initialLocation);
+  const [minPrice, handleMinPrice] = useInputNumber(initialMinPrice);
+  const [maxPrice, handleMaxPrice] = useInputNumber(initialMaxPrice);
   const { data: categories, isLoading } = useCategories();
   const [searchedCategories, setSearchedCategories] = useState([]);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(initialCategory);
 
   const router = useRouter();
   const pathname = usePathname();

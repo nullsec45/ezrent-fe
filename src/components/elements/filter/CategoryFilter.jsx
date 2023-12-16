@@ -46,7 +46,7 @@ export default function CategoryFilter({
           <AccordionContent className="px-1 pt-3">
             <Search onChange={searchCategory} />
 
-            <RadioGroup className="space-y-2 my-4">
+            <RadioGroup className="space-y-2 my-4" defaultValue={category}>
               {!searchedCategories.length && (
                 <div className="text-gray-400 font-medium">
                   Kategori tidak ditemukan
