@@ -111,7 +111,7 @@ export default function Page() {
         </section>
 
         {/* Order Summary */}
-        <section className="lg:max-w-[400px]">
+        <section className="w-full lg:max-w-[400px]">
           <div className="border-2 border-gray-200 px-4 py-14 rounded-xl w-full lg:px-6">
             <h2 className="text-xl font-bold mb-10">Ringkasan Order</h2>
 
