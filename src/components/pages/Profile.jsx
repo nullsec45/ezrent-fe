@@ -26,11 +26,16 @@ import ErrorMessageInput from '@/components/elements/errors/ErrorMessageInput';
 import { addProfile, updateProfile } from '@/utils/api';
 import { CheckCircle } from 'lucide-react';
 import ButtonSubmit from '@/components/elements/button/ButtonSubmit';
+import { api } from '@/utils/axios';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Profile() {
   const [previewImage, setPreviewImage] = useState(null);
   const { data: user } = useMyProfile();
   const { edgestore } = useEdgeStore();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callback');
 
   const {
     handleSubmit,
@@ -38,7 +43,19 @@ export default function Profile() {
     control,
     formState: { isSubmitting, errors },
   } = useForm({
-    defaultValues: user ? user : null,
+    defaultValues: async () => {
+      const response = await api.get('/profiles/me');
+      const data = response.data?.data;
+
+      if (!data) return;
+
+      return {
+        fullname: data.fullname,
+        dateOfbirth: data.dateOfbirth.split('T')[0],
+        gender: data.gender,
+        phoneNumber: data.phoneNumber,
+      };
+    },
     resolver: yupResolver(updateProfileSchema),
   });
 
@@ -131,6 +148,10 @@ export default function Profile() {
             description: response?.data?.message,
             action: <CheckCircle />,
           });
+
+          if (callbackUrl) {
+            router.push(callbackUrl);
+          }
         }
       } catch (error) {
         console.log(error?.message);
@@ -244,7 +265,9 @@ export default function Profile() {
             render={({ field }) => (
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger className="w-full text-gray-600">
-                  <SelectValue placeholder="Pilih Jenis Kelamin" />
+                  <SelectValue
+                    placeholder={field?.value ?? 'Pilih Jenis Kelamin'}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

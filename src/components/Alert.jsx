@@ -2,20 +2,31 @@
 
 import { Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
+import useMyProfile from '@/hooks/api/useMyProfile';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Alert() {
-  const [isClose, setIsClose] = useState(true);
+  const { data: profile, isLoading } = useMyProfile();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const handleClose = () => setIsClose(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isLoading) return;
+    profile ? setIsOpen(false) : setIsOpen(true);
+  }, [isLoading, setIsOpen, profile]);
+
+  const handleClose = () => setIsOpen(false);
 
   return (
     <div
       className={twMerge(
-        'w-full bg-black py-[0.6rem] relative',
-        isClose ? null : 'hidden'
+        'w-full bg-black py-[0.6rem] sticky top-[72px] z-50',
+        !isOpen ? 'hidden' : null
       )}
       data-aos="fade-down"
     >
@@ -33,7 +44,10 @@ export default function Alert() {
               </Link>
             </p>
           </div>
-          <Link href="/dashboard/data-completeness" className="hidden sm:block">
+          <Link
+            href={`/dashboard?callback=${pathname}?${searchParams.toString()}`}
+            className="hidden sm:block"
+          >
             <Button variant="outline" className="text-sm px-6">
               Lebih Lanjut
             </Button>

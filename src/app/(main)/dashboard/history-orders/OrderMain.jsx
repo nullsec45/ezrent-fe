@@ -31,7 +31,7 @@ export default function OrderMain() {
 
   if (orders.length === 0)
     return (
-      <div className="h-52 w-full bg-red-400 grid place-content-center">
+      <div className="h-52 w-full grid place-content-center">
         Belum Ada Order
       </div>
     );

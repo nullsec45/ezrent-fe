@@ -24,8 +24,6 @@ export default function ShippingSection({ nextPage, prevPage }) {
   const setCurrentTransaction = useTransactionStore(
     (state) => state.setCurrentTransaction
   );
-  const selectedShipping = order.shipping;
-  const selectedPaymentMethod = order.transaction.paymentMethod;
 
   // Untuk alur Cart Orders
   const searchParams = useSearchParams();
@@ -40,8 +38,16 @@ export default function ShippingSection({ nextPage, prevPage }) {
   const { trigger: triggerEmptyCart } = useEmptyCartItemMutation();
   const router = useRouter();
 
+  const selectedShipping = isCartOrders
+    ? cartOrders[0]?.shipping
+    : order?.shipping;
+
+  const selectedPaymentMethod = isCartOrders
+    ? cartOrders[0]?.transaction.paymentMethod
+    : order?.transaction.paymentMethod;
+
   const onButtonNextStep = async () => {
-    if (!selectedPaymentMethod || !selectedPaymentMethod) {
+    if (!selectedShipping || !selectedPaymentMethod) {
       return toast({
         variant: 'destructive',
         title: 'Anda belum melengkapi metodenya',
