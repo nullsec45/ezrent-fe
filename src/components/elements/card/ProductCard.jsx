@@ -5,18 +5,11 @@ import { FaStar } from 'react-icons/fa6';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Button } from '@/components/ui/button';
 import { twMerge } from 'tailwind-merge';
-import { formatPrice } from '@/utils/helperFunction';
+import { calculateAverageRating, formatPrice } from '@/utils/helperFunction';
 
 export default function ProductCard({ product }) {
-  const {
-    id,
-    name,
-    description,
-    price,
-    availableStock,
-    productPictures,
-    store,
-  } = product;
+  const { id, name, reviews, price, availableStock, productPictures, store } =
+    product;
 
   return (
     <div className="w-full min-w-[150px] lg:min-w-[220px] max-w-xs bg-gray-50 shadow-md rounded-xl overflow-hidden">
@@ -64,7 +57,9 @@ export default function ProductCard({ product }) {
           </div>
           <div className="flex items-center gap-1 text-xs lg:text-base">
             <FaStar className="text-yellow-400" />
-            <span className="font-medium">4.7</span>
+            <span className="font-medium">
+              {calculateAverageRating(reviews)}
+            </span>
           </div>
         </div>
 
