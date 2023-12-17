@@ -135,8 +135,8 @@ const SingleImageDropzone = React.forwardRef(
             <>
               <div className="flex flex-col items-center justify-center text-xs text-gray-400">
                 <DollarIcon />
-                <div className="text-gray-400 font-bold mt-3">
-                  Foto Bukti Pembayaran
+                <div className="text-gray-400 font-bold mt-3 text-center">
+                  Foto atau Screenshot Bukti Pembayaran
                 </div>
                 <div className="mt-5">
                   <Button disabled={disabled} className="py-4 px-5 mx-5">

@@ -10,6 +10,7 @@ import useAddresses from '@/hooks/api/useAddresses';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCartOrdersStore } from './store/useCartOrdersStore';
 import Link from 'next/link';
+import { MdOutlineWrongLocation } from 'react-icons/md';
 
 export default function AddressSection({ prevPage, nextPage }) {
   const { data: addresses, isLoading } = useAddresses();
@@ -55,6 +56,14 @@ export default function AddressSection({ prevPage, nextPage }) {
   return (
     <div>
       <h1 className="text-xl font-semibold mb-8">Pilih Alamat</h1>
+      {addresses.length === 0 && (
+        <div className="flex flex-col gap-3 justify-center items-center min-h-[400px]">
+          <MdOutlineWrongLocation className="w-14 h-14 text-gray-400" />
+          <div className="text-gray-400 font-medium text-center">
+            Anda belum menambahkan alamat
+          </div>
+        </div>
+      )}
 
       <div>
         <RadioGroup className="space-y-6" defaultValue={order.userAddressId}>
@@ -80,7 +89,9 @@ export default function AddressSection({ prevPage, nextPage }) {
         <div className="flex items-center">
           <div className="border-t border-gray-400 border-dashed w-full"></div>
           <Button variant="ghost" className="hover:bg-transparent p-0">
-            <Link href="/dashboard/address/add">
+            <Link
+              href={`/dashboard/address/add?callback=\/checkout?step=address`}
+            >
               <FaCirclePlus className="w-6 h-6" />
             </Link>
           </Button>

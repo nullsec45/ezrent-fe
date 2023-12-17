@@ -6,7 +6,7 @@ export default function NavbarMenuDekstopNotAuthenticated() {
   return (
     <ul className="flex gap-4 items-center">
       <li>
-        <Link href="/">
+        <Link href="/cart">
           <Button size="icon" variant="ghost">
             <ShoppingCart />
           </Button>

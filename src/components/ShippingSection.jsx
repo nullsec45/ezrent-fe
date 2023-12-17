@@ -159,7 +159,7 @@ export default function ShippingSection({ nextPage, prevPage }) {
                   : setOrderPaymentMethod('TRANSFER');
               }}
             />
-            <PaymentMethodCard
+            {/* <PaymentMethodCard
               id="cod"
               value="cod"
               title="COD"
@@ -169,7 +169,7 @@ export default function ShippingSection({ nextPage, prevPage }) {
                   ? setPaymentMethodCartOrders('COD')
                   : setOrderPaymentMethod('COD');
               }}
-            />
+            /> */}
           </RadioGroup>
         </div>
       </div>

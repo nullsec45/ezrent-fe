@@ -5,11 +5,17 @@ import { deleteCookie, setCookie } from 'cookies-next';
 export const register = async (data) => {
   try {
     const response = await api.post('/auth/register', data);
-    if (response.status === 201) {
-      return response;
-    }
+    return response;
   } catch (error) {
-    console.log(error?.message);
+    if (error?.response?.status === 409) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Credentials',
+        description: 'Email atau Username telah digunakan',
+      });
+    } else {
+      console.log(error?.message);
+    }
   }
 };
 

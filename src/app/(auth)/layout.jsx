@@ -33,6 +33,9 @@ export const metadata = {
     address: 'Pulau Jawa, Indonesia',
     telephone: '0813987326',
   },
+  other: {
+    'dicoding:email': 'dimasfauzan1712@gmail.com',
+  },
 };
 
 export const viewport = {

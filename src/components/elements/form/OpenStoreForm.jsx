@@ -72,6 +72,15 @@ export default function OpenStoreForm() {
   const handleOpenStore = async (data) => {
     const profilePicture = file;
 
+    if (!position) {
+      return toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'Silahkan Pilih Lokasi Toko Anda Terlebih Dahulu',
+        action: <Info />,
+      });
+    }
+
     if (profilePicture) {
       try {
         const res = await edgestore.publicFiles.upload({
@@ -425,7 +434,7 @@ export default function OpenStoreForm() {
             </div>
 
             <div className="flex flex-col space-y-1.5 ">
-              <Label>Pilih Lokasi Anda</Label>
+              <Label>Pilih Lokasi Toko Anda</Label>
               <div className="text-xs text-gray-500 font-medium max-w-md">
                 Pilih lokasi toko anda dengan memberikan PIN pada peta.
               </div>

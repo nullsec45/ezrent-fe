@@ -6,6 +6,7 @@ import { toast } from '@/components/ui/use-toast';
 import { deleteAddress } from '@/utils/api';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { MdOutlineWrongLocation } from 'react-icons/md';
 
 export default function AddressItemCard() {
   const { data: addresses, isLoading, mutate } = useMyAddress();
@@ -31,6 +32,17 @@ export default function AddressItemCard() {
   };
 
   if (isLoading || !addresses) return null;
+
+  if (addresses.length === 0) {
+    return (
+      <div className="flex flex-col gap-3 justify-center items-center min-h-[400px]">
+        <MdOutlineWrongLocation className="w-14 h-14 text-gray-400" />
+        <div className="text-gray-400 font-medium text-center">
+          Anda belum menambahkan alamat
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

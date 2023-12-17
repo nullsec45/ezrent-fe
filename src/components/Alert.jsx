@@ -25,7 +25,7 @@ export default function Alert() {
   return (
     <div
       className={twMerge(
-        'w-full bg-black py-[0.6rem] sticky top-[72px] z-50',
+        'w-full bg-black py-[0.6rem] sticky top-[72px] sm:top-[58px] lg:top-[72px] z-[99999]',
         !isOpen ? 'hidden' : null
       )}
       data-aos="fade-down"
