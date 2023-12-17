@@ -16,7 +16,7 @@ export default function Products() {
       {/* Filter Sidebar */}
       <aside
         className={twMerge(
-          'fixed lg:sticky top-0 lg:top-0 left-0 lg:left-auto w-full h-screen lg:block lg:w-72 max-h-screen overflow-y-scroll bg-white z-[9999] lg:z-10 flex-shrink-0',
+          'fixed lg:sticky top-0 lg:top-0 left-0 lg:left-auto w-full h-screen lg:block lg:w-72 max-h-screen overflow-y-scroll bg-white z-[9999999] lg:z-10 flex-shrink-0',
           `${isFilterMenuOpen || 'hidden'}`
         )}
       >
