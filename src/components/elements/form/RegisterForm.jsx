@@ -33,11 +33,12 @@ export default function RegisterForm() {
   const handleRegister = async (data) => {
     try {
       const response = await CreateAccount(data);
-      if (response.status === 201) {
+      if (response?.status === 201) {
         reset(initialRegister);
         toast({
           title: 'Congratulations.',
-          description: response.data?.message,
+          description:
+            'Register berhasil, silahkan pergi ke menu LOGIN untuk masuk ke akun Anda',
           action: <CheckCircle />,
         });
       }

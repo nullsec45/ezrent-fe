@@ -27,7 +27,7 @@ import useDetailProduct from '@/hooks/api/useDetailProduct';
 import DetailProductInfoCard from '@/components/elements/card/DetailProductInfoCard';
 import ErrorFetchApiFallback from '@/components/elements/errors/ErrorFetchApiFallback';
 import { useBoundStore } from '@/components/store/useBoundStore';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import ProductMainContentSkeleton from '@/components/elements/skeleton/ProductMainContentSkeleton';
 import PropTypes from 'prop-types';
 import { FaMapLocationDot, FaWhatsapp } from 'react-icons/fa6';
@@ -46,9 +46,11 @@ export default function ProductMainContent({ productId }) {
   const { data: carts, mutate: mutateCart } = useCart();
   const setOrderProduct = useBoundStore((state) => state.setOrderProduct);
   const router = useRouter();
+  const pathname = usePathname();
   const { trigger: triggerAddItemToCart } = useAddItemToCartMutation();
-  const { data: profile } = useMyProfile();
+  const { data: profile, error: errorMyProfile } = useMyProfile();
   const isProfileFilled = Boolean(profile);
+  const isUserLogin = !Boolean(errorMyProfile);
 
   const today = startOfDay(new Date());
   const [date, setDate] = useState({
@@ -122,6 +124,8 @@ export default function ProductMainContent({ productId }) {
   };
 
   const handleOnAddCart = async () => {
+    if (!isUserLogin) return router.push(`/auth?callback=${pathname}`);
+
     const cartItem = carts.find((cart) => cart.productId === productId);
 
     try {
