@@ -1,6 +1,4 @@
 import AddressItemCard from '@/components/elements/card/AddressItemCard';
-import SmallMenu from '@/components/elements/menu/SmallMenu';
-import Breadcrumbs from '@/components/Breadcrumbs';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 

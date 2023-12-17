@@ -27,7 +27,7 @@ import { toast } from '@/components/ui/use-toast';
 import { CheckCircle, Info } from 'lucide-react';
 import useCities from '@/hooks/api/useCities';
 import { Label } from '@/components/ui/label';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createAddress } from '@/utils/api';
 import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -61,7 +61,9 @@ export default function AddAddressForm() {
   const { data: subDistricts } = useSubDistricts(districtId);
   const { data: postalCodes } = usePostalCode(cityId, districtId);
 
-  const { back } = useRouter();
+  const { back, push } = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callback');
 
   const handleAddAddress = async (data) => {
     try {
@@ -82,12 +84,17 @@ export default function AddAddressForm() {
       const response = await createAddress(address);
       if (response?.status === 201) {
         reset(addressInitialValues);
-        back();
         toast({
           title: 'Success',
           description: response.data?.message,
           action: <CheckCircle />,
         });
+
+        if (callbackUrl) {
+          push(callbackUrl);
+        } else {
+          back();
+        }
       }
     } catch (error) {
       toast({
