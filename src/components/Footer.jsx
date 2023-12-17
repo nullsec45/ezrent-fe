@@ -12,7 +12,7 @@ export default function Footer() {
        space-y-2"
           >
             <Image
-              src="/logo-white.png"
+              src="/logo-white.svg"
               alt="/"
               width={110}
               height={110}
