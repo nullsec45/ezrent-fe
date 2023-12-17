@@ -6,7 +6,7 @@ export default function NavbarBrand() {
     <div className="w-full max-w-[7rem] mr-2">
       <Link href="/">
         <Image
-          src={'/logo.png'}
+          src={'/logo.svg'}
           alt="logo"
           width={500}
           height={500}

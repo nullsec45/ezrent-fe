@@ -39,7 +39,7 @@ export default function TransactionDetailModal({ order, store }) {
           <AlertDialogTitle className="text-start">
             Rincian Pembayaran
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-start pt-4 text-black space-y-2 overflow-y-auto max-h-[700px]">
+          <AlertDialogDescription className="text-start pt-4 text-black space-y-2 overflow-y-auto max-h-[500px]">
             <div className="border border-gray-200 rounded-md p-2">
               <h2 className="font-bold mb-2">Info Transaksi Pembayaran</h2>
               <div className="space-y-1">
