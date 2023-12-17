@@ -13,7 +13,7 @@ export default function DataCompleteness() {
           <div className="flex gap-3 items-center">
             <div className="rounded-lg shadow h-full min-h-[6rem] max-w-[6rem] w-full flex text-gray-600 items-center flex-col justify-center">
               <Image
-                src={'/logo.png'}
+                src={'/logo.svg'}
                 width={100}
                 height={100}
                 quality={100}

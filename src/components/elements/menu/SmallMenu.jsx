@@ -23,11 +23,6 @@ export default function SmallMenu() {
       href: '/dashboard/address',
     },
     {
-      icon: <FileText />,
-      text: 'Kelengkapan Data',
-      href: '/dashboard/data-completeness',
-    },
-    {
       icon: <FileClock />,
       text: 'Menunggu Pembayaran',
       href: '/dashboard/history-transactions',
@@ -56,7 +51,7 @@ export default function SmallMenu() {
                 {menu.text}
               </Button>
             </Link>
-            {index === 2 && (
+            {index === 1 && (
               <hr className="w-full h-[1.5px] bg-gray-400 my-3" />
             )}
           </li>

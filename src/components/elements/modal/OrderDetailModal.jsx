@@ -45,7 +45,7 @@ export default function OrderDetailModal({ order, isUserDashboard }) {
           <AlertDialogTitle className="text-start">
             Rincian Order Sewa Barang
           </AlertDialogTitle>
-          <AlertDialogDescription className="flex flex-col gap-2 text-start pt-4 text-black overflow-y-auto max-h-[620px]">
+          <AlertDialogDescription className="flex flex-col gap-2 text-start pt-4 text-black overflow-y-auto max-h-[500px]">
             <div className="border border-gray-200 rounded-md p-2">
               <h2 className="font-bold mb-2">Status</h2>
               <div className="space-y-1">
