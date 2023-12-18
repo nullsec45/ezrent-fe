@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h2 align="center">Frontend Repository <br> Platform Penyewaan Barang</h2>
+<h3>TEAM ID       :  C523-PS029</h3>
+<h3>TEMA			    : Teknologi dalam Berbagai Aspek Kehidupan </h3>
+<h3>NAMA ADVISOR	: Buchori Rafsanjani </h3>
+<h3>LIST ANGGOTA	: </h3>
+<ol>
+  <li>S182XB441 – Astriditiya Laila Nur Fadilah - Aktif</li>
+  <li>F498YB197 – Abdul Rizki Maghribi - Aktif</li>
+  <li>F265YB190 – Dimas Fauzan - Aktif</li>
+  <li>F193YB217 – Muhammad Dariaz Zidane - Aktif</li>
+  <li>F156YB169 – Rama Fajar Fadhillah - Aktif</li>
+</ol>
+<h3>Nama Project : Ezrent</h3>
+<h3>LINK FRONTEND : <a href="https://ezrent.my.id/">ezrent.my.id</a> </h3>
+<h2 align="left">Apa itu ezrent ?</h2>
+<p align="justify">Ezrent adalah platform penyewaan barang berbasis website yang dapat digunakan untuk transaksi penyewaan barang. Pengguna dapat menyewa barang dengan rentang hari tertentu. Barang yang terdapat pun beragam, terdapat barang elektronik, otomatif, aksesoris, dan lainnya. Selain menyewa barang, pengguana pun dapat menyewakan barang yang ia miliki dengan cara membuka toko. Demi kenyamanan dan keamanan sebelum menyewa barang pengguna harus melengkapi data pribadai seperti KTP, SIM, atau Pasport.</p>
+<h2 align="left">Tech Stack</h2>
 
-## Getting Started
+| Nama               |                          Link                           |
+| ------------------ | :-----------------------------------------------------: |
+| Javascript         | https://developer.mozilla.org/en-US/docs/Web/JavaScript |
+| Next.js            |                   https://nextjs.org                    |
+| TailwindCSS        |                 https://tailwindcss.com                 |
+| Shadcn/ui          |                  https://ui.shadcn.com                  |
+| Axios              |                 https://axios-http.com                  |
+| SWR                |                 https://swr.vercel.app                  |
+| React Leaflet      |              https://react-leaflet.js.org               |
+| React Hook Form    |               https://react-hook-form.com               |
+| React Icons        |        https://react-icons.github.io/react-icons        |
+| Prop types         |        https://www.npmjs.com/package/prop-types         |
+| ESLint             |                   https://eslint.org                    |
+| Zustand            |              https://zustand-demo.pmnd.rs               |
+| Edge Store         |                  https://edgestore.dev                  |
+| Framer Motion      |                 https://www.framer.com                  |
+| Yup                |            https://www.npmjs.com/package/yup            |
+| Zod                |                     https://zod.dev                     |
+| Cookies-next       |       https://www.npmjs.com/package/cookies-next        |
+| Next-nprogress-bar |    https://www.npmjs.com/package/next-nprogress-bar     |
+| Vitest             |                   https://vitest.dev                    |
+| React-date-picker  |             https://react-day-picker.js.org             |
 
-First, run the development server:
+<h2 align="left">Development</h2>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<p align="left">
+  Clone Repository ini<br>
+    
+    git clone https://github.com/muhammaddariazzidane/Front-end-Capstone
+</p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<p align="left">
+  Install dependencies : <br>
+    
+    npm install
+</p>
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+<p align="left">
+  Ubah .env.example menjadi .env : <br>
+    
+    cp .env.example .env
+</p>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<p align="left">
+  Ubah isi .env sesuai environment anda *sebagai contoh: 
+  <br>
 
-## Learn More
+    # CLOUD STORAGE
+    EDGE_STORE_ACCESS_KEY=OtpWy0qR1B6jVgt2yjIhHGWwRrKKfF7sav
+    EDGE_STORE_SECRET_KEY=XFPtdE1SYGGY8ZdiIEq9smOSb5BahFIo9JiRn9Gy3KvCvOoS6
 
-To learn more about Next.js, take a look at the following resources:
+    # API URL
+    NEXT_PUBLIC_API_BASE_URL=https://api.ezrent.my.id
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+</p>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<p align="left">
+  Jalankan Program Ke Mode Development : <br>
 
-## Deploy on Vercel
+    npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+</p>
+<p align="left">
+  Buka URL : <br>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    http://localhost:3001
+
+</p>
+
+<p align="left">
+  Kontributor : 
+  <br />
+  <br />
+  <a href="https://github.com/fltmzl">
+  <img src="https://avatars.githubusercontent.com/u/79774904?v=4" alt="Abdul Rizki Maghribi" width='40' />
+  </a>
+  <a href='https://github.com/nullsec45'>
+  <img src="https://avatars.githubusercontent.com/u/107412463?v=4" alt="Rama Fajar Fadhillah" width='40' />
+  </a>
+  <a href='https://github.com/dimskuyyy'>
+  <img src="https://avatars.githubusercontent.com/u/91046187?v=4" alt="Dimas Fauzan" width='40' />
+  </a>
+  <a href='https://github.com/astrid383'>
+  <img src="https://avatars.githubusercontent.com/u/142241617?v=4" alt="Astriditiya Laila Nur Fadilah" width='40' />
+  </a>
+  <a href='https://github.com/muhammaddariazzidane'>
+  <img src="https://avatars.githubusercontent.com/u/106227152?v=4" alt="Muhammad Dariaz Zidane" width='40' />
+  </a>
+</p>
